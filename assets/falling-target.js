@@ -15,6 +15,7 @@
     targetHeight: $('#targetHeight'), result: $('#resultCard'), resultIcon: $('#resultIcon'), resultTitle: $('#resultTitle'),
     resultText: $('#resultText'), status: $('#simLiveStatus'), conditionStatus: $('#conditionStatus'), predictionReview: $('#predictionReview'),
     predictionConditions: $('#predictionConditions'), predictionFeedback: $('#predictionFeedback'),
+    predictionPanel: $('.prediction-panel'), playGuidance: $('#playGuidance'),
     progress: [...document.querySelectorAll('.progress span')],
   };
 
@@ -152,13 +153,32 @@
 
   function announce(message) { elements.status.textContent = message; }
 
+  function setPlayReady(ready, message) {
+    elements.play.setAttribute('aria-disabled', String(!ready));
+    elements.play.classList.toggle('needs-prediction', !ready);
+    if (!playing) elements.play.textContent = ready ? (reducedMotion ? '↦ 다음 장면' : '▶ 재생') : '↑ 예상 선택 필요';
+    elements.playGuidance.textContent = message;
+    elements.playGuidance.classList.toggle('ready', ready);
+  }
+
+  function requestPrediction() {
+    const message = '재생하려면 위에서 결과를 먼저 예상해 주세요.';
+    elements.predictionFeedback.textContent = message;
+    elements.predictionPanel.classList.add('attention');
+    elements.predictionPanel.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+    window.setTimeout(() => {
+      document.querySelector('.prediction-option')?.focus({ preventScroll: true });
+    }, reducedMotion ? 0 : 400);
+    announce(message);
+  }
+
   function clearPrediction(message) {
     prediction = null;
     predictionText = '';
     document.querySelectorAll('.prediction-option').forEach(item => { item.classList.remove('selected'); item.setAttribute('aria-pressed', 'false'); });
     elements.predictionReview.hidden = true;
     elements.predictionFeedback.textContent = message;
-    elements.play.disabled = true;
+    setPlayReady(false, message);
   }
 
   function setProgress(completedSteps) {
@@ -229,6 +249,7 @@
   }
 
   function play() {
+    if (!prediction) { requestPrediction(); return; }
     const model = getModel();
     if (reducedMotion) {
       if (completed) reset({ announceReset: false });
@@ -278,7 +299,8 @@
     button.classList.add('selected');
     button.setAttribute('aria-pressed', 'true');
     prediction = button.dataset.prediction; predictionText = button.textContent.trim();
-    elements.play.disabled = false;
+    elements.predictionPanel.classList.remove('attention');
+    setPlayReady(true, '예상 완료. 재생을 눌러 결과를 확인하세요.');
     setProgress(1);
     elements.predictionFeedback.textContent = '예상을 선택했습니다. 아직 정답은 보여드리지 않을게요. 직접 재생해 확인해 보세요.';
   }));
