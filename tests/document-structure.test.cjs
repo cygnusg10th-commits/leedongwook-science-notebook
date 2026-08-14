@@ -38,5 +38,6 @@ const playButtonTag = lessonHtml.match(/<button[^>]+id="playButton"[^>]*>/)?.[0]
 assert.doesNotMatch(playButtonTag, /\sdisabled(?:\s|>)/, 'play button must remain tappable when a prediction is missing');
 assert.doesNotMatch(playButtonTag, /aria-disabled=/, 'play button should be exposed as an actionable guidance control');
 assert.match(lessonHtml, /id="playGuidance"[^>]+role="status"/, 'mobile play guidance is missing');
+assert.match(lessonHtml, /falling-target\.js\?v=[^"\s]+/, 'simulation script needs a cache-busting version');
 
 console.log(`Document structure: ${pages.length} pages passed.`);
