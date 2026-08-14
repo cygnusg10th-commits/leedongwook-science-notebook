@@ -35,8 +35,8 @@ for (const file of pages) {
 
 const lessonHtml = fs.readFileSync(path.join(root, 'learn', 'falling-target', 'index.html'), 'utf8');
 const playButtonTag = lessonHtml.match(/<button[^>]+id="playButton"[^>]*>/)?.[0] || '';
-assert.match(playButtonTag, /aria-disabled="true"/, 'play button should guide users instead of becoming untappable');
 assert.doesNotMatch(playButtonTag, /\sdisabled(?:\s|>)/, 'play button must remain tappable when a prediction is missing');
+assert.doesNotMatch(playButtonTag, /aria-disabled=/, 'play button should be exposed as an actionable guidance control');
 assert.match(lessonHtml, /id="playGuidance"[^>]+role="status"/, 'mobile play guidance is missing');
 
 console.log(`Document structure: ${pages.length} pages passed.`);
