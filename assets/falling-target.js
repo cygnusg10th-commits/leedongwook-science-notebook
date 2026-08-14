@@ -154,7 +154,6 @@
   function announce(message) { elements.status.textContent = message; }
 
   function setPlayReady(ready, message) {
-    elements.play.setAttribute('aria-disabled', String(!ready));
     elements.play.classList.toggle('needs-prediction', !ready);
     if (!playing) elements.play.textContent = ready ? (reducedMotion ? '↦ 다음 장면' : '▶ 재생') : '↑ 예상 선택 필요';
     elements.playGuidance.textContent = message;
