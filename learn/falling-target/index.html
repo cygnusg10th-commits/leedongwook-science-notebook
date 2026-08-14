@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="떨어지는 표적과 발사체의 운동을 가로와 세로로 나누어 관찰하는 교육용 시뮬레이션" />
+  <title>떨어지는 표적과 발사체 | 이동욱의 과학 수첩</title>
+  <link rel="stylesheet" href="../../assets/site.css" />
+  <script src="../../assets/site.js" defer></script>
+  <script src="../../assets/falling-target-model.js" defer></script>
+  <script src="../../assets/falling-target.js" defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../" aria-label="이동욱의 과학 수첩 홈"><span class="brand-mark" aria-hidden="true"></span><span>이동욱의 과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav>
+        <a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a>
+      </nav>
+      <div class="header-tools"><button class="icon-button" type="button" aria-label="공유" data-share>↗</button><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container lesson-heading">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>운동과 힘</span></nav>
+      <div class="lesson-heading-grid">
+        <div>
+          <div class="tag-row"><span class="tag physics">물리학</span><span class="tag neutral">약 3분</span><span class="tag neutral">시뮬레이션</span></div>
+          <h1>떨어지는 표적과 발사체</h1>
+          <p>표적이 떨어지기 시작하는 순간, 어느 방향을 향해야 공중에서 만날 수 있을까요?</p>
+        </div>
+        <button class="icon-button" type="button" aria-label="공유" data-share>↗</button>
+      </div>
+      <div class="progress" role="list" aria-label="학습 순서"><span class="active" role="listitem" aria-label="1단계 예상" aria-current="step"></span><span role="listitem" aria-label="2단계 실험"></span><span role="listitem" aria-label="3단계 원리"></span><span role="listitem" aria-label="4단계 퀴즈"></span><span role="listitem" aria-label="5단계 관련 콘텐츠"></span></div>
+    </section>
+
+    <section class="container prediction-panel" aria-labelledby="predictionTitle">
+      <h2 id="predictionTitle">먼저 예상해 보세요</h2>
+      <p>표적의 처음 위치를 향해 발사하면 어떻게 될까요?</p>
+      <p class="prediction-conditions" id="predictionConditions">높이 20m · 수평거리 20m · 발사 속력 20m/s</p>
+      <div class="prediction-options">
+        <button class="prediction-option" type="button" aria-pressed="false" data-prediction="air-hit">공중에서 만난다</button>
+        <button class="prediction-option" type="button" aria-pressed="false" data-prediction="projectile-ground">발사체가 먼저 지면에 닿는다</button>
+        <button class="prediction-option" type="button" aria-pressed="false" data-prediction="ground-simultaneous">지면과 동시에 도달한다</button>
+      </div>
+      <div class="prediction-feedback" id="predictionFeedback" aria-live="polite">하나를 선택한 뒤 시뮬레이션으로 확인해 보세요.</div>
+    </section>
+
+    <div class="container lesson-grid">
+      <div>
+        <article class="simulation-card" aria-labelledby="simTitle">
+          <div class="sim-head"><strong id="simTitle">직접 움직여 확인하기</strong><button type="button" onclick="document.getElementById('conditions').scrollIntoView({behavior:'smooth'})">실험 조건 ⓘ</button></div>
+          <div class="sim-stage">
+            <span class="sim-status" id="conditionStatus">높이 20m · 거리 20m</span>
+            <svg id="simulationSvg" viewBox="0 0 800 450" role="img" aria-labelledby="svgTitle svgDesc">
+              <title id="svgTitle">떨어지는 표적과 발사체 시뮬레이션</title>
+              <desc id="svgDesc">파란 발사체와 주황 표적이 중력 아래에서 이동하는 모습을 보여줍니다.</desc>
+              <defs><marker id="gravityArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#813866" /></marker></defs>
+              <line id="groundLine" stroke="#465268" stroke-width="4" />
+              <text x="70" y="430" fill="#465268" font-size="13">지면</text>
+              <line id="aimLine" stroke="#7e88a7" stroke-width="3" stroke-dasharray="12 6 2 6" />
+              <text x="330" y="88" fill="#687392" font-size="12">처음 조준선</text>
+              <path id="projectilePath" fill="none" stroke="#315fdb" stroke-width="6" stroke-linecap="round" />
+              <path id="targetPath" fill="none" stroke="#d97706" stroke-width="5" stroke-dasharray="7 9" stroke-linecap="round" />
+              <g id="timeMarkers"></g><g id="gravityGuides"></g>
+              <circle id="targetStart" r="22" fill="#fff" stroke="#d97706" stroke-width="5" opacity=".55" />
+              <circle id="projectile" r="16" fill="#315fdb" stroke="#fff" stroke-width="3" />
+              <circle id="target" r="22" fill="#fff" stroke="#d97706" stroke-width="6" />
+              <circle id="eventMarker" r="24" fill="none" stroke="#17233a" stroke-width="3" hidden />
+              <text id="projectileLabel" fill="#263b94" font-size="13" font-weight="700">발사체</text>
+              <text id="targetLabel" fill="#8a4d00" font-size="13" font-weight="700">낙하 표적</text>
+            </svg>
+          </div>
+          <div class="sim-readout" aria-label="현재 측정값"><div class="readout-item"><span>시간</span><b id="timeValue">0.00 s</b></div><div class="readout-item"><span>발사체 높이</span><b id="projectileHeight">0.0 m</b></div><div class="readout-item"><span>표적 높이</span><b id="targetHeight">20.0 m</b></div></div>
+          <div class="sim-controls">
+            <div class="main-controls"><button class="control-button play" id="playButton" type="button" disabled>▶ 재생</button><button class="control-button" id="pauseButton" type="button">Ⅱ 정지</button><button class="control-button" id="resetButton" type="button">↺ 처음부터</button></div>
+            <div class="control-group"><div class="control-label"><label for="speedRange">발사 속력</label><b><span id="speedValue">20.0</span> m/s</b></div><input id="speedRange" type="range" min="5" max="60" step="0.5" value="20" /><div class="speed-ticks"><span>느리게 5</span><span>빠르게 60</span></div></div>
+            <div class="control-group"><div class="control-label"><span>화면 재생 배속</span><b>물리 결과에는 영향 없음</b></div><div class="playback-row"><button class="chip-button" type="button" aria-pressed="false" data-playback="0.25">0.25×</button><button class="chip-button active" type="button" aria-pressed="true" data-playback="0.5">0.5×</button><button class="chip-button" type="button" aria-pressed="false" data-playback="1">1×</button><button class="chip-button" type="button" aria-pressed="false" data-playback="2">2×</button></div></div>
+            <div class="control-group"><div class="control-label"><span>관찰 도구</span><b>색과 선 모양으로 함께 구분</b></div><div class="toggle-row"><button class="chip-button active" type="button" aria-pressed="true" data-toggle-view="trajectory">궤적</button><button class="chip-button active" type="button" aria-pressed="true" data-toggle-view="aim">조준선</button><button class="chip-button" type="button" aria-pressed="false" data-toggle-view="markers">시간 간격점</button><button class="chip-button" type="button" aria-pressed="false" data-toggle-view="xy">중력 없는 경로와 비교</button></div></div>
+            <details class="advanced"><summary>조건을 더 바꾸어 보기</summary><div class="advanced-grid"><div><div class="control-label"><label for="heightRange">표적 높이</label><b><span id="heightValue">20</span> m</b></div><input id="heightRange" type="range" min="5" max="40" step="1" value="20" /></div><div><div class="control-label"><label for="distanceRange">수평거리</label><b><span id="distanceValue">20</span> m</b></div><input id="distanceRange" type="range" min="5" max="50" step="1" value="20" /></div></div></details>
+          </div>
+          <div class="result-card" id="resultCard"><span class="result-icon" id="resultIcon">•</span><div><strong id="resultTitle">예상한 뒤 재생해 보세요</strong><p id="resultText">발사체와 표적이 시간에 따라 어떻게 움직이는지 살펴보세요.</p></div></div>
+          <div class="prediction-review" id="predictionReview" hidden></div>
+          <div class="sr-only" id="simLiveStatus" aria-live="polite"></div>
+        </article>
+
+        <div id="postExperiment" hidden>
+          <noscript><p class="side-card caution">JavaScript가 꺼져 있어 시뮬레이션을 실행할 수 없습니다. 아래 설명은 읽을 수 있습니다.</p><style>#postExperiment{display:block!important}</style></noscript>
+          <section class="explanation" aria-labelledby="principleTitle">
+            <p class="eyebrow">핵심 원리</p><h2 id="principleTitle">중력이 없을 때의 길과 비교해 볼까요?</h2>
+            <p>발사체가 실제로 위로 올라가는 동안에도 중력은 계속 작용합니다. 여기서 “같이 떨어진다”는 말은 두 물체의 실제 높이가 같다는 뜻이 아닙니다.</p>
+            <div class="xy-grid">
+              <article class="xy-card"><b>가로 방향 x</b><strong>발사체가 표적 쪽으로 이동</strong><p>표적은 가로로 움직이지 않고, 발사체는 표적의 가로 위치까지 이동합니다.</p></article>
+              <article class="xy-card"><b>중력이 없다면</b><strong>처음 조준선 위로 이동</strong><p>발사체는 처음 조준선을 따라가고, 표적은 처음 높이에 그대로 있습니다.</p></article>
+              <article class="xy-card"><b>중력이 있다면</b><strong>두 경로가 같은 양만큼 아래로</strong><p>중력이 발사체의 경로와 표적의 위치를 같은 시간 동안 같은 양만큼 아래쪽으로 바꿉니다.</p></article>
+            </div>
+            <details class="deep-dive"><summary>조금 더 깊게 보기</summary><div class="deep-dive-content"><p>발사점이 (0, 0), 표적이 (D, H)에 있을 때 발사체는 표적의 처음 위치를 향합니다. 이때 θ는 조준각이며 θ = tan⁻¹(H/D)입니다. 두 물체의 세로 위치에는 똑같은 중력 항이 들어가기 때문에 서로의 상대적인 조준 관계에서는 그 항이 사라집니다.</p><div class="formula">표적: y = H − ½gt²</div><div class="formula">발사체: y = v sin(θ)t − ½gt²</div><p>단, 계산상 만남 위치가 지면 아래라면 실제로는 그 전에 발사체가 지면에 닿습니다.</p></div></details>
+          </section>
+
+          <section class="quiz" aria-labelledby="quizTitle">
+            <p class="eyebrow">확인 퀴즈</p><h2 id="quizTitle">조건이 바뀌어도 설명할 수 있나요?</h2>
+            <div class="quiz-list">
+              <article class="quiz-item"><h3>1. 두 물체가 공중에서 만날 수 있는 핵심 이유는?</h3><div class="quiz-options"><button class="quiz-option" type="button" data-correct="false" data-hint="질량이 같을 필요는 없습니다.">두 물체의 질량이 같기 때문에</button><button class="quiz-option" type="button" data-correct="true" data-feedback="맞았습니다. 같은 시간 동안 중력은 두 물체의 위치를 각자의 중력 없는 경로보다 같은 만큼 아래로 바꿉니다.">둘 다 같은 중력가속도의 영향을 받기 때문에</button><button class="quiz-option" type="button" data-correct="false" data-hint="가로 속력은 서로 같지 않습니다.">두 물체의 가로 속력이 같기 때문에</button></div><div class="quiz-feedback" aria-live="polite"></div></article>
+              <article class="quiz-item"><h3>2. 발사 속력이 너무 느리면 어떻게 될까요?</h3><div class="quiz-options"><button class="quiz-option" type="button" data-correct="false" data-hint="지면이라는 현실 조건을 생각해 보세요.">방향만 맞으면 언제나 공중에서 만난다</button><button class="quiz-option" type="button" data-correct="true" data-feedback="맞았습니다. 이 조건에서는 발사체가 표적에 닿기 전에 지면과 충돌할 수 있습니다.">만나기 전에 발사체가 지면에 닿을 수 있다</button><button class="quiz-option" type="button" data-correct="false" data-hint="중력은 두 물체 모두에 작용합니다.">중력이 발사체에만 작용한다</button></div><div class="quiz-feedback" aria-live="polite"></div></article>
+            </div>
+          </section>
+
+          <section class="sources"><h2>과학적으로 정확히 말하면</h2><p>이 시뮬레이션은 공기 저항·바람·회전·지구 곡률을 제외하고 두 물체를 점으로 취급한 이상적인 모형입니다. 화면의 원은 실제 크기가 아니라 위치를 보여 주는 표식입니다. 위치는 프레임 누적이 아니라 등가속도 운동식으로 직접 계산하며, 지면 충돌과 만남은 연속적인 사건 시각으로 판정합니다.</p><p><b>검토 상태:</b> 운동 모델 검산 완료 · 기준 중력가속도 9.8m/s² · 최종 수정 2026-08-14</p></section>
+        </div>
+      </div>
+
+      <aside class="side-stack">
+        <section class="side-card" id="conditions"><h2>이번 실험의 조건</h2><ul class="condition-list"><li>발사와 표적 낙하가 동시에 시작</li><li>표적의 처음 중심을 향해 발사</li><li>두 물체에 같은 중력가속도 적용</li><li>공기 저항과 바람은 제외</li><li>지면에 먼저 닿으면 공중에서 만나지 못함</li></ul></section>
+        <section class="side-card caution"><p><b>안전 안내</b><br />이 내용을 실제 발사 실험으로 따라 하지 마세요. 총, BB탄, 새총, 활, 다트 등 사람이나 물체를 향해 날아가는 도구는 사용하지 않습니다. 이 원리는 시뮬레이션으로 확인하세요.</p></section>
+        <section class="side-card"><h2>관련 숏츠</h2><p style="margin:0;color:var(--muted);font-size:12px;line-height:1.6">영상이 공개되면 이곳에서 바로 연결합니다.<br /><span class="coming">숏츠 준비 중</span></p></section>
+        <section class="side-card"><h2>다음 호기심</h2><ul class="condition-list"><li>수평으로 던진 물체도 동시에 떨어질까?</li><li>공기 저항이 있으면 무엇이 달라질까?</li><li>물에 뜬 얼음이 녹으면 수면은?</li></ul></section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>이동욱의 과학 수첩</strong><span>과학 숏츠에서 시작하는 작은 실험</span><a href="../../simulations/">다른 시뮬레이션 보기 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="page"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
