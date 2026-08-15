@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="원통거울 속 동심원 반사상이 생기는 원리를 R과 L을 바꾸며 확인하는 시뮬레이션" />
+  <title>거울로 된 통 안을 들여다보면? | 과학 수첩</title>
+  <link rel="stylesheet" href="../../assets/site.css" />
+  <link rel="stylesheet" href="../../assets/cylindrical-mirror.css" />
+  <script src="../../assets/site.js" defer></script>
+  <script src="../../assets/cylindrical-mirror-model.js" defer></script>
+  <script src="../../assets/cylindrical-mirror.js" defer></script>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="../../" aria-label="과학 수첩 홈"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a><nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav><div class="header-tools"><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div></div></header>
+  <main id="main">
+    <section class="container lesson-heading"><nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>빛과 광학</span></nav><div class="lesson-heading-grid"><div><div class="tag-row"><span class="tag physics">물리학</span><span class="tag neutral">빛과 광학</span><span class="tag neutral">시뮬레이션</span></div><h1>거울로 된 통 안을 들여다보면?</h1><p>축 위의 점광원이 원통 거울 벽에서 반복 반사되면 동심원 고리가 생깁니다. 통의 반지름 R과 길이 L을 바꾸며 고리 간격을 확인하세요.</p></div></div></section>
+    <section class="container prediction-panel"><h2>먼저 예상해 보세요</h2><p>통의 반지름 R을 키우면 고리 사이 간격은 어떻게 될까요?</p><div class="prediction-options" data-mirror-quiz><button type="button" class="prediction-option" data-correct="true" data-feedback="맞습니다. 간격은 2R/L에 비례합니다.">더 넓어진다</button><button type="button" class="prediction-option" data-correct="false" data-hint="식에서 R이 분자에 있다는 점을 확인해 보세요.">더 좁아진다</button><div class="prediction-feedback" data-feedback aria-live="polite"></div></div></section>
+    <div class="container lesson-grid"><div>
+      <article class="simulation-card"><div class="sim-head"><strong>R과 L을 직접 움직여 확인하기</strong><span class="tag neutral">평면 센서</span></div>
+        <div class="sim-stage optics-dark"><svg viewBox="0 0 520 520" role="img" aria-labelledby="mirrorSvgTitle mirrorSvgDesc"><title id="mirrorSvgTitle">원통거울 동심원 반사상</title><desc id="mirrorSvgDesc">중앙 광원과 반사 차수에 따라 밝기가 줄어드는 동심원 고리</desc><line class="mirror-axis" x1="40" y1="260" x2="480" y2="260"/><line class="mirror-axis" x1="260" y1="40" x2="260" y2="480"/><g id="mirrorRings"></g><line class="mirror-ruler-axis" x1="264" y1="50" x2="264" y2="260"/><g id="mirrorRuler" class="mirror-ruler"></g><text class="mirror-label" x="282" y="66">등간격 눈금</text></svg></div>
+        <div class="mirror-readout"><div class="readout-item"><span>고리 간격</span><b id="mirrorSpacing">—</b></div><div class="readout-item"><span>밝기 절반 차수</span><b id="mirrorHalf">—</b></div></div>
+        <div class="mirror-controls"><div class="control-group"><div class="control-label"><label for="mirrorR">통 반지름 R</label><b><span id="mirrorRValue">1.0</span></b></div><input id="mirrorR" type="range" min="0.5" max="3" step="0.1" value="1" /></div><div class="control-group"><div class="control-label"><label for="mirrorL">통 길이 L</label><b><span id="mirrorLValue">8.0</span></b></div><input id="mirrorL" type="range" min="3" max="25" step="0.5" value="8" /></div><div class="control-group"><div class="control-label"><label for="mirrorOrder">최대 반사 차수</label><b>n = <span id="mirrorOrderValue">8</span></b></div><input id="mirrorOrder" type="range" min="2" max="16" step="1" value="8" /></div><div class="control-group"><div class="control-label"><label for="mirrorRho">벽 반사율 ρ</label><b><span id="mirrorRhoValue">0.96</span></b></div><input id="mirrorRho" type="range" min="0.75" max="1" step="0.01" value="0.96" /></div></div>
+        <div class="mirror-equation">tan θ<sub>n</sub> = 2nR / L</div><p class="sr-only" id="mirrorStatus" aria-live="polite"></p>
+      </article>
+      <section class="explanation"><p class="eyebrow">핵심 원리</p><h2>왜 고리가 일정한 간격으로 생길까요?</h2><p>원통 벽을 펼쳐 보면 반사 경로는 곧은 선으로 이어집니다. 반사 차수 n이 하나 늘 때마다 가로 이동량이 2R씩 늘어나므로, 평면 센서에서 고리 반지름은 n에 정확히 비례합니다.</p><div class="xy-grid"><article class="xy-card"><b>반지름 R</b><strong>클수록 간격이 넓어짐</strong><p>고리 간격은 2R/L에 비례합니다.</p></article><article class="xy-card"><b>길이 L</b><strong>길수록 간격이 좁아짐</strong><p>같은 가로 이동을 더 긴 거리에서 바라봅니다.</p></article><article class="xy-card"><b>반사율 ρ</b><strong>바깥 고리가 어두워짐</strong><p>n번째 고리 밝기는 ρⁿ에 비례합니다.</p></article></div></section>
+      <section class="quiz"><p class="eyebrow">확인 퀴즈</p><h2>조건까지 설명할 수 있나요?</h2><div class="quiz-list"><article class="quiz-item" data-mirror-quiz><h3>광원이 원통축에서 벗어나면 어떻게 될까요?</h3><div class="quiz-options"><button class="quiz-option" data-correct="false" data-hint="축 대칭이 깨집니다.">동심원이 그대로 유지된다</button><button class="quiz-option" data-correct="true" data-feedback="맞습니다. 축 대칭이 깨져 고리 대신 한 줄의 점열로 나타납니다.">고리가 무너져 점들이 한 줄로 나타난다</button></div><div class="quiz-feedback" data-feedback aria-live="polite"></div></article></div></section>
+      <section class="sources"><h2>과학적으로 정확히 말하면</h2><p>이 모델은 점광원과 관찰자가 원통축 위에 있고, 벽이 완전한 정반사를 하며, 평면 투영 센서를 사용한다고 가정합니다. 회절·흡수·거울의 미세한 흠집은 제외했습니다. 고리는 이론상 계속되지만 실제로는 반사율 때문에 점점 어두워집니다.</p><p><b>검증:</b> 제공된 광선추적 벡터 59건과 닫힌 해의 최대 오차가 10⁻⁶ 이하임을 확인했습니다.</p></section>
+    </div><aside class="side-stack"><section class="side-card"><h2>이번 실험의 조건</h2><ul class="condition-list"><li>점광원과 관찰자가 원통축 위</li><li>평면 투영 센서</li><li>원통 벽은 정반사</li><li>끝판은 반사하지 않음</li><li>기하광학 모형</li></ul></section><section class="side-card caution"><p><b>관찰 포인트</b><br />화면은 바깥 고리가 항상 보이도록 자동 축척됩니다. 숫자로 표시되는 고리 간격과 밝기 변화를 함께 확인하세요.</p></section></aside></div>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>빛과 반사를 직접 확인하는 실험</span><a href="../../simulations/">다른 시뮬레이션 보기 →</a></div></footer><nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="page"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body></html>
+
