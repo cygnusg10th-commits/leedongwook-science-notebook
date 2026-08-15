@@ -43,6 +43,24 @@
     }));
   }
 
-  return { images, ringRadiusRatio, angularSpacingDeg, halfBrightnessOrder };
+  function offsetPointImages({ R, L, s, nMax = 8, rho = 0.96 }) {
+    const radius = positive(R, 'R');
+    positive(L, 'L');
+    const offset = Number(s);
+    const max = Number(nMax);
+    if (!Number.isFinite(offset) || Math.abs(offset) >= radius) throw new RangeError('축 이탈량은 원통 반지름보다 작아야 합니다.');
+    if (!Number.isInteger(max) || max < 1 || max > 24) throw new RangeError('최대 차수는 1~24의 정수여야 합니다.');
+    const points = [{ n: 0, uOverR: offset / radius, intensity: 1 }];
+    for (let k = -max; k <= max; k += 1) {
+      const families = [offset + 4 * k * radius, 2 * radius - offset + 4 * k * radius];
+      families.forEach(u => {
+        const n = Math.max(1, Math.round(Math.abs(u - offset) / (2 * radius)));
+        if (n <= max) points.push({ n, uOverR: u / radius, intensity: Math.pow(rho, n) });
+      });
+    }
+    return points.sort((a, b) => a.uOverR - b.uOverR);
+  }
+
+  return { images, offsetPointImages, ringRadiusRatio, angularSpacingDeg, halfBrightnessOrder };
 });
 
