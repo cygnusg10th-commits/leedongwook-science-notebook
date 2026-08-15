@@ -12,6 +12,8 @@
   const modeButtons = [...document.querySelectorAll('[data-mirror-mode]')];
   const modeStatus = $('mirrorModeStatus');
   const rulerAxis = $('mirrorRulerAxis');
+  const stage = $('mirrorStage');
+  const offsetExplainer = $('offsetRayExplainer');
   let mode = 'center';
 
   function render() {
@@ -68,6 +70,8 @@
     }
     ruler.style.display = mode === 'center' ? '' : 'none';
     rulerAxis.style.display = mode === 'center' ? '' : 'none';
+    stage.classList.toggle('slit-view', mode === 'slit');
+    offsetExplainer.hidden = mode !== 'offset';
     const step = (2 * state.R) / state.L;
     spacing.textContent = `${step.toFixed(3)} f`;
     half.textContent = state.rho < 1 ? `약 ${model.halfBrightnessOrder(state.rho).toFixed(1)}회` : '감쇠 없음';
