@@ -70,6 +70,7 @@
 .offset-step strong { display: block; margin: 12px 0 6px; font-size: 14px; }
 .offset-step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .point-cause-figure { margin: 14px 0 0; padding: 16px; overflow-x: auto; border-radius: 16px; background: #111522; }
+.point-cause-figure h3 { margin: 0 0 14px; color: #fff; font-size: 17px; }
 .point-cause-figure svg { display: block; width: 100%; }
 .point-cause-figure text { fill: #d2e3f7; font-size: 12px; }
 .point-cause-figure .cause-head { fill: #fff; font-size: 16px; font-weight: 800; }
