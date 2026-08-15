@@ -76,6 +76,8 @@
 .point-cause-figure .cause-tube { fill: none; stroke: #ee9a2e; stroke-width: 7; }
 .point-cause-figure .cause-axis { stroke: #7a7f95; stroke-width: 1.5; stroke-dasharray: 7 6; }
 .point-cause-figure .cause-source { fill: #fff; }
+.point-cause-figure .cause-endplate { fill: #111522; stroke: #ee9a2e; stroke-width: 5; }
+.point-cause-figure .cause-end-axis { stroke: #7a7f95; stroke-width: 1; stroke-dasharray: 4 4; }
 .point-cause-figure .cause-pinhole { fill: #315fdb; }
 .point-cause-figure .cause-ray { fill: none; stroke: #d2e3f7; stroke-width: 3; }
 .point-cause-figure .cause-miss { fill: none; stroke: #7a7f95; stroke-width: 2; stroke-dasharray: 7 6; }
