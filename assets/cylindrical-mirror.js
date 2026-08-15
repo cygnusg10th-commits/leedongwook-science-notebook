@@ -17,6 +17,43 @@
   const offsetTopView = $('offsetTopView');
   let mode = 'center';
 
+  const causeFigure = document.createElement('figure');
+  causeFigure.className = 'point-cause-figure';
+  causeFigure.innerHTML = `
+    <svg viewBox="0 0 920 430" role="img" aria-labelledby="pointCauseTitle pointCauseDesc">
+      <title id="pointCauseTitle">하나의 자오면이 수평 점열을 만드는 과정</title>
+      <desc id="pointCauseDesc">위에서 본 원통의 허용 광선이 하나의 자오면으로 제한되고, 그 평면과 센서가 만나는 선 위에 점상만 생기며 동심원은 생기지 않는 비교 그림</desc>
+      <defs><marker id="causeArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker></defs>
+      <g transform="translate(20 52)">
+        <text class="cause-head" x="0" y="-18">① 위에서 본 원통</text>
+        <rect class="cause-tube" x="0" y="0" width="410" height="250" rx="12"/>
+        <line class="cause-axis" x1="0" y1="125" x2="410" y2="125"/>
+        <circle class="cause-source" cx="26" cy="80" r="8"/>
+        <circle class="cause-pinhole" cx="384" cy="125" r="8"/>
+        <path class="cause-ray" d="M384 125 L302 8 L206 242 L118 8 L26 80"/>
+        <path class="cause-miss" d="M384 125 L300 242 L210 40 L120 242 L26 170"/>
+        <circle class="cause-miss-dot" cx="26" cy="170" r="6"/>
+        <text x="8" y="65">축 밖 광원</text><text x="333" y="110">핀홀</text>
+        <text class="cause-ok" x="165" y="92">광원과 같은 자오면</text>
+        <text class="cause-no" x="152" y="198">다른 방위각 → 빗나감</text>
+      </g>
+      <path class="cause-arrow" d="M455 177 H530" marker-end="url(#causeArrow)"/>
+      <text class="cause-link" x="465" y="155">허용된</text><text class="cause-link" x="465" y="171">한 평면만</text>
+      <g transform="translate(550 52)">
+        <text class="cause-head" x="0" y="-18">② 핀홀 센서에서 보이는 상</text>
+        <circle class="cause-sensor" cx="165" cy="125" r="122"/>
+        <line class="cause-image-line" x1="42" y1="125" x2="288" y2="125"/>
+        <circle class="cause-image-dot" cx="62" cy="125" r="6"/><circle class="cause-image-dot" cx="104" cy="125" r="6"/>
+        <circle class="cause-image-dot" cx="145" cy="125" r="6"/><circle class="cause-image-dot" cx="185" cy="125" r="6"/>
+        <circle class="cause-image-dot" cx="226" cy="125" r="6"/><circle class="cause-image-dot" cx="268" cy="125" r="6"/>
+        <circle class="cause-ring-no" cx="165" cy="125" r="74"/><path class="cause-x" d="M118 78 L212 172 M212 78 L118 172"/>
+        <text class="cause-ok" x="93" y="282">한 직선 위 점상만 남음</text>
+        <text class="cause-no" x="105" y="316">원을 채울 다른 자오면이 없음</text>
+      </g>
+    </svg>
+    <figcaption>축 위 광원은 모든 방위각의 자오면에 속하므로 같은 점상이 회전해 링을 만듭니다. 축 밖 광원은 단 하나의 자오면에만 속하므로, 그 면이 센서와 만나는 직선 위의 점들만 보입니다.</figcaption>`;
+  offsetTopView.querySelector('.top-ray-stage').insertAdjacentElement('afterend', causeFigure);
+
   function render() {
     const state = Object.fromEntries(Object.entries(controls).map(([key, input]) => [key, Number(input.value)]));
     values.R.textContent = state.R.toFixed(1);
