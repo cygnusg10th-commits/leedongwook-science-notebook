@@ -22,3 +22,11 @@ test('밝기는 rho의 n제곱으로 감쇠한다', () => {
   assert.ok(Math.abs(model.halfBrightnessOrder(.96) - 16.98) < .02);
 });
 
+test('R/2 축 이탈 점광원은 1R, 3R 교대 점열을 만든다', () => {
+  const points = model.offsetPointImages({ R: 1, L: 8, s: .5, nMax: 4 }).map(point => point.uOverR);
+  const visible = [...new Set(points)].sort((a, b) => a - b);
+  const gaps = visible.slice(1).map((value, index) => Number((value - visible[index]).toFixed(6)));
+  assert.ok(gaps.includes(1));
+  assert.ok(gaps.includes(3));
+});
+
