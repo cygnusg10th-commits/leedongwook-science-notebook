@@ -20,7 +20,7 @@
 
   document.querySelectorAll('[data-share]').forEach(button => {
     button.addEventListener('click', async () => {
-      const data = { title: document.title, text: '이동욱의 과학 수첩에서 직접 확인해 보세요.', url: location.href };
+      const data = { title: document.title, text: '과학 수첩에서 직접 확인해 보세요.', url: location.href };
       try {
         if (navigator.share) await navigator.share(data);
         else {
