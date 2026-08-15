@@ -69,6 +69,28 @@
 .offset-step::before { content: counter(offset-step); display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; color: #fff; background: var(--physics); font-size: 12px; font-weight: 850; }
 .offset-step strong { display: block; margin: 12px 0 6px; font-size: 14px; }
 .offset-step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.point-cause-figure { margin: 14px 0 0; padding: 16px; overflow-x: auto; border-radius: 16px; background: #111522; }
+.point-cause-figure svg { display: block; width: 100%; }
+.point-cause-figure text { fill: #d2e3f7; font-size: 12px; }
+.point-cause-figure .cause-head { fill: #fff; font-size: 16px; font-weight: 800; }
+.point-cause-figure .cause-tube { fill: none; stroke: #ee9a2e; stroke-width: 7; }
+.point-cause-figure .cause-axis { stroke: #7a7f95; stroke-width: 1.5; stroke-dasharray: 7 6; }
+.point-cause-figure .cause-source { fill: #fff; }
+.point-cause-figure .cause-pinhole { fill: #315fdb; }
+.point-cause-figure .cause-ray { fill: none; stroke: #d2e3f7; stroke-width: 3; }
+.point-cause-figure .cause-miss { fill: none; stroke: #7a7f95; stroke-width: 2; stroke-dasharray: 7 6; }
+.point-cause-figure .cause-miss-dot { fill: #7a7f95; }
+.point-cause-figure .cause-arrow { fill: none; stroke: #d2e3f7; stroke-width: 3; }
+.point-cause-figure marker path { fill: #d2e3f7; }
+.point-cause-figure .cause-link { fill: #d2e3f7; font-size: 11px; }
+.point-cause-figure .cause-sensor { fill: #090c14; stroke: #7a7f95; stroke-width: 3; }
+.point-cause-figure .cause-image-line { stroke: #315fdb; stroke-width: 2; stroke-dasharray: 5 5; }
+.point-cause-figure .cause-image-dot { fill: #fff; }
+.point-cause-figure .cause-ring-no { fill: none; stroke: #7a7f95; stroke-width: 2; stroke-dasharray: 6 6; opacity: .45; }
+.point-cause-figure .cause-x { fill: none; stroke: #ee9a2e; stroke-width: 4; opacity: .8; }
+.point-cause-figure .cause-ok { fill: #d2e3f7; }
+.point-cause-figure .cause-no { fill: #9da4b7; }
+.point-cause-figure figcaption { margin-top: 12px; color: #d2e3f7; font-size: 12px; line-height: 1.65; }
 .mirror-tube-icon { position: relative; font-size: 0; background: #111522; }
 .mirror-tube-icon::before { content: ""; width: 92px; height: 92px; border: 9px double #d2e3f7; border-radius: 50%; box-shadow: 0 0 0 15px #111522, 0 0 0 21px #ee9a2e; }
 @media (max-width: 620px) {
@@ -78,5 +100,6 @@
   .apparatus-diagram { grid-template-columns: 1fr; }
   .ray-panels { grid-template-columns: 1fr; }
   .offset-steps { grid-template-columns: 1fr; }
+  .point-cause-figure svg { min-width: 720px; }
 }
 
