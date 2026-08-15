@@ -20,6 +20,7 @@
   const causeFigure = document.createElement('figure');
   causeFigure.className = 'point-cause-figure';
   causeFigure.innerHTML = `
+    <h3>축 밖 점광원은 왜 링이 아니라 점으로 보일까요?</h3>
     <svg viewBox="0 0 920 430" role="img" aria-labelledby="pointCauseTitle pointCauseDesc">
       <title id="pointCauseTitle">광원 쪽 끝판의 축 이탈 점광원에서 핀홀까지 가는 빛</title>
       <desc id="pointCauseDesc">축 밖 점광원에서 출발해 원통 벽에서 반사된 뒤 중앙 핀홀에 도달하는 한 자오면의 경로와, 다른 방위각으로 출발해 핀홀을 빗나가는 경로, 센서의 점상 비교 그림</desc>
@@ -55,7 +56,7 @@
       </g>
     </svg>
     <figcaption>광원에서 나온 빛 가운데 광원·원통축·중앙 핀홀을 함께 포함하는 한 자오면의 경로만 핀홀에 도달합니다. 이유는 빛의 길을 거꾸로 따라도 같기 때문입니다. 핀홀에서 역추적한 광선은 처음 정해진 자오면을 반사 뒤에도 벗어나지 않으므로, 축 밖 광원을 포함한 단 하나의 자오면만 광원과 연결됩니다. 따라서 센서에는 그 평면이 센서와 만나는 직선 위의 점들만 생기고, 360° 방향의 광선이 필요한 링은 생기지 않습니다.</figcaption>`;
-  offsetTopView.querySelector('.top-ray-stage').insertAdjacentElement('afterend', causeFigure);
+  document.querySelector('.explanation .xy-grid').insertAdjacentElement('afterend', causeFigure);
 
   function render() {
     const state = Object.fromEntries(Object.entries(controls).map(([key, input]) => [key, Number(input.value)]));
