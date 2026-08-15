@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="무극성 분자 사이에도 인력이 생기는 이유를 분산력과 펜테인의 모양으로 설명합니다." />
+  <title>기체는 왜 액체가 될까? | 과학 수첩</title>
+  <link rel="stylesheet" href="../../assets/site.css" />
+  <script src="../../assets/site.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js" defer></script>
+  <style>
+    .dispersion-hero { padding-bottom: 28px; }
+    .dispersion-hero h1 { max-width: 760px; }
+    .video-layout { display: grid; grid-template-columns: minmax(280px, 420px) 1fr; gap: 42px; align-items: center; }
+    .shorts-frame { position: relative; width: min(100%, 420px); margin: 0 auto; padding: 10px; border-radius: 34px; background: #07101f; box-shadow: 0 22px 60px rgba(14, 28, 52, .24); }
+    .shorts-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 25px; background: #07101f; object-fit: cover; }
+    .video-note { margin: 14px 0 0; color: #667085; font-size: .92rem; text-align: center; }
+    .key-list { display: grid; gap: 14px; margin: 24px 0 30px; }
+    .key-item { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; padding: 18px; border: 1px solid #dfe5ef; border-radius: 18px; background: #fff; }
+    .key-number { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #fff; background: #7456d8; font-weight: 800; }
+    .key-item strong { display: block; margin-bottom: 5px; color: #172b4d; }
+    .key-item p { margin: 0; color: #667085; }
+    .molecule-stage { position: relative; min-height: 290px; overflow: hidden; border-radius: 26px; background: radial-gradient(circle at 50% 40%, #183d68, #081628 72%); }
+    .molecule { position: absolute; display: flex; align-items: center; filter: drop-shadow(0 10px 16px rgba(24, 207, 255, .18)); }
+    .molecule.normal { left: 8%; top: 27%; transform: rotate(-8deg); }
+    .molecule.neo { right: 10%; bottom: 22%; width: 130px; height: 130px; }
+    .atom { display: grid; place-items: center; width: 48px; height: 48px; margin-left: -7px; border: 3px solid #bfeaff; border-radius: 50%; color: #fff; background: #315a86; font-weight: 800; }
+    .atom:first-child { margin-left: 0; }
+    .molecule.normal .atom:nth-child(even) { transform: translateY(-22px); }
+    .molecule.neo .atom { position: absolute; margin: 0; }
+    .molecule.neo .atom:nth-child(1) { left: 41px; top: 41px; background: #243e63; }
+    .molecule.neo .atom:nth-child(2) { left: 0; top: 4px; }
+    .molecule.neo .atom:nth-child(3) { right: 0; top: 4px; }
+    .molecule.neo .atom:nth-child(4) { left: 0; bottom: 0; }
+    .molecule.neo .atom:nth-child(5) { right: 0; bottom: 0; }
+    .molecule-label { position: absolute; bottom: 20px; color: #d9f6ff; font-weight: 700; }
+    .normal-label { left: 9%; }
+    .neo-label { right: 9%; }
+    .compare-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; background: #fff; box-shadow: 0 12px 36px rgba(30, 51, 80, .08); }
+    .compare-table th, .compare-table td { padding: 17px 19px; border-bottom: 1px solid #e6ebf3; text-align: left; }
+    .compare-table th { color: #172b4d; background: #f4f1ff; }
+    .compare-table tr:last-child td { border-bottom: 0; }
+    .science-caution { margin-top: 22px; padding: 18px 20px; border-left: 5px solid #7456d8; border-radius: 12px; background: #f4f1ff; color: #3f3b59; }
+    @media (max-width: 820px) {
+      .video-layout { grid-template-columns: 1fr; }
+      .video-copy { order: -1; }
+      .molecule-stage { min-height: 260px; }
+    }
+    @media (max-width: 520px) {
+      .shorts-frame { width: min(92vw, 390px); border-radius: 28px; }
+      .shorts-frame video { border-radius: 20px; }
+      .molecule.normal { left: 2%; transform: scale(.8) rotate(-8deg); transform-origin: left center; }
+      .molecule.neo { right: 3%; transform: scale(.82); transform-origin: right bottom; }
+      .compare-table th, .compare-table td { padding: 13px 11px; font-size: .9rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/">물리학</a><a href="../../subjects/chemistry/" aria-current="page">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero dispersion-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/chemistry/">화학</a><span>›</span><span>분산력</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag chemistry">⚗ 화학</span><span class="tag neutral">2분 52초</span><span class="tag everyday">숏츠</span></div>
+      <h1>무극성 분자는 왜 액체가 될까?</h1>
+      <p>극성이 거의 없는 분자도 순간적으로 흔들리는 전자구름 때문에 서로를 끌어당깁니다. 같은 분자식의 노말펜테인과 네오펜테인을 비교하며 분자 모양의 영향까지 확인해 보세요.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video id="dispersionVideo" controls playsinline preload="metadata" poster="poster.jpg" aria-label="분산력 설명 영상"></video>
+          </div>
+          <p class="video-note">재생 버튼을 누르면 약 2분 52초 동안 이어집니다.</p>
+        </div>
+        <div class="video-copy">
+          <p class="eyebrow">영상에서 확인할 세 가지</p>
+          <h2>보이지 않는 작은 흔들림이<br />물질의 상태를 바꿉니다</h2>
+          <div class="key-list">
+            <div class="key-item"><span class="key-number">1</span><div><strong>순간 쌍극자</strong><p>움직이는 전자가 한쪽에 조금 더 모이는 순간, 잠깐 δ−와 δ+가 생깁니다.</p></div></div>
+            <div class="key-item"><span class="key-number">2</span><div><strong>유발 쌍극자</strong><p>이 순간적인 전하가 옆 분자의 전자구름을 밀고 당겨 약한 인력을 만듭니다.</p></div></div>
+            <div class="key-item"><span class="key-number">3</span><div><strong>분자의 모양</strong><p>전자 수가 같아도 길쭉한 분자는 넓게 접촉해 전체 분산력이 더 커질 수 있습니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>같은 분자식, 다른 모양</h2><p>노말펜테인과 네오펜테인은 모두 C<sub>5</sub>H<sub>12</sub>이지만 공간에서 놓이는 모양이 다릅니다.</p></div>
+        <div class="molecule-stage" aria-label="노말펜테인과 네오펜테인의 모양 비교">
+          <div class="molecule normal" aria-hidden="true"><span class="atom">C</span><span class="atom">C</span><span class="atom">C</span><span class="atom">C</span><span class="atom">C</span></div>
+          <div class="molecule neo" aria-hidden="true"><span class="atom">C</span><span class="atom">C</span><span class="atom">C</span><span class="atom">C</span><span class="atom">C</span></div>
+          <span class="molecule-label normal-label">노말펜테인 · 길쭉함</span><span class="molecule-label neo-label">네오펜테인 · 조밀함</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>실제 끓는점 비교</h2><p>분자를 떼어 기체로 만들려면 분자 사이의 인력을 이겨야 합니다.</p></div>
+        <table class="compare-table">
+          <thead><tr><th>물질</th><th>분자식</th><th>모양</th><th>끓는점</th><th>25℃에서</th></tr></thead>
+          <tbody><tr><td>노말펜테인</td><td>C<sub>5</sub>H<sub>12</sub></td><td>길쭉함</td><td>약 36℃</td><td>액체</td></tr><tr><td>네오펜테인</td><td>C<sub>5</sub>H<sub>12</sub></td><td>둥글고 조밀함</td><td>약 10℃</td><td>기체</td></tr></tbody>
+        </table>
+        <p class="science-caution"><strong>핵심:</strong> 무극성이라는 말은 분자 사이의 인력이 없다는 뜻이 아닙니다. 순간적인 전자구름의 흔들림이 분산력을 만들고, 모든 상호작용을 합한 결과가 물질의 상태에 영향을 줍니다.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>화학 · 분산력</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/chemistry/" aria-current="page"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const video = document.getElementById('dispersionVideo');
+      const source = 'media/playlist.m3u8';
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+      } else if (window.Hls && Hls.isSupported()) {
+        const hls = new Hls({ enableWorker: true });
+        hls.loadSource(source);
+        hls.attachMedia(video);
+      } else {
+        video.insertAdjacentHTML('afterend', '<p class="video-note">이 브라우저에서는 영상 재생을 지원하지 않습니다. 최신 Chrome, Edge 또는 Safari에서 열어 주세요.</p>');
+      }
+    });
+  </script>
+</body>
+</html>
