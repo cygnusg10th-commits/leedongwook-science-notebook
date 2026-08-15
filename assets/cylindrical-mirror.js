@@ -14,6 +14,7 @@
   const rulerAxis = $('mirrorRulerAxis');
   const stage = $('mirrorStage');
   const offsetExplainer = $('offsetRayExplainer');
+  const offsetTopView = $('offsetTopView');
   let mode = 'center';
 
   function render() {
@@ -72,6 +73,7 @@
     rulerAxis.style.display = mode === 'center' ? '' : 'none';
     stage.classList.toggle('slit-view', mode === 'slit');
     offsetExplainer.hidden = mode !== 'offset';
+    offsetTopView.hidden = mode !== 'offset';
     const step = (2 * state.R) / state.L;
     spacing.textContent = `${step.toFixed(3)} f`;
     half.textContent = state.rho < 1 ? `약 ${model.halfBrightnessOrder(state.rho).toFixed(1)}회` : '감쇠 없음';
