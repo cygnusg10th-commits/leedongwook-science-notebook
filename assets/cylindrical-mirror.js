@@ -21,26 +21,29 @@
   causeFigure.className = 'point-cause-figure';
   causeFigure.innerHTML = `
     <svg viewBox="0 0 920 430" role="img" aria-labelledby="pointCauseTitle pointCauseDesc">
-      <title id="pointCauseTitle">하나의 자오면이 수평 점열을 만드는 과정</title>
-      <desc id="pointCauseDesc">위에서 본 원통의 허용 광선이 하나의 자오면으로 제한되고, 그 평면과 센서가 만나는 선 위에 점상만 생기며 동심원은 생기지 않는 비교 그림</desc>
+      <title id="pointCauseTitle">광원 쪽 끝판의 축 이탈 점광원에서 핀홀까지 가는 빛</title>
+      <desc id="pointCauseDesc">축 밖 점광원에서 출발해 원통 벽에서 반사된 뒤 중앙 핀홀에 도달하는 한 자오면의 경로와, 다른 방위각으로 출발해 핀홀을 빗나가는 경로, 센서의 점상 비교 그림</desc>
       <defs><marker id="causeArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z"/></marker></defs>
       <g transform="translate(20 52)">
-        <text class="cause-head" x="0" y="-18">① 위에서 본 원통</text>
+        <text class="cause-head" x="0" y="-18">① 광원 끝판 → 반사 → 중앙 핀홀</text>
         <rect class="cause-tube" x="0" y="0" width="410" height="250" rx="12"/>
         <line class="cause-axis" x1="0" y1="125" x2="410" y2="125"/>
         <circle class="cause-source" cx="26" cy="80" r="8"/>
         <circle class="cause-pinhole" cx="384" cy="125" r="8"/>
-        <path class="cause-ray" d="M384 125 L302 8 L206 242 L118 8 L26 80"/>
-        <path class="cause-miss" d="M384 125 L300 242 L210 40 L120 242 L26 170"/>
-        <circle class="cause-miss-dot" cx="26" cy="170" r="6"/>
-        <text x="8" y="65">축 밖 광원</text><text x="333" y="110">핀홀</text>
-        <text class="cause-ok" x="165" y="92">광원과 같은 자오면</text>
-        <text class="cause-no" x="152" y="198">다른 방위각 → 빗나감</text>
+        <path class="cause-ray" d="M26 80 L118 8 L206 242 L302 8 L384 125" marker-end="url(#causeArrow)"/>
+        <path class="cause-miss" d="M26 80 L120 242 L210 40 L300 242 L384 190"/>
+        <circle class="cause-miss-dot" cx="384" cy="190" r="6"/>
+        <text x="3" y="65">끝판의 축 밖 광원</text><text x="321" y="110">중앙 핀홀</text>
+        <text class="cause-ok" x="145" y="92">같은 자오면의 빛 → 핀홀 도달</text>
+        <text class="cause-no" x="134" y="198">다른 방위각의 빛 → 핀홀 빗나감</text>
+        <circle class="cause-endplate" cx="58" cy="330" r="39"/><circle class="cause-source" cx="58" cy="315" r="6"/>
+        <line class="cause-end-axis" x1="25" y1="330" x2="91" y2="330"/><line class="cause-end-axis" x1="58" y1="297" x2="58" y2="363"/>
+        <text x="112" y="326">광원 쪽 끝판</text><text class="cause-no" x="112" y="345">흰 점이 중심에서 R/2 이탈</text>
       </g>
       <path class="cause-arrow" d="M455 177 H530" marker-end="url(#causeArrow)"/>
       <text class="cause-link" x="465" y="155">허용된</text><text class="cause-link" x="465" y="171">한 평면만</text>
       <g transform="translate(550 52)">
-        <text class="cause-head" x="0" y="-18">② 핀홀 센서에서 보이는 상</text>
+        <text class="cause-head" x="0" y="-18">② 핀홀 뒤 센서에서 보이는 상</text>
         <circle class="cause-sensor" cx="165" cy="125" r="122"/>
         <line class="cause-image-line" x1="42" y1="125" x2="288" y2="125"/>
         <circle class="cause-image-dot" cx="62" cy="125" r="6"/><circle class="cause-image-dot" cx="104" cy="125" r="6"/>
@@ -51,7 +54,7 @@
         <text class="cause-no" x="105" y="316">원을 채울 다른 자오면이 없음</text>
       </g>
     </svg>
-    <figcaption>축 위 광원은 모든 방위각의 자오면에 속하므로 같은 점상이 회전해 링을 만듭니다. 축 밖 광원은 단 하나의 자오면에만 속하므로, 그 면이 센서와 만나는 직선 위의 점들만 보입니다.</figcaption>`;
+    <figcaption>광원에서 나온 빛 가운데 광원·원통축·중앙 핀홀을 함께 포함하는 한 자오면의 경로만 핀홀에 도달합니다. 이유는 빛의 길을 거꾸로 따라도 같기 때문입니다. 핀홀에서 역추적한 광선은 처음 정해진 자오면을 반사 뒤에도 벗어나지 않으므로, 축 밖 광원을 포함한 단 하나의 자오면만 광원과 연결됩니다. 따라서 센서에는 그 평면이 센서와 만나는 직선 위의 점들만 생기고, 360° 방향의 광선이 필요한 링은 생기지 않습니다.</figcaption>`;
   offsetTopView.querySelector('.top-ray-stage').insertAdjacentElement('afterend', causeFigure);
 
   function render() {
