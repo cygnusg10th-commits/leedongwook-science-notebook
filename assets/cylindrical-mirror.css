@@ -1,0 +1,19 @@
+.sim-stage.optics-dark { min-height: 500px; aspect-ratio: 1/1; background: radial-gradient(circle, #242a3b 0, #111522 60%, #090c14 100%); }
+.optics-dark .mirror-ring { fill: none; stroke: #d2e3f7; stroke-width: 4; }
+.optics-dark .mirror-source { fill: #fff; }
+.optics-dark .mirror-axis { stroke: #7a7f95; stroke-width: 1.5; stroke-dasharray: 7 7; }
+.optics-dark .mirror-ruler line { stroke: #7a7f95; stroke-width: 2; }
+.optics-dark .mirror-ruler-axis { stroke: #7a7f95; stroke-width: 2; }
+.optics-dark .mirror-label { fill: #d2e3f7; font-size: 13px; }
+.mirror-readout { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); background: #f8f9ff; }
+.mirror-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; padding: 20px 21px 24px; }
+.mirror-controls .control-group { margin-top: 8px; }
+.mirror-equation { margin: 18px 21px 22px; padding: 18px; border-radius: 15px; text-align: center; color: #263b94; background: var(--physics-soft); font: 800 20px ui-monospace, SFMono-Regular, Consolas, monospace; }
+.mirror-tube-icon { position: relative; font-size: 0; background: #111522; }
+.mirror-tube-icon::before { content: ""; width: 92px; height: 92px; border: 9px double #d2e3f7; border-radius: 50%; box-shadow: 0 0 0 15px #111522, 0 0 0 21px #ee9a2e; }
+@media (max-width: 620px) {
+  .sim-stage.optics-dark { min-height: 0; }
+  .mirror-controls { grid-template-columns: 1fr; }
+  .mirror-readout { grid-template-columns: 1fr 1fr; }
+}
+
