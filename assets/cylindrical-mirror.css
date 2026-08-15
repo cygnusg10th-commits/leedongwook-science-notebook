@@ -49,6 +49,26 @@
 .ray-panel .observer { fill: #315fdb; }
 .ray-panel .virtual { fill: #d2e3f7; }
 .ray-conclusion { margin: 12px 0 0; padding: 13px 15px; border-radius: 13px; color: #30406a; background: var(--physics-soft); font-size: 13px; font-weight: 750; line-height: 1.6; }
+.offset-top-view { margin-top: 14px; padding: 25px; border: 1px solid var(--line); border-radius: 20px; background: #fff; }
+.offset-top-view[hidden] { display: none; }
+.offset-top-view h2 { margin: 0; font-size: 25px; letter-spacing: -.03em; }
+.offset-top-view > p { color: var(--muted); line-height: 1.65; }
+.top-ray-stage { margin-top: 18px; padding: 16px; border-radius: 16px; background: #111522; }
+.top-ray-stage svg { display: block; width: 100%; }
+.top-ray-stage text { fill: #d2e3f7; font-size: 12px; }
+.top-ray-stage .wall { stroke: #ee9a2e; stroke-width: 7; }
+.top-ray-stage .axis { stroke: #7a7f95; stroke-width: 2; stroke-dasharray: 8 7; }
+.top-ray-stage .allowed { fill: none; stroke: #d2e3f7; stroke-width: 3; }
+.top-ray-stage .blocked { fill: none; stroke: #7a7f95; stroke-width: 2; stroke-dasharray: 7 6; }
+.top-ray-stage .normal { stroke: #315fdb; stroke-width: 2; transform-box: fill-box; transform-origin: center; transform: rotate(90deg); }
+.top-ray-stage .source { fill: #fff; }
+.top-ray-stage .observer { fill: #315fdb; }
+.top-ray-stage .miss { fill: #7a7f95; }
+.offset-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; counter-reset: offset-step; }
+.offset-step { padding: 15px; border-radius: 14px; background: #f6f7fa; counter-increment: offset-step; }
+.offset-step::before { content: counter(offset-step); display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; color: #fff; background: var(--physics); font-size: 12px; font-weight: 850; }
+.offset-step strong { display: block; margin: 12px 0 6px; font-size: 14px; }
+.offset-step p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
 .mirror-tube-icon { position: relative; font-size: 0; background: #111522; }
 .mirror-tube-icon::before { content: ""; width: 92px; height: 92px; border: 9px double #d2e3f7; border-radius: 50%; box-shadow: 0 0 0 15px #111522, 0 0 0 21px #ee9a2e; }
 @media (max-width: 620px) {
@@ -57,5 +77,6 @@
   .mirror-readout { grid-template-columns: 1fr 1fr; }
   .apparatus-diagram { grid-template-columns: 1fr; }
   .ray-panels { grid-template-columns: 1fr; }
+  .offset-steps { grid-template-columns: 1fr; }
 }
 
