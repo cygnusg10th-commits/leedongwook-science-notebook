@@ -1,8 +1,8 @@
 .sim-stage.optics-dark { min-height: 500px; aspect-ratio: 1/1; background: radial-gradient(circle, #242a3b 0, #111522 60%, #090c14 100%); }
-.optics-dark .mirror-ring { fill: none; stroke: #d2e3f7; stroke-width: 4; }
-.optics-dark .mirror-source { fill: #fff; }
-.optics-dark .mirror-point { fill: #d2e3f7; }
-.optics-dark .mirror-slit-image { stroke: #fff; stroke-width: 2.2; stroke-linecap: round; }
+.optics-dark .mirror-ring { fill: none; stroke: #ff5b61; stroke-width: 4; }
+.optics-dark .mirror-source { fill: #ff5b61; }
+.optics-dark .mirror-point { fill: #ff5b61; }
+.optics-dark .mirror-slit-image { stroke: #ff5b61; stroke-width: 2.2; stroke-linecap: round; }
 .optics-dark.slit-view .mirror-ring { stroke-width: 2; }
 .optics-dark .mirror-axis { stroke: #7a7f95; stroke-width: 1.5; stroke-dasharray: 7 7; }
 .optics-dark .mirror-ruler line { stroke: #7a7f95; stroke-width: 2; }
@@ -76,7 +76,7 @@
 .point-cause-figure .cause-head { fill: #fff; font-size: 16px; font-weight: 800; }
 .point-cause-figure .cause-tube { fill: none; stroke: #ee9a2e; stroke-width: 7; }
 .point-cause-figure .cause-axis { stroke: #7a7f95; stroke-width: 1.5; stroke-dasharray: 7 6; }
-.point-cause-figure .cause-source { fill: #fff; }
+.point-cause-figure .cause-source { fill: #ff5b61; }
 .point-cause-figure .cause-endplate { fill: #111522; stroke: #ee9a2e; stroke-width: 5; }
 .point-cause-figure .cause-end-axis { stroke: #7a7f95; stroke-width: 1; stroke-dasharray: 4 4; }
 .point-cause-figure .cause-pinhole { fill: #315fdb; }
@@ -88,7 +88,7 @@
 .point-cause-figure .cause-link { fill: #d2e3f7; font-size: 11px; }
 .point-cause-figure .cause-sensor { fill: #090c14; stroke: #7a7f95; stroke-width: 3; }
 .point-cause-figure .cause-image-line { stroke: #315fdb; stroke-width: 2; stroke-dasharray: 5 5; }
-.point-cause-figure .cause-image-dot { fill: #fff; }
+.point-cause-figure .cause-image-dot { fill: #ff5b61; }
 .point-cause-figure .cause-ring-no { fill: none; stroke: #7a7f95; stroke-width: 2; stroke-dasharray: 6 6; opacity: .45; }
 .point-cause-figure .cause-x { fill: none; stroke: #ee9a2e; stroke-width: 4; opacity: .8; }
 .point-cause-figure .cause-ok { fill: #d2e3f7; }
