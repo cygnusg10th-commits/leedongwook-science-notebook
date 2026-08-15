@@ -15,7 +15,7 @@
   const stage = $('mirrorStage');
   const offsetExplainer = $('offsetRayExplainer');
   const offsetTopView = $('offsetTopView');
-  let mode = 'center';
+  let mode = 'offset';
 
   const causeFigure = document.createElement('figure');
   causeFigure.className = 'point-cause-figure';
@@ -130,6 +130,11 @@
     modeButtons.forEach(item => { const active = item === button; item.classList.toggle('active', active); item.setAttribute('aria-pressed', String(active)); });
     render();
   }));
+  modeButtons.forEach(item => {
+    const active = item.dataset.mirrorMode === mode;
+    item.classList.toggle('active', active);
+    item.setAttribute('aria-pressed', String(active));
+  });
   document.querySelectorAll('[data-mirror-quiz]').forEach(group => {
     group.querySelectorAll('button').forEach(button => button.addEventListener('click', () => {
       group.querySelectorAll('button').forEach(item => item.classList.remove('correct', 'incorrect'));
