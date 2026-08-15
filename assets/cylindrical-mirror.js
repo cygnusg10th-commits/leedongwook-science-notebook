@@ -102,13 +102,13 @@
         const radius = item.radiusOverF * scale;
         [-1, 1].forEach(sign => {
           const dash = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          dash.setAttribute('x1', String(260 + sign * radius - 12)); dash.setAttribute('x2', String(260 + sign * radius + 12));
+          dash.setAttribute('x1', String(260 + sign * radius - 6)); dash.setAttribute('x2', String(260 + sign * radius + 6));
           dash.setAttribute('y1', '260'); dash.setAttribute('y2', '260'); dash.setAttribute('class', 'mirror-slit-image');
           dash.setAttribute('opacity', String(Math.max(.18, item.intensity))); rings.append(dash);
         });
       });
       const sourceDash = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      sourceDash.setAttribute('x1', '250'); sourceDash.setAttribute('x2', '270'); sourceDash.setAttribute('y1', '260'); sourceDash.setAttribute('y2', '260'); sourceDash.setAttribute('class', 'mirror-slit-image'); rings.append(sourceDash);
+      sourceDash.setAttribute('x1', '254'); sourceDash.setAttribute('x2', '266'); sourceDash.setAttribute('y1', '260'); sourceDash.setAttribute('y2', '260'); sourceDash.setAttribute('class', 'mirror-slit-image'); rings.append(sourceDash);
     }
     ruler.style.display = mode === 'center' ? '' : 'none';
     rulerAxis.style.display = mode === 'center' ? '' : 'none';
