@@ -692,7 +692,7 @@
     const stage = c < 3.4 ? 0 : c < 7.2 ? 1 : 2;
     frame(ctx, [
       '④ 제멋대로 흩어져 있으면 빛이 서로 상쇄됩니다',
-      '④ 먼저 나간 빛이 전자를 밀고 당깁니다',
+      '④ 에너지를 잃은 전자는 느려지고, 얻은 전자는 빨라집니다',
       '④ 파장 간격으로 줄을 서면 밝기가 제곱으로 뜁니다',
     ][stage]);
     const bunching = stage === 0 ? 0 : stage === 1 ? (c - 3.4) / 3.8 : 1;
@@ -770,16 +770,11 @@
     ctx.restore();
     label(ctx, '빛', sx1 - 10, boxTop + 13, { size: 11, color: C.violet, align: 'right' });
 
-    // 밀고 당김 화살표
     if (stage === 1) {
-      ctx.save();
-      for (let k = 0; k < 7; k += 1) {
-        const cx = sx0 + 16 + drift + k * lam * 2;
-        if (cx > sx1 - 28) continue;
-        arrow(ctx, cx - 7, dotY - 20, 1, 6, 'rgba(179,157,219,.9)');
-        arrow(ctx, cx + 25, dotY - 20, -1, 6, 'rgba(179,157,219,.9)');
-      }
-      ctx.restore();
+      label(ctx, '빛에게 에너지를 준 전자 → 느려져 뒤로', sx0 + 8, dotY - 24,
+        { size: 10, align: 'left', color: C.cyan });
+      label(ctx, '에너지를 받은 전자 → 빨라져 앞으로', sx1 - 8, dotY - 24,
+        { size: 10, align: 'right', color: C.pink });
     }
 
     // 전자
@@ -787,9 +782,18 @@
     for (let i = 0; i < N; i += 1) {
       const base = ((i * 9.37 + t * 26) % (sx1 - sx0 - 12));
       const cell = Math.round((base - drift) / lam) * lam + drift;
-      const x = sx0 + 6 + base + (cell - base) * bunching;
+      const need = cell - base;                       // + 면 앞으로, - 면 뒤로 가야 합니다
+      const x = sx0 + 6 + base + need * bunching;
       if (x < sx0 + 4 || x > sx1 - 4) continue;
-      glowDot(ctx, x, dotY + ((i % 3) - 1) * 5, 2.1, bunching > 0.5 ? C.pink : C.cyan, 0.8);
+      const y = dotY + ((i % 3) - 1) * 5;
+      // 앞으로 가야 하는 전자 = 에너지를 얻어 빨라진 쪽(분홍)
+      // 뒤로 가야 하는 전자 = 에너지를 잃어 느려진 쪽(시안)
+      const col = stage === 0 ? C.cyan : need >= 0 ? C.pink : C.cyan;
+      glowDot(ctx, x, y, 2.1, col, 0.8);
+      if (stage === 1 && Math.abs(need) > lam * 0.12 && i % 2 === 0) {
+        arrow(ctx, x + (need > 0 ? 7 : -7), y, need > 0 ? 1 : -1, 4.5,
+          need > 0 ? 'rgba(232,120,168,.9)' : 'rgba(95,168,224,.9)');
+      }
     }
 
     // 밀도 곡선
@@ -832,6 +836,8 @@
     });
     label(ctx, '나오는 빛의 밝기', bx + 63, barTop - 18, { size: 11 });
     label(ctx, `번칭 인자 b = ${bunching.toFixed(2)}`, bx + 63, DH - 16, { size: 12, color: bunching > 0.6 ? C.green : C.text });
+    label(ctx, '언듈레이터 안에서는 βz = 1 − (1+K²/2)/2γ² — 에너지가 곧 앞뒤 위치입니다',
+      sx0 + 4, DH - 16, { size: 10, align: 'left' });
   }
 
   function detail5(ctx, t) {
@@ -985,11 +991,13 @@
       body: [
         'N극과 S극이 번갈아 놓인 자석 사이를 지나면 전자가 뱀처럼 굽이칩니다. <b>자기장은 전자의 속력을 바꾸지 않습니다</b>(일을 하지 않습니다). 바꾸는 것은 방향이고, 방향이 바뀌는 것도 가속입니다. 가속하는 전하는 반드시 빛을 냅니다.',
         '처음에는 전자가 제멋대로 흩어져 있어 각자 낸 빛의 위상이 어긋나고 서로 상쇄됩니다. 그런데 먼저 나간 빛이 뒤따라오는 전자 무리를 덮칩니다. 빛의 마루에 있는 전자는 밀리고 골에 있는 전자는 당겨집니다.',
+        '여기서 한 단계가 더 있습니다. 언듈레이터 안에서 전자가 <b>앞으로 나아가는 속도는 에너지에 의존합니다</b>: $\\beta_z = 1-(1+K^2/2)/2\\gamma^2$. 그래서 에너지를 잃은 전자는 느려져 뒤로 처지고, 얻은 전자는 빨라져 앞으로 나갑니다. <b>에너지 차이가 위치 차이로 바뀌는 것</b>이 뭉침의 정체입니다.',
         '그 결과 전자들이 <b>빛의 파장과 똑같은 간격</b>으로 층층이 뭉칩니다. 이것이 마이크로번칭입니다. 같은 층의 전자들은 위상이 맞아 빛이 보강 간섭을 하고, 밝기가 전자 수 N이 아니라 <b>N²</b>로 뜁니다.',
       ],
       points: [
         ['공명 조건', 'λ = (λu / 2γ²)(1 + K²/2). 전자 에너지와 자석 주기가 파장을 정합니다.'],
         ['자기조직화', '누가 줄을 세우는 것이 아닙니다. 자기가 낸 빛이 자기를 줄 세웁니다.'],
+        ['두 단계', '① 빛과 에너지를 주고받아 에너지가 갈린다 → ② 언듈레이터 안에서는 에너지가 곧 속도라 앞뒤로 갈라진다. 660 MeV 기준으로 반 파장만큼 밀리는 데 4.4 m가 걸리고, 이것이 포화 길이와 같은 크기입니다.'],
         ['N²의 의미', '전자 10억 개가 줄을 서면 밝기가 10억 배가 아니라 10억의 제곱만큼 뜁니다.'],
         ['동시가 아닙니다', '전자들이 같은 순간에 흔들릴 필요는 없습니다. 한 파장만큼 늦으면 빛의 한 주기만큼 늦는 것이라 마루가 다시 겹칩니다. 아래 「왜 동시에가 아니라 파장 간격일까」에서 확인하세요.'],
       ],
@@ -1189,6 +1197,7 @@
     }
     if (onScreen(slipCanvas)) drawSlip(fit(slipCanvas, SLIP_W, SLIP_H), state.t);
     if (onScreen(pairCanvas)) drawPair(fit(pairCanvas, PAIR_W, PAIR_H), state.t);
+    if (onScreen(ladderCanvas)) drawLadder(fit(ladderCanvas, LAD_W, LAD_H), state.t);
     if (onScreen(limitCanvas)) drawLimit(fit(limitCanvas, LIM_W, LIM_H));
     requestAnimationFrame(loop);
   }
@@ -1288,6 +1297,91 @@
 
     label(ctx, '실제 비율은 λ : λu = 1 : 220만입니다. 보이도록 크게 그렸습니다.',
       SLIP_W / 2, SLIP_H - 16, { size: 11 });
+  }
+
+  // ── 진동수 사다리 ──
+  const ladderCanvas = document.getElementById('felLadder');
+  const LAD_W = 660;
+  const LAD_H = 250;
+
+  function fmtHz(hz) {
+    if (hz >= 1e15) return `${(hz / 1e15).toFixed(1)} PHz`;
+    if (hz >= 1e12) return `${(hz / 1e12).toFixed(1)} THz`;
+    if (hz >= 1e9) return `${(hz / 1e9).toFixed(1)} GHz`;
+    return `${(hz / 1e6).toFixed(1)} MHz`;
+  }
+  function fmtLen(m) {
+    if (m >= 1e-2) return `${(m * 100).toFixed(1)} cm`;
+    if (m >= 1e-6) return `${(m * 1e6).toFixed(1)} µm`;
+    return `${(m * 1e9).toFixed(2)} nm`;
+  }
+
+  function drawLadder(ctx, t) {
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, LAD_W, LAD_H);
+    const L = M.frequencyLadder({ periodCm: state.periodCm, gamma: out.gamma, K: out.K });
+    const steps = [
+      ['실험실에서 전자가 흔들림', L.wiggle, C.cyan, '마이크로파 영역'],
+      ['전자가 보는 자석 · 전자가 냄', L.rest, C.pink, '적외선 영역'],
+      ['실험실에서 나오는 빛', L.lab, C.violet, 'EUV 영역'],
+    ];
+    const bw = 170;
+    const bh = 82;
+    const by = 66;
+    steps.forEach(([name, v, color, band], i) => {
+      const x = 10 + i * 222;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = 0.85;
+      ctx.lineWidth = 1.6;
+      ctx.fillStyle = 'rgba(255,255,255,.035)';
+      roundRect(ctx, x, by, bw, bh, 10);
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+      label(ctx, `${i + 1}`, x + 8, by - 12, { size: 12, weight: 700, color, align: 'left' });
+      label(ctx, name, x + 24, by - 12, { size: 11, align: 'left' });
+      label(ctx, fmtHz(v.hz), x + bw / 2, by + 30, { size: 19, weight: 700, color });
+      label(ctx, `파장 ${fmtLen(v.wavelengthM)}`, x + bw / 2, by + 56, { size: 12, color: C.text });
+      label(ctx, band, x + bw / 2, by + 72, { size: 10 });
+    });
+
+    // 곱하기 화살표
+    const arrows = [
+      [`× ${L.contractionFactor.toFixed(0)}`, '길이 수축', 206],
+      [`× ${L.dopplerFactor.toFixed(0)}`, '도플러', 428],
+    ];
+    arrows.forEach(([mul, why, cx]) => {
+      ctx.save();
+      ctx.strokeStyle = C.green;
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(cx - 12, by + bh / 2);
+      ctx.lineTo(cx + 8, by + bh / 2);
+      ctx.stroke();
+      ctx.restore();
+      arrow(ctx, cx + 12, by + bh / 2, 1, 6, C.green);
+      label(ctx, mul, cx, by + bh + 18, { size: 13, weight: 700, color: C.green });
+      label(ctx, why, cx, by + bh + 36, { size: 10 });
+    });
+
+    // 달리는 표시
+    const p = (t * 0.35) % 3;
+    const idx = Math.floor(p);
+    ctx.save();
+    ctx.globalAlpha = 0.5 + 0.5 * Math.sin((p % 1) * Math.PI);
+    ctx.strokeStyle = C.green;
+    ctx.lineWidth = 2;
+    roundRect(ctx, 18 + idx * 216 - 3, by - 3, bw + 6, bh + 6, 12);
+    ctx.stroke();
+    ctx.restore();
+
+    label(ctx, `언듈레이터 주기 ${state.periodCm.toFixed(1)} cm · 전자 에너지 ${state.energyMeV} MeV · K ${out.K.toFixed(2)}`,
+      LAD_W / 2, 26, { size: 12, color: C.text });
+    label(ctx, `모두 곱하면 ${(L.totalFactor / 1e6).toFixed(2)} × 10⁶ 배 = 2γ² / (1 + K²/2)`,
+      LAD_W / 2, LAD_H - 42, { size: 13, color: C.green });
+    label(ctx, 'K를 그대로 두고 주기만 줄이면 ①과 ③이 나란히 오릅니다. 이 화면은 자석 세기가 고정이라 K도 함께 변합니다.',
+      LAD_W / 2, LAD_H - 20, { size: 11 });
   }
 
   // ── 전자 두 개 ──

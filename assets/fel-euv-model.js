@@ -8,6 +8,7 @@
   // ── 물리 상수 ─────────────────────────────────────────────
   const ELECTRON_REST_MEV = 0.51099895;   // 전자 정지 에너지 [MeV]
   const ALFVEN_CURRENT = 17045;           // 알펜 전류 I_A [A]
+  const LIGHT_SPEED = 299792458;          // 빛의 속도 [m/s]
   const K_PER_TESLA_CM = 0.9337;          // K = 0.9337 · B[T] · λu[cm]
 
   // ── 기준 설계값 (xLight급 EUV-FEL을 상정한 값) ────────────
@@ -277,6 +278,61 @@
     return period * (1 / betaZ - 1) * 1e9;
   }
 
+  // 굽이치느라 앞으로 가는 속도가 줄어든 만큼 낮아진 '축방향 유효 감마'
+  //   γz = γ / √(1 + K²/2)
+  function axialGamma({ gamma, K }) {
+    const k = finite(K, 'K');
+    return positive(gamma, 'γ') / Math.sqrt(1 + (k * k) / 2);
+  }
+
+  // ── 마이크로번칭의 실제 기제 ──────────────────────────────
+  // 언듈레이터 안에서는 축방향 속도가 에너지에 의존합니다.
+  //   βz = 1 - (1 + K²/2) / (2γ²)
+  // 그래서 에너지가 바뀌면 앞뒤 위치가 바뀝니다. 이것이 뭉침의 원인입니다.
+  function axialBeta({ gamma, K, relativeEnergyOffset = 0 }) {
+    const g = positive(gamma, 'γ') * (1 + finite(relativeEnergyOffset, '에너지 차이'));
+    const k = finite(K, 'K');
+    return 1 - (1 + (k * k) / 2) / (2 * g * g);
+  }
+
+  // 에너지가 δ만큼 다른 전자가 1 m를 가는 동안 기준 전자보다 앞서는(뒤처지는) 거리.
+  //   Δβz = (2λ/λu) · δ   →  1 m당 밀림 = Δβz [m]
+  function slipPerMetre({ gamma, K, relativeEnergyOffset }) {
+    const g = positive(gamma, 'γ');
+    const k = finite(K, 'K');
+    return ((1 + (k * k) / 2) / (g * g)) * finite(relativeEnergyOffset, '에너지 차이');
+  }
+
+  // 에너지 차이 δ를 가진 전자가 반 파장만큼 밀려나는 데 필요한 거리
+  //   L = λu / (4δ)
+  function halfWavelengthSlipDistanceM({ periodCm, relativeEnergyOffset }) {
+    const d = Math.abs(finite(relativeEnergyOffset, '에너지 차이'));
+    if (d === 0) return Infinity;
+    return (positive(periodCm, '언듈레이터 주기') / 100) / (4 * d);
+  }
+
+  // 진동수 사다리 — 흔드는 진동수가 어떻게 빛의 진동수가 되는가
+  //   ① 실험실에서 전자가 흔들림     f = c/λu
+  //   ② 길이 수축 (×γz)              전자가 보는 자석 주기 λu/γz
+  //   ③ 도플러 (×2γz)                실험실로 되돌린 파장 λu/(2γz²)
+  // 세 단계를 곱하면 공명식과 정확히 같아집니다.
+  function frequencyLadder({ periodCm, gamma, K }) {
+    const lu = positive(periodCm, '언듈레이터 주기') / 100;
+    const gz = axialGamma({ gamma, K });
+    const wiggle = { wavelengthM: lu, hz: LIGHT_SPEED / lu };
+    const rest = { wavelengthM: lu / gz, hz: (LIGHT_SPEED * gz) / lu };
+    const lab = { wavelengthM: lu / (2 * gz * gz), hz: (LIGHT_SPEED * 2 * gz * gz) / lu };
+    return {
+      axialGamma: gz,
+      wiggle,
+      rest,
+      lab,
+      contractionFactor: gz,
+      dopplerFactor: 2 * gz,
+      totalFactor: 2 * gz * gz,
+    };
+  }
+
   // 세로로 d만큼 떨어진 전자 두 개가 같은 방향으로 내보낸 빛의 세기.
   // 전자 하나가 내는 세기를 1로 두었을 때의 값입니다.
   // I = |1 + e^{i·2π·d/λ}|² = 4cos²(π·d/λ)
@@ -397,6 +453,12 @@
     twoElectronIntensity,
     arrayIntensity,
     wavelengthsInBunch,
+    LIGHT_SPEED,
+    axialGamma,
+    frequencyLadder,
+    axialBeta,
+    slipPerMetre,
+    halfWavelengthSlipDistanceM,
     HALBACH,
     halbachFieldT,
     emittanceFloorNm,
