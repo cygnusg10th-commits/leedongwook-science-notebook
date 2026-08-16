@@ -304,3 +304,75 @@ test('뭉치는 거리와 포화 거리가 같은 물리에서 나온다', () =>
   near(bunchDist / out.saturationLengthM, (4 * Math.PI * Math.sqrt(3)) / 20, 1e-9);
   assert.ok(Math.abs(bunchDist - out.saturationLengthM) / out.saturationLengthM < 0.1);
 });
+
+test('보정을 안 하면 에너지 손실의 두 배만큼 공명 파장이 밀린다', () => {
+  // λ ∝ 1/γ² 이므로 δγ/γ = d 이면 δλ/λ ≈ 2d
+  [1e-3, 5e-3, 1e-2].forEach(d => {
+    near(model.resonanceDetuning({ energyLossFraction: d, K: 1 }), 2 * d, 4 * d * d);
+  });
+  // 손실이 ρ를 넘으면 이득 대역폭 밖으로 나갑니다
+  const rho = 1.71e-3;
+  assert.ok(model.resonanceDetuning({ energyLossFraction: rho, K: 1 }) > rho);
+});
+
+test('테이퍼된 K는 공명을 정확히 유지한다', () => {
+  const gamma0 = model.lorentzGamma(660);
+  const K0 = 1;
+  const lam0 = model.resonantWavelengthNm({ gamma: gamma0, periodCm: 3, K: K0 });
+  [0.01, 0.05, 0.10, 0.15].forEach(loss => {
+    const K = model.taperedK({ K0, energyLossFraction: loss });
+    const lam = model.resonantWavelengthNm({ gamma: gamma0 * (1 - loss), periodCm: 3, K });
+    near(lam, lam0, lam0 * 1e-12);   // 파장이 조금도 안 밀려야 합니다
+  });
+});
+
+test('K가 0이 되는 지점이 테이퍼링의 상한이고, K0가 클수록 여유가 크다', () => {
+  near(model.maxTaperExtraction(1), 0.1835, 1e-3);
+  near(model.maxTaperExtraction(2), 0.4226, 1e-3);
+  assert.ok(model.maxTaperExtraction(3) > model.maxTaperExtraction(2));
+  assert.ok(model.maxTaperExtraction(0.5) < 0.06);
+  // 상한에서 K는 0으로 수렴합니다.
+  // K = √(2·괄호) 이고 괄호가 0에 붙으므로, 배정밀도 오차가 √로 증폭됩니다.
+  // 괄호(=K²/2)가 배정밀도 한계 안에 드는지로 봅니다.
+  const cap = model.maxTaperExtraction(1);
+  const K = model.taperedK({ K0: 1, energyLossFraction: cap });
+  assert.ok(K * K / 2 < 1e-12, `괄호가 ${K * K / 2} 로 0에 붙지 않았습니다`);
+  assert.ok(K < 1e-6);
+  // 상한을 넘기면 0으로 잘립니다
+  near(model.taperedK({ K0: 1, energyLossFraction: cap + 0.01 }), 0, 0);
+});
+
+test('Halbach 역산이 정산과 맞물린다', () => {
+  [0.35, 0.8, 1.5].forEach(B => {
+    const gap = model.gapForFieldMm({ fieldT: B, periodCm: 3 });
+    near(model.halbachFieldT({ gapMm: gap, periodCm: 3 }).fieldT, B, 1e-6);
+  });
+});
+
+test('테이퍼 구간을 따라 K와 자기장은 줄고 간극은 벌어진다', () => {
+  const t = model.taperProfile({ K0: 1, periodCm: 3, extraction: 0.10 });
+  const first = t.points[0];
+  const last = t.points[t.points.length - 1];
+  near(first.K, 1, 1e-9);
+  near(last.K, 0.656, 0.005);
+  assert.ok(last.gapMm > first.gapMm, '간극이 벌어져야 합니다');
+  near(first.gapMm, 16.6, 0.3);
+  near(last.gapMm, 20.6, 0.4);
+  // 단조 감소·증가
+  for (let i = 1; i < t.points.length; i += 1) {
+    assert.ok(t.points[i].K <= t.points[i - 1].K);
+    assert.ok(t.points[i].gapMm >= t.points[i - 1].gapMm);
+  }
+  // 상한을 넘겨 요청하면 잘라 냅니다
+  assert.ok(model.taperProfile({ K0: 1, periodCm: 3, extraction: 0.5 }).clamped);
+});
+
+test('테이퍼링이 출력을 몇 배로 올리는가 — 스캐너 대수로', () => {
+  const out = model.solve({ energyMeV: 660, periodCm: 3, fieldT: 0.357, compression: 20, repRateMHz: 10 });
+  const plain = out.rho * out.beamPowerW;                 // 보정 없음: η ≈ ρ
+  const tapered = 0.02 * out.beamPowerW;                  // 2 % 추출
+  near(plain / 1000, 1.13, 0.05);
+  near(tapered / 1000, 13.2, 0.1);
+  assert.ok(model.scannerCount({ euvW: tapered }) >= 20, '2 % 추출이면 노광기 20대가 가능합니다');
+  assert.ok(model.scannerCount({ euvW: plain }) < 5);
+});
