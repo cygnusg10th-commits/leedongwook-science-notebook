@@ -171,6 +171,68 @@
     };
   }
 
+  // ── 테이퍼링 ──────────────────────────────────────────────
+  // 전자가 빛에게 에너지를 주면 γ가 줄어들고, 공명 파장이 길어집니다.
+  //   λ = λu(1+K²/2)/(2γ²)
+  // 손실이 ρ(=이득 대역폭)를 넘으면 공명에서 벗어나 증폭이 멈춥니다. 이것이 포화입니다.
+  // 보정법: 자석을 따라가며 K를 줄여 (1+K²/2)/γ² 를 일정하게 유지합니다.
+  //   K(z)² = 2[ (1+K0²/2)(γ(z)/γ0)² − 1 ]
+
+  // 보정을 안 했을 때 공명 파장이 얼마나 밀리는가 (상대값)
+  function resonanceDetuning({ energyLossFraction, K }) {
+    const d = finite(energyLossFraction, '에너지 손실');
+    finite(K, 'K');
+    return 1 / Math.pow(1 - d, 2) - 1;   // λ / λ0 − 1
+  }
+
+  // 공명을 유지하려면 K가 얼마여야 하는가
+  function taperedK({ K0, energyLossFraction }) {
+    const k0 = positive(K0, 'K0');
+    const ratio = 1 - finite(energyLossFraction, '에너지 손실');
+    const inner = (1 + (k0 * k0) / 2) * ratio * ratio - 1;
+    return inner > 0 ? Math.sqrt(2 * inner) : 0;
+  }
+
+  // K가 0이 되어 더는 못 따라가는 지점 — 테이퍼링의 이론 상한
+  function maxTaperExtraction(K0) {
+    const k0 = positive(K0, 'K0');
+    return 1 - 1 / Math.sqrt(1 + (k0 * k0) / 2);
+  }
+
+  // Halbach 식을 거꾸로 풀어 필요한 자석 간극을 구합니다
+  function gapForFieldMm({ fieldT, periodCm }) {
+    const target = positive(fieldT, '자기장');
+    let lo = 0.02;
+    let hi = 2.0;
+    for (let i = 0; i < 80; i += 1) {
+      const mid = (lo + hi) / 2;
+      const b = HALBACH.a * Math.exp(-HALBACH.b * mid + HALBACH.c * mid * mid);
+      if (b > target) lo = mid; else hi = mid;
+    }
+    return lo * positive(periodCm, '언듈레이터 주기') * 10;
+  }
+
+  // 테이퍼 구간 전체의 K·자기장·간극 변화
+  function taperProfile({ K0, periodCm, extraction, steps = 40 }) {
+    const cap = maxTaperExtraction(K0);
+    const eta = Math.min(Math.max(finite(extraction, '추출률'), 0), cap);
+    const out = [];
+    for (let i = 0; i <= steps; i += 1) {
+      const z = i / steps;
+      const loss = eta * z;                       // 구간을 따라 선형으로 에너지를 뽑습니다
+      const K = taperedK({ K0, energyLossFraction: loss });
+      const fieldT = K / (K_PER_TESLA_CM * periodCm);
+      out.push({
+        z,
+        gammaRatio: 1 - loss,
+        K,
+        fieldT,
+        gapMm: fieldT > 1e-4 ? gapForFieldMm({ fieldT, periodCm }) : Infinity,
+      });
+    }
+    return { cap, extraction: eta, points: out, clamped: finite(extraction, '추출률') > cap };
+  }
+
   // ── 다발 압축 ─────────────────────────────────────────────
   // 시케인 압축비 C = 1 / |1 + h·R56|
   function compressionFactor({ chirpPerM, r56M }) {
@@ -459,6 +521,11 @@
     axialBeta,
     slipPerMetre,
     halfWavelengthSlipDistanceM,
+    resonanceDetuning,
+    taperedK,
+    maxTaperExtraction,
+    gapForFieldMm,
+    taperProfile,
     HALBACH,
     halbachFieldT,
     emittanceFloorNm,

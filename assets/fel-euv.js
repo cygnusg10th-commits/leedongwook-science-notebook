@@ -1099,6 +1099,7 @@
     state.recovery = controls.recovery.checked;
     out = M.solve(state);
     paintReadout();
+    if (typeof readTaper === 'function') readTaper();
   }
 
   Object.values(controls).forEach(el => {
@@ -1198,6 +1199,7 @@
     if (onScreen(slipCanvas)) drawSlip(fit(slipCanvas, SLIP_W, SLIP_H), state.t);
     if (onScreen(pairCanvas)) drawPair(fit(pairCanvas, PAIR_W, PAIR_H), state.t);
     if (onScreen(ladderCanvas)) drawLadder(fit(ladderCanvas, LAD_W, LAD_H), state.t);
+    if (onScreen(taperCanvas)) drawTaper(fit(taperCanvas, TAP_W, TAP_H));
     if (onScreen(limitCanvas)) drawLimit(fit(limitCanvas, LIM_W, LIM_H));
     requestAnimationFrame(loop);
   }
@@ -1297,6 +1299,136 @@
 
     label(ctx, '실제 비율은 λ : λu = 1 : 220만입니다. 보이도록 크게 그렸습니다.',
       SLIP_W / 2, SLIP_H - 16, { size: 11 });
+  }
+
+  // ── 테이퍼링 ──
+  const taperCanvas = document.getElementById('felTaper');
+  const TAP_W = 660;
+  const TAP_H = 330;
+  let taperEta = 0.02;
+
+  function drawTaper(ctx) {
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, TAP_W, TAP_H);
+    const prof = M.taperProfile({ K0: out.K, periodCm: state.periodCm, extraction: taperEta });
+    const px0 = 62;
+    const px1 = 596;
+    const axis = 106;
+
+    // 간극이 벌어지는 자석 — 실제 변화를 20배 과장해 그립니다
+    const g0 = prof.points[0].gapMm;
+    const gLast = prof.points[prof.points.length - 1].gapMm;
+    const gSpan = Number.isFinite(gLast) ? gLast - g0 : g0;
+    const halfAt = z => {
+      const p = prof.points[Math.round(z * (prof.points.length - 1))];
+      const g = Number.isFinite(p.gapMm) ? p.gapMm : g0 * 3;
+      // 변화폭이 아무리 작아도 눈에 보이도록 자동으로 늘려 그립니다
+      return 14 + (gSpan > 1e-6 ? ((g - g0) / gSpan) * 30 : 0);
+    };
+    ctx.save();
+    const n = 22;
+    for (let i = 0; i < n; i += 1) {
+      const z = i / n;
+      const x = px0 + (px1 - px0) * z;
+      const w = (px1 - px0) / n - 4;
+      const h = halfAt(z);
+      ctx.fillStyle = i % 2 === 0 ? C.device : C.devDark;
+      roundRect(ctx, x, axis - h - 15, w, 15, 3);
+      ctx.fill();
+      ctx.fillStyle = i % 2 === 0 ? C.devDark : C.device;
+      roundRect(ctx, x, axis + h, w, 15, 3);
+      ctx.fill();
+    }
+    ctx.restore();
+    ctx.save();
+    ctx.strokeStyle = 'rgba(232,120,168,.45)';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(px0, axis);
+    ctx.lineTo(px1, axis);
+    ctx.stroke();
+    ctx.restore();
+    label(ctx, '자석 간극이 서서히 벌어집니다 (변화를 크게 그렸습니다)', (px0 + px1) / 2, 26, { size: 11 });
+    label(ctx, `${prof.points[0].gapMm.toFixed(1)} mm`, px0 - 6, axis, { size: 10, align: 'right', color: C.text });
+    const gEnd = prof.points[prof.points.length - 1].gapMm;
+    label(ctx, Number.isFinite(gEnd) ? `${gEnd.toFixed(1)} mm` : '∞', px1 + 6, axis, { size: 10, align: 'left', color: C.text });
+
+    // K(z) 와 γ(z)
+    const cy0 = 196;
+    const cy1 = 262;
+    ctx.save();
+    ctx.strokeStyle = C.dim;
+    ctx.globalAlpha = 0.4;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(px0, cy0, px1 - px0, cy1 - cy0);
+    ctx.restore();
+    const K0 = prof.points[0].K || 1;
+    // 두 곡선은 위아래 칸을 나눠 쓰고, 각자 변화폭에 맞춰 늘려 그립니다
+    const drawCurve = (getter, color, laneTop, laneBottom, name) => {
+      const vals = prof.points.map(getter);
+      const lo = Math.min(...vals);
+      const hi = Math.max(...vals);
+      const span = hi - lo;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      prof.points.forEach((p, i) => {
+        const x = px0 + (px1 - px0) * p.z;
+        const f = span > 1e-12 ? (getter(p) - lo) / span : 0.5;
+        const y = laneBottom - 5 - f * (laneBottom - laneTop - 10);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      ctx.restore();
+      label(ctx, name, px0 + 6, laneBottom - 7, { size: 10, align: 'left', color });
+    };
+    const mid = (cy0 + cy1) / 2;
+    drawCurve(p => p.K, C.cyan, cy0, mid, '자석 세기 K');
+    drawCurve(p => p.gammaRatio, C.pink, mid, cy1, '전자 에너지');
+    ctx.save();
+    ctx.strokeStyle = C.dim;
+    ctx.globalAlpha = 0.3;
+    ctx.beginPath(); ctx.moveTo(px0, mid); ctx.lineTo(px1, mid); ctx.stroke();
+    ctx.restore();
+    label(ctx, '세로 눈금은 각 곡선의 변화폭에 맞춰 늘렸습니다', (px0 + px1) / 2, cy1 + 18, { size: 10 });
+    label(ctx, `K  ${K0.toFixed(2)} → ${prof.points[prof.points.length - 1].K.toFixed(2)}`,
+      px0 + 6, cy0 - 14, { size: 11, align: 'left', color: C.cyan });
+    label(ctx, `전자 에너지  100 % → ${((1 - prof.extraction) * 100).toFixed(1)} %`,
+      px1 - 6, cy0 - 14, { size: 11, align: 'right', color: C.pink });
+    label(ctx, '입구', px0 + 2, cy1 + 18, { size: 10, align: 'left' });
+    label(ctx, '출구', px1 - 2, cy1 + 18, { size: 10, align: 'right' });
+
+    label(ctx, `(1 + K²/2) / γ² 을 일정하게 유지 → 공명 파장 ${out.wavelengthNm.toFixed(2)} nm 고정`,
+      TAP_W / 2, TAP_H - 18, { size: 12, color: C.green });
+  }
+
+  const taperInput = document.getElementById('felTaperEta');
+
+  function readTaper() {
+    if (!taperInput) return;
+    taperEta = Number(taperInput.value) / 100;
+    const prof = M.taperProfile({ K0: out.K, periodCm: state.periodCm, extraction: taperEta });
+    const euvW = prof.extraction * out.beamPowerW;
+    const plainW = out.rho * out.beamPowerW;
+    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    set('felTaperEtaValue', `${(prof.extraction * 100).toFixed(2)} %`);
+    set('felTaperK', `${out.K.toFixed(2)} → ${prof.points[prof.points.length - 1].K.toFixed(2)}`);
+    const gEnd = prof.points[prof.points.length - 1].gapMm;
+    set('felTaperGap', Number.isFinite(gEnd)
+      ? `${prof.points[0].gapMm.toFixed(1)} → ${gEnd.toFixed(1)} mm` : '한계 초과');
+    set('felTaperEuv', `${(euvW / 1000).toFixed(2)} kW`);
+    set('felTaperScanners', `${M.scannerCount({ euvW: Math.max(euvW, 1) })} 대`);
+    set('felTaperGain', `${(prof.extraction / out.rho).toFixed(1)}배`);
+    set('felTaperCap', `${(prof.cap * 100).toFixed(1)} %`);
+    set('felTaperPlain', `${(plainW / 1000).toFixed(2)} kW`);
+    const box = document.getElementById('felTaperScannerBox');
+    if (box) box.className = M.scannerCount({ euvW: Math.max(euvW, 1) }) >= 20 ? 'good' : '';
+  }
+
+  if (taperInput) {
+    taperInput.addEventListener('input', readTaper);
+    readTaper();
   }
 
   // ── 진동수 사다리 ──
