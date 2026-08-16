@@ -6,12 +6,12 @@
   <meta name="description" content="자유전자레이저 EUV 광원의 전체 장치를 한 화면에 놓고 전자총부터 빔 분배까지 구간별로 확인하는 시뮬레이션" />
   <title>빛이 전자를 줄 세운다 — FEL EUV 광원 | 과학 수첩</title>
   <link rel="stylesheet" href="../../assets/site.css?v=20260816-1" />
-  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-1" />
+  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-2" />
   <script src="../../assets/site.js?v=20260816-1" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-  <script src="../../assets/fel-euv-model.js?v=20260816-1" defer></script>
-  <script src="../../assets/fel-euv.js?v=20260816-1" defer></script>
+  <script src="../../assets/fel-euv-model.js?v=20260816-2" defer></script>
+  <script src="../../assets/fel-euv.js?v=20260816-2" defer></script>
 </head>
 <body class="fel-page">
   <a class="sr-only" href="#main">본문으로 바로가기</a>
@@ -125,8 +125,47 @@
       </div>
     </section>
 
-    <!-- ── 핵심 원리 ───────────────────────────────────── -->
+    <!-- ── 왜 파장 간격인가 ────────────────────────────── -->
     <section class="section tinted" style="margin-top:34px">
+      <div class="container">
+        <p class="eyebrow">가장 헷갈리는 지점</p>
+        <h2>왜 “동시에”가 아니라 “파장 간격”일까?</h2>
+        <p>결맞은 빛을 얻으려면 전자들이 <b>동시에</b> 흔들려야 할 것 같습니다. 자연스러운 생각이지만, 실제 조건은 그것보다 훨씬 느슨하고 훨씬 영리합니다.</p>
+        <p>전자 다발의 길이는 200 fs, 거리로는 <b id="felBunchMicron">60</b> µm입니다. 여기에 13.5 nm 파장이 <b id="felLambdaCount">4,445</b>개 들어갑니다. 전자 <b>6억 2천만 개</b>를 파장 하나 안에 몰아넣는 일은 일어나지 않습니다. “동시에”는 애초에 불가능합니다.</p>
+
+        <h3 style="margin:22px 0 6px">먼저 — 빛은 전자보다 한 주기에 정확히 한 파장씩 앞섭니다</h3>
+        <p style="margin-top:0">전자는 좌우로 굽이치느라 앞으로 가는 속도가 빛보다 조금 느립니다. 그 차이가 얼마나 되느냐가 이 장치의 전부입니다.</p>
+        <div class="fel-stage overview">
+          <canvas id="felSlip" width="660" height="250" role="img" aria-label="언듈레이터 한 주기를 지나는 동안 빛이 전자보다 한 파장 앞서는 과정"></canvas>
+        </div>
+        <p class="fel-scrollnote">그림은 가로로 밀어서 볼 수 있습니다.</p>
+
+        <h3 style="margin:24px 0 6px">그래서 — 늦게 흔들려도 괜찮습니다. 딱 한 파장만큼 늦으면 됩니다</h3>
+        <p style="margin-top:0">뒤따르는 전자는 앞선 전자보다 늦게 같은 자리를 지나갑니다. 그런데 그 늦음이 정확히 빛의 <b>한 주기</b>에 해당하면, 두 빛의 마루가 다시 겹칩니다. 간격을 바꿔 가며 확인해 보세요.</p>
+        <div class="fel-stage detail">
+          <canvas id="felPair" width="660" height="360" role="img" aria-label="세로로 떨어진 전자 두 개가 내보내는 빛이 간격에 따라 보강되거나 상쇄되는 모습"></canvas>
+        </div>
+        <div class="fel-panel" style="margin-top:14px">
+          <div class="fel-control" style="margin-bottom:12px">
+            <div class="fel-control-label"><label for="felGap">전자 두 개의 세로 간격</label><b><span id="felGapValue">1.00</span> λ</b></div>
+            <input id="felGap" type="range" min="0" max="2" step="0.01" value="1" />
+          </div>
+          <div class="fel-readout">
+            <div><span>위상 차이</span><b id="felPhase">—</b></div>
+            <div id="felPairBox"><span>합쳐진 세기 (전자 하나 = 1)</span><b id="felPairI">—</b></div>
+            <div><span>같은 판정</span><b id="felPairVerdict">—</b></div>
+          </div>
+        </div>
+
+        <p style="margin-top:18px">전자가 <b>둘</b>일 때 파장 간격이면 세기가 4가 됩니다. 그냥 더한 값 2가 아니라 <b>2² = 4</b>입니다. 이것이 N²의 정체입니다. 반 파장 어긋나면 0이 되고, 4분의 1 파장이면 정확히 2 — 서로 남남인 것과 같아집니다.</p>
+        <div class="fel-caution" style="border-color:var(--line);background:var(--paper)">
+          <b>정리.</b> 결맞음의 조건은 “같은 순간에 흔들려라”가 아니라 <b>“빛의 파장의 정수배만큼 떨어져 있어라”</b>입니다. 마이크로번칭이 하는 일이 바로 이 간격 맞추기이고, 언듈레이터의 미끄러짐이 그 간격을 자동으로 파장에 맞춰 줍니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 핵심 원리 ───────────────────────────────────── -->
+    <section class="section" style="margin-top:0">
       <div class="container">
         <p class="eyebrow">핵심 원리</p>
         <h2>줄만 섰을 뿐인데 왜 밝기가 제곱으로 뛸까요?</h2>
