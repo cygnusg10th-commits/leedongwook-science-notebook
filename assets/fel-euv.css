@@ -1,0 +1,182 @@
+/* FEL-EUV 광원 장치 시뮬레이션 */
+
+.fel-page { --fel-bg: #0f1420; --fel-bg2: #161c2c; --fel-line: #2a3145;
+  --fel-cyan: #5fa8e0; --fel-pink: #e878a8; --fel-violet: #b39ddb;
+  --fel-green: #7fd88f; --fel-muted: #7a7f95; --fel-text: #c8ccd8; }
+
+/* ── 전체 장치 판 ─────────────────────────────────────── */
+.fel-machine { margin-block: 26px; }
+.fel-machine h2 { margin: 0 0 6px; font-size: clamp(1.15rem, 2.4vw, 1.5rem); }
+.fel-machine > p { margin: 0 0 16px; color: var(--muted); max-width: 62ch; }
+
+.fel-stage {
+  position: relative; border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(160deg, #0f1420, #161c2c);
+  border: 1px solid #1e2536; box-shadow: var(--shadow);
+}
+.fel-stage canvas { display: block; width: 100%; height: auto; }
+.fel-stage.detail { margin-top: 14px; }
+
+.fel-hint {
+  position: absolute; left: 12px; top: 10px; z-index: 2;
+  padding: 5px 10px; border-radius: 999px; font-size: .72rem; letter-spacing: .02em;
+  color: #9aa3b8; background: rgba(15, 20, 32, .78); border: 1px solid #2a3145;
+  pointer-events: none;
+}
+
+/* ── 구간 선택 칩 ─────────────────────────────────────── */
+.fel-zones {
+  display: grid; gap: 8px; margin-top: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+.fel-zone {
+  display: flex; flex-direction: column; gap: 3px; align-items: flex-start;
+  padding: 11px 13px; border-radius: 13px; cursor: pointer; text-align: left;
+  border: 1px solid var(--line); background: var(--card);
+  transition: border-color .16s, box-shadow .16s, transform .16s;
+}
+.fel-zone:hover { transform: translateY(-1px); border-color: #b9c4dd; }
+.fel-zone .num {
+  font-size: .68rem; font-weight: 700; letter-spacing: .1em;
+  color: var(--muted);
+}
+.fel-zone .name { font-weight: 700; font-size: .95rem; }
+.fel-zone .role { font-size: .78rem; color: var(--muted); }
+.fel-zone[aria-pressed="true"] {
+  border-color: var(--physics); background: var(--physics-soft);
+  box-shadow: 0 8px 22px rgba(49, 95, 219, .16);
+}
+.fel-zone[aria-pressed="true"] .num { color: var(--physics); }
+
+/* ── 구간 설명 ────────────────────────────────────────── */
+.fel-detail { margin-top: 18px; }
+.fel-detail-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.fel-detail-head h3 { margin: 0; font-size: clamp(1.05rem, 2.2vw, 1.3rem); }
+.fel-detail-head .en { font-size: .8rem; color: var(--muted); letter-spacing: .04em; }
+.fel-detail-body { margin: 10px 0 0; line-height: 1.75; }
+.fel-detail-body p { margin: 0 0 10px; }
+.fel-detail-body p:last-child { margin-bottom: 0; }
+.fel-detail-body b { color: var(--navy); }
+
+.fel-points { display: grid; gap: 10px; margin-top: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+.fel-point {
+  padding: 12px 14px; border-radius: 13px;
+  border: 1px solid var(--line); background: var(--card);
+}
+.fel-point b { display: block; font-size: .82rem; color: var(--physics); margin-bottom: 3px; }
+.fel-point span { font-size: .9rem; line-height: 1.6; color: var(--ink); }
+
+.fel-caution {
+  margin-top: 14px; padding: 12px 15px; border-radius: 13px;
+  border: 1px solid #f0dcb8; background: var(--warning-soft);
+  font-size: .9rem; line-height: 1.7;
+}
+.fel-caution b { color: var(--warning); }
+
+/* ── 조작부 ───────────────────────────────────────────── */
+.fel-console { margin-top: 26px; display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) { .fel-console { grid-template-columns: minmax(0, 320px) minmax(0, 1fr); } }
+
+.fel-panel {
+  min-width: 0; padding: 16px 18px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--card);
+}
+.fel-panel h3 { margin: 0 0 4px; font-size: 1rem; }
+.fel-panel > p { margin: 0 0 14px; font-size: .85rem; color: var(--muted); }
+
+.fel-control { margin-bottom: 15px; }
+.fel-control:last-child { margin-bottom: 0; }
+.fel-control-label {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  margin-bottom: 5px; font-size: .88rem;
+}
+.fel-control-label b { font-variant-numeric: tabular-nums; color: var(--physics); }
+.fel-control input[type="range"] { width: 100%; accent-color: var(--physics); }
+.fel-control .note { font-size: .74rem; color: var(--muted); }
+
+.fel-toggle { display: flex; align-items: center; gap: 9px; font-size: .88rem; margin-top: 4px; }
+.fel-toggle input { width: 17px; height: 17px; accent-color: var(--physics); }
+
+.fel-target {
+  margin-bottom: 16px; padding: 12px 14px; border-radius: 13px;
+  border: 1px solid var(--line); background: var(--paper);
+}
+.fel-target .big {
+  display: flex; align-items: baseline; gap: 7px;
+  font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.fel-target .big em { font-style: normal; font-size: .95rem; font-weight: 600; color: var(--muted); }
+.fel-target .bar {
+  position: relative; height: 9px; margin-top: 9px; border-radius: 999px;
+  background: linear-gradient(90deg, #dfe4ee, #dfe4ee);
+  overflow: hidden;
+}
+.fel-target .bar i {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: 8%;
+  transform: translateX(-50%); background: var(--success-soft);
+  border-left: 1px solid var(--success); border-right: 1px solid var(--success);
+}
+.fel-target .bar u {
+  position: absolute; top: -3px; width: 3px; height: 15px; border-radius: 2px;
+  background: var(--physics); transition: left .12s;
+}
+.fel-target .verdict { margin-top: 8px; font-size: .85rem; font-weight: 700; }
+.fel-target.hit { border-color: var(--success); background: var(--success-soft); }
+.fel-target.hit .verdict { color: var(--success); }
+.fel-target.miss .verdict { color: var(--warning); }
+
+.fel-readout { display: grid; gap: 9px; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
+.fel-readout div {
+  padding: 10px 12px; border-radius: 12px;
+  border: 1px solid var(--line); background: var(--paper);
+}
+.fel-readout span { display: block; font-size: .74rem; color: var(--muted); margin-bottom: 2px; }
+.fel-readout b { font-size: 1.02rem; font-variant-numeric: tabular-nums; }
+.fel-readout small { display: block; font-size: .7rem; color: var(--muted); margin-top: 1px; }
+.fel-readout div.good b { color: var(--success); }
+.fel-readout div.warn b { color: var(--warning); }
+
+.fel-compare { margin-top: 14px; }
+.fel-compare h4 { margin: 0 0 9px; font-size: .88rem; color: var(--muted); font-weight: 600; }
+.fel-compare-row {
+  display: grid; grid-template-columns: 78px 1fr 92px; align-items: center;
+  gap: 10px; margin-bottom: 7px; font-size: .85rem;
+}
+.fel-compare-row .track { height: 15px; border-radius: 999px; background: #eceef4; overflow: hidden; }
+.fel-compare-row .track i { display: block; height: 100%; border-radius: 999px; transition: width .18s; }
+.fel-compare-row.fel .track i { background: var(--physics); }
+.fel-compare-row.lpp .track i { background: #c3552f; }
+.fel-compare-row b { text-align: right; font-variant-numeric: tabular-nums; }
+
+.fel-preset { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.fel-preset button {
+  padding: 7px 12px; border-radius: 999px; cursor: pointer; font-size: .82rem;
+  border: 1px solid var(--line); background: var(--card);
+}
+.fel-preset button:hover { border-color: var(--physics); color: var(--physics); }
+
+.fel-formula {
+  margin-top: 14px; padding: 12px 14px; border-radius: 13px; text-align: center;
+  border: 1px solid #1e2536; background: var(--fel-bg); color: #dbe3f2;
+  font-size: .95rem; overflow-x: auto;
+}
+.fel-formula small { display: block; margin-top: 6px; font-size: .74rem; color: #8992a8; }
+
+.fel-scrollnote { display: none; margin: 7px 0 0; font-size: .78rem; color: var(--muted); }
+
+@media (max-width: 760px) {
+  /* 좁은 화면에서는 도면을 줄이는 대신 가로로 밀어 보게 합니다 */
+  .fel-stage { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .fel-stage.overview canvas { min-width: 780px; }
+  .fel-stage.detail canvas { min-width: 560px; }
+  .fel-scrollnote { display: block; }
+  .fel-hint { display: none; }
+}
+
+@media (max-width: 620px) {
+  .fel-zones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fel-zone { padding: 9px 10px; }
+  .fel-zone .role { display: none; }
+  .fel-compare-row { grid-template-columns: 62px 1fr 78px; font-size: .78rem; }
+}
