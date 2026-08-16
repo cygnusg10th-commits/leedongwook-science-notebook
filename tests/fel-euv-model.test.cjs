@@ -183,3 +183,54 @@ test('200 fs 다발 안에는 13.5 nm 파장이 4천 개 넘게 들어간다', (
   const n = model.wavelengthsInBunch({ bunchLengthFs: 200, wavelengthNm: 13.5 });
   assert.ok(n > 4000 && n < 4600, `${n}`);
 });
+
+test('Halbach 식: 간극이 벌어지면 자기장이 지수적으로 무너진다', () => {
+  const a = model.halbachFieldT({ gapMm: 5, periodCm: 3.0 }).fieldT;
+  const b = model.halbachFieldT({ gapMm: 5, periodCm: 1.0 }).fieldT;
+  const c = model.halbachFieldT({ gapMm: 5, periodCm: 0.5 }).fieldT;
+  assert.ok(a > b && b > c, `${a} > ${b} > ${c}`);
+  near(a, 1.656, 0.01);   // g/λu = 0.167
+  near(c, 0.106, 0.005);  // g/λu = 1.0
+  // 같은 g/λu면 같은 값 (무차원 식)
+  near(model.halbachFieldT({ gapMm: 10, periodCm: 6 }).fieldT,
+       model.halbachFieldT({ gapMm: 5, periodCm: 3 }).fieldT, 1e-12);
+  // 검증 범위 밖 표시
+  assert.ok(model.halbachFieldT({ gapMm: 5, periodCm: 0.3 }).extrapolated);
+  assert.ok(model.halbachFieldT({ gapMm: 1, periodCm: 3 }).capped);
+});
+
+test('에미턴스 바닥 λ ≥ 4π·εn/γ', () => {
+  const gamma = model.lorentzGamma(660);
+  near(model.emittanceFloorNm({ emittanceMmMrad: 0.25, gamma }), 2.43, 0.02);
+  // 에너지를 두 배로 올리면 바닥이 절반으로
+  const g2 = model.lorentzGamma(1320);
+  near(model.emittanceFloorNm({ emittanceMmMrad: 0.25, gamma: g2 })
+     / model.emittanceFloorNm({ emittanceMmMrad: 0.25, gamma }), 0.5, 1e-9);
+});
+
+test('660 MeV · 간극 5 mm에서 발진 가능한 최단 파장은 2 nm 언저리', () => {
+  const r = model.shortestLasingWavelength({ energyMeV: 660, gapMm: 5 });
+  assert.ok(r.shortestNm > 1.8 && r.shortestNm < 3.2, `${r.shortestNm} nm`);
+  assert.ok(r.atPeriodMm > 5 && r.atPeriodMm < 12, `λu=${r.atPeriodMm} mm`);
+  assert.notEqual(r.limitedBy, '없음');
+  // 13.5 nm는 넉넉히 안쪽입니다
+  assert.ok(r.shortestNm < 13.5);
+});
+
+test('에너지를 올리면 최단 파장이 짧아지고, 간극을 벌리면 길어진다', () => {
+  const base = model.shortestLasingWavelength({ energyMeV: 660, gapMm: 5 });
+  const hot = model.shortestLasingWavelength({ energyMeV: 2000, gapMm: 5 });
+  const wide = model.shortestLasingWavelength({ energyMeV: 660, gapMm: 10 });
+  assert.ok(hot.shortestNm < base.shortestNm, `${hot.shortestNm} < ${base.shortestNm}`);
+  assert.ok(wide.shortestNm > base.shortestNm, `${wide.shortestNm} > ${base.shortestNm}`);
+});
+
+test('K를 0으로 보내도 λu/2γ² 아래로는 절대 못 내려간다', () => {
+  const gamma = model.lorentzGamma(660);
+  const floor = model.resonantWavelengthNm({ gamma, periodCm: 0.5, K: 0 });
+  near(floor, 1.499, 0.002);
+  // 어떤 K에서도 이 값 이상
+  [0.1, 1, 3].forEach(K => {
+    assert.ok(model.resonantWavelengthNm({ gamma, periodCm: 0.5, K }) >= floor);
+  });
+});
