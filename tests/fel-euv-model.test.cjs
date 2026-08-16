@@ -1,0 +1,141 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const model = require('../assets/fel-euv-model.js');
+
+const near = (a, b, tol) => assert.ok(Math.abs(a - b) <= tol, `${a} ≉ ${b} (허용 ${tol})`);
+
+test('로렌츠 인자는 전체 에너지 / 정지 에너지', () => {
+  near(model.lorentzGamma(0.51099895), 1, 1e-12);
+  near(model.lorentzGamma(1000), 1956.95, 0.01);
+  near(model.lorentzGamma(660), 1291.59, 0.01);
+});
+
+test('1 - β 는 큰 γ에서 1/(2γ²)로 수렴한다', () => {
+  [100, 1000, 5000].forEach(gamma => {
+    near(model.oneMinusBeta(gamma), 1 / (2 * gamma * gamma), 1 / (2 * gamma ** 4));
+  });
+  // 660 MeV에서 광속의 99.99997 %
+  near(model.betaValue(model.lorentzGamma(660)) * 100, 99.99997, 1e-5);
+});
+
+test('K = 0.9337 · B · λu', () => {
+  near(model.undulatorK({ fieldT: 1, periodCm: 1 }), 0.9337, 1e-12);
+  near(model.undulatorK({ fieldT: 0.357, periodCm: 3 }), 1.0, 0.003);
+});
+
+test('공명 파장식이 문헌 관계를 재현한다', () => {
+  // K → 0 이면 λ = λu / 2γ²
+  const gamma = 1000;
+  near(
+    model.resonantWavelengthNm({ gamma, periodCm: 3, K: 0 }),
+    (0.03 / (2 * gamma * gamma)) * 1e9,
+    1e-9,
+  );
+  // K = 1 이면 정확히 1.5배
+  const a = model.resonantWavelengthNm({ gamma, periodCm: 3, K: 0 });
+  const b = model.resonantWavelengthNm({ gamma, periodCm: 3, K: 1 });
+  near(b / a, 1.5, 1e-12);
+  // 파장은 γ의 제곱에 반비례
+  const c = model.resonantWavelengthNm({ gamma: 2000, periodCm: 3, K: 1 });
+  near(b / c, 4, 1e-12);
+});
+
+test('13.5 nm 역산과 정산이 서로 맞물린다', () => {
+  const energy = model.energyForWavelengthMeV({ wavelengthNm: 13.5, periodCm: 3, K: 1 });
+  near(energy, 660, 3);
+  const back = model.resonantWavelengthNm({
+    gamma: model.lorentzGamma(energy),
+    periodCm: 3,
+    K: 1,
+  });
+  near(back, 13.5, 1e-9);
+});
+
+test('결합 인자 [JJ]는 K→0에서 1, K가 커지면 줄어든다', () => {
+  near(model.couplingJJ(0.001), 1, 1e-5);
+  assert.ok(model.couplingJJ(1) < 1 && model.couplingJJ(1) > 0.9);
+  assert.ok(model.couplingJJ(3.5) < model.couplingJJ(1));
+  // 베셀 급수 자체 검증
+  near(model.besselJ(0, 0.5), 0.938469807, 1e-8);
+  near(model.besselJ(1, 0.5), 0.242268458, 1e-8);
+});
+
+test('다발 압축은 길이를 줄이고 첨두 전류를 그만큼 올린다', () => {
+  const before = model.compressedBunch({ chargePC: 100, lengthPs: 4, compression: 1 });
+  const after = model.compressedBunch({ chargePC: 100, lengthPs: 4, compression: 20 });
+  near(before.peakCurrentA, 25, 1e-9);
+  near(after.lengthFs, 200, 1e-9);
+  near(after.peakCurrentA, 500, 1e-9);
+  near(after.peakCurrentA / before.peakCurrentA, 20, 1e-9);
+});
+
+test('시케인 압축비 C = 1 / |1 + h·R56|', () => {
+  near(model.compressionFactor({ chirpPerM: 19, r56M: -0.05 }), 20, 1e-9);
+  assert.throws(() => model.compressionFactor({ chirpPerM: 20, r56M: -0.05 }), RangeError);
+});
+
+test('피어스 파라미터가 LCLS급 조건에서 알려진 크기(≈5e-4)에 든다', () => {
+  const rho = model.pierceParameter({
+    currentA: 3000, periodCm: 3, K: 3.5, sigmaXum: 30, gamma: 27000,
+  });
+  assert.ok(rho > 2e-4 && rho < 8e-4, `ρ=${rho}`);
+});
+
+test('이득 길이는 ρ에 반비례한다', () => {
+  const l1 = model.gainLengthM({ periodCm: 3, rho: 1e-3 });
+  const l2 = model.gainLengthM({ periodCm: 3, rho: 2e-3 });
+  near(l1 / l2, 2, 1e-12);
+  near(l1, 0.03 / (4 * Math.PI * Math.sqrt(3) * 1e-3), 1e-12);
+});
+
+test('평균 빔 전력 = 전하 × 반복률 × 전압', () => {
+  near(model.averageBeamPowerW({ chargePC: 100, repRateMHz: 10, energyMeV: 660 }), 660000, 1e-6);
+});
+
+test('에너지 회수를 끄면 벽면 전력이 크게 뛴다', () => {
+  const on = model.wallPowerMW({ beamPowerW: 660000, recovery: 0.9 });
+  const off = model.wallPowerMW({ beamPowerW: 660000, recovery: 0 });
+  near(on, 0.682, 0.001);
+  near(off, 1.87, 0.001);
+  assert.ok(off / on > 2.5);
+});
+
+test('번칭 인자: 고르게 퍼지면 0, 한 점에 모이면 1', () => {
+  const uniform = Array.from({ length: 360 }, (_, i) => (i * 2 * Math.PI) / 360);
+  near(model.bunchingFactor(uniform), 0, 1e-12);
+  near(model.bunchingFactor([1.2, 1.2, 1.2]), 1, 1e-12);
+  const half = model.bunchingFactor([0, Math.PI / 2]);
+  near(half, Math.SQRT1_2, 1e-12);
+});
+
+test('결맞은 방출은 b=0에서 N, b=1에서 N²', () => {
+  near(model.coherentPower({ N: 1000, b: 0 }), 1000, 1e-9);
+  near(model.coherentPower({ N: 1000, b: 1 }), 1000 * 1000, 1e-9);
+  assert.ok(model.coherentPower({ N: 1000, b: 0.5 }) > 200000);
+});
+
+test('기준 설계값이 보도된 규모(13.5 nm · 0.7 MW 급)를 재현한다', () => {
+  const out = model.solve({
+    energyMeV: 660, periodCm: 3, fieldT: 0.357, compression: 20, repRateMHz: 10,
+  });
+  near(out.wavelengthNm, 13.5, 0.15);
+  assert.ok(out.onTarget, `파장 ${out.wavelengthNm} nm`);
+  near(out.peakCurrentA, 500, 1e-9);
+  near(out.beamPowerW / 1e3, 660, 1e-6);
+  assert.ok(out.rho > 1e-3 && out.rho < 3e-3, `ρ=${out.rho}`);
+  assert.ok(out.gainLengthM > 0.3 && out.gainLengthM < 2, `Lg=${out.gainLengthM}`);
+  assert.ok(out.euvW > 700 && out.euvW < 2500, `EUV=${out.euvW}`);
+  near(out.wallMW, 0.68, 0.02);
+  // 같은 출력을 LPP로 내려면 훨씬 많이 듭니다
+  assert.ok(out.lppWallMW / out.wallMW > 4);
+});
+
+test('에너지를 올리면 파장이 짧아지고 스캐너 대수는 늘어난다', () => {
+  const base = { periodCm: 3, fieldT: 0.357, compression: 20, repRateMHz: 10 };
+  const low = model.solve(Object.assign({ energyMeV: 500 }, base));
+  const high = model.solve(Object.assign({ energyMeV: 900 }, base));
+  assert.ok(high.wavelengthNm < low.wavelengthNm);
+  const more = model.solve(Object.assign({ energyMeV: 660, repRateMHz: 60 }, base, { repRateMHz: 60 }));
+  const less = model.solve(Object.assign({ energyMeV: 660 }, base));
+  assert.ok(more.scanners > less.scanners);
+});
