@@ -6,12 +6,12 @@
   <meta name="description" content="자유전자레이저 EUV 광원의 전체 장치를 한 화면에 놓고 전자총부터 빔 분배까지 구간별로 확인하는 시뮬레이션" />
   <title>빛이 전자를 줄 세운다 — FEL EUV 광원 | 과학 수첩</title>
   <link rel="stylesheet" href="../../assets/site.css?v=20260816-1" />
-  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-2" />
+  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-5" />
   <script src="../../assets/site.js?v=20260816-1" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-  <script src="../../assets/fel-euv-model.js?v=20260816-2" defer></script>
-  <script src="../../assets/fel-euv.js?v=20260816-2" defer></script>
+  <script src="../../assets/fel-euv-model.js?v=20260816-5" defer></script>
+  <script src="../../assets/fel-euv.js?v=20260816-5" defer></script>
 </head>
 <body class="fel-page">
   <a class="sr-only" href="#main">본문으로 바로가기</a>
@@ -31,6 +31,7 @@
     <section class="container fel-machine">
       <h2>전체 장치는 이렇게 생겼습니다</h2>
       <p>전자는 왼쪽 전자총에서 태어나 오른쪽으로 달리며 에너지를 얻고, 언듈레이터에서 빛을 낸 뒤 아래 통로로 한 바퀴 돌아와 에너지를 반납합니다. 빛만 오른쪽으로 빠져나가 노광기로 갈라집니다.</p>
+      <p style="margin:-8px 0 16px;color:var(--muted);font-size:.9rem">움직이는 점 하나는 <b>전자 다발 하나</b>(100 pC · 약 6억 2천만 개)입니다. 구간마다 색과 밝기는 달라지지만 <b>개수는 처음부터 끝까지 변하지 않습니다.</b> 압축기는 다발을 짧게 만들 뿐이고, 언듈레이터는 다발 안에서 전자를 재배치할 뿐입니다.</p>
       <div class="fel-stage overview">
         <span class="fel-hint">구간을 눌러 보세요</span>
         <canvas id="felOverview" width="1020" height="420" role="img" aria-label="자유전자레이저 EUV 광원의 전체 빔라인. 전자총, 초전도 가속관, 번치 압축기, 언듈레이터, 에너지 회수 통로, 빔 분배로 이어집니다."></canvas>
@@ -160,6 +161,63 @@
         <p style="margin-top:18px">전자가 <b>둘</b>일 때 파장 간격이면 세기가 4가 됩니다. 그냥 더한 값 2가 아니라 <b>2² = 4</b>입니다. 이것이 N²의 정체입니다. 반 파장 어긋나면 0이 되고, 4분의 1 파장이면 정확히 2 — 서로 남남인 것과 같아집니다.</p>
         <div class="fel-caution" style="border-color:var(--line);background:var(--paper)">
           <b>정리.</b> 결맞음의 조건은 “같은 순간에 흔들려라”가 아니라 <b>“빛의 파장의 정수배만큼 떨어져 있어라”</b>입니다. 마이크로번칭이 하는 일이 바로 이 간격 맞추기이고, 언듈레이터의 미끄러짐이 그 간격을 자동으로 파장에 맞춰 줍니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 한계 ────────────────────────────────────────── -->
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow">어디까지 되나</p>
+        <h2>자석 주기만 바꾸면 아무 파장이나 만들 수 있을까?</h2>
+        <p>식만 보면 그렇습니다. $\lambda = \lambda_u(1+K^2/2)/2\gamma^2$ 에서 $\lambda_u$를 줄이면 파장은 얼마든지 짧아집니다. 그런데 <b>파장이 나오는 것</b>과 <b>그 빛이 증폭되는 것</b>은 다른 문제입니다. 벽이 세 개 있습니다.</p>
+
+        <div class="fel-points" style="margin-bottom:16px">
+          <div class="fel-point"><b>① 자석 간극</b><span>주기를 줄이면 자기장이 <b>지수적으로</b> 무너집니다. 전자빔이 지나갈 통로가 있어야 해서 간극은 4~5 mm 아래로 못 줄이는데, 주기가 그보다 빨리 작아지기 때문입니다.</span></div>
+          <div class="fel-point"><b>② 이득</b><span>자기장이 무너지면 K가 작아지고, 피어스 파라미터도 같이 죽습니다. 전자빔의 에너지 퍼짐보다 커야 하므로 최소 1만분의 1은 필요합니다.</span></div>
+          <div class="fel-point"><b>③ 빔 품질</b><span>전자빔이 빛보다 더 잘 모여 있어야 겹칠 수 있습니다. 이 조건이 <b>파장의 절대 바닥</b>을 만들고, 자석으로는 절대 내릴 수 없습니다. 에너지를 올려야만 내려갑니다.</span></div>
+        </div>
+
+        <div class="fel-formula">
+          $$B_0 = 3.694\,e^{-5.068\,(g/\lambda_u)\,+\,1.520\,(g/\lambda_u)^2}\;[\mathrm{T}]
+          \qquad \rho \propto \frac{(\lambda_u K [JJ])^{2/3}}{\gamma}
+          \qquad \lambda \;\ge\; \frac{4\pi\varepsilon_n}{\gamma}$$
+          <small>왼쪽부터 자석 간극 · 이득 · 빔 품질. 세 번째 식이 파장의 절대 바닥입니다</small>
+        </div>
+
+        <div class="fel-stage overview">
+          <canvas id="felLimit" width="660" height="300" role="img" aria-label="언듈레이터 주기에 따른 파장 곡선과 발진 가능 구간"></canvas>
+        </div>
+        <p class="fel-scrollnote">그래프는 가로로 밀어서 볼 수 있습니다.</p>
+
+        <div class="fel-panel" style="margin-top:14px">
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felLimitEnergy">전자 에너지</label><b id="felLimitEnergyValue">660 MeV</b></div>
+            <input id="felLimitEnergy" type="range" min="200" max="4000" step="20" value="660" />
+          </div>
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felLimitGap">자석 간극 <span class="note">g · 작을수록 좋은 자석</span></label><b id="felLimitGapValue">5.0 mm</b></div>
+            <input id="felLimitGap" type="range" min="3" max="12" step="0.5" value="5" />
+          </div>
+          <div class="fel-control" style="margin-bottom:12px">
+            <div class="fel-control-label"><label for="felLimitEmit">전자빔 에미턴스 <span class="note">작을수록 좋은 빔</span></label><b id="felLimitEmitValue">0.25 mm·mrad</b></div>
+            <input id="felLimitEmit" type="range" min="0.08" max="0.8" step="0.01" value="0.25" />
+          </div>
+          <div class="fel-readout">
+            <div id="felShortestBox"><span>발진하는 가장 짧은 파장</span><b id="felShortest">&mdash;</b></div>
+            <div><span>그때의 자석 주기</span><b id="felShortestPu">&mdash;</b></div>
+            <div><span>필요한 자석 길이</span><b id="felShortestMag">&mdash;</b></div>
+            <div><span>막는 것</span><b id="felBlocker">&mdash;</b></div>
+            <div><span>빔 품질 바닥 4&pi;&epsilon;n/&gamma;</span><b id="felFloor">&mdash;</b></div>
+          </div>
+          <p style="margin:12px 0 0;font-size:.84rem;color:var(--muted)">첨두 전류 500 A, 빔 크기 40 &micro;m, 자석 길이 60 m 이내를 조건으로 두었습니다. <b>자석 간극을 움직여도 주황색 바닥선은 꿈쩍하지 않습니다.</b> 그 선을 움직이는 것은 에너지와 에미턴스뿐입니다.</p>
+        </div>
+
+        <p style="margin-top:18px"><b>자석이 정하는 것은 파장이 아니라 길이입니다.</b> 660 MeV에서 자석 간극을 8 mm에서 3 mm로 좁혀 보면 한계 파장은 2.44 nm에서 2.46 nm로 <b>사실상 그대로</b>인데, 필요한 자석 길이는 52 m에서 17 m로 <b>3분의 1</b>이 됩니다. 좋은 자석은 더 짧은 파장을 주는 것이 아니라 <b>같은 파장을 더 싸게</b> 줍니다. 간극이 10 mm를 넘어가면 그제야 자석이 진짜 발목을 잡습니다 &mdash; 포화까지 60 m를 넘겨 버리기 때문입니다.</p>
+        <p><b>바닥을 정하는 것은 전자빔입니다.</b> 에미턴스를 0.6에서 0.25 mm&middot;mrad로 줄이면 한계가 5.91 nm에서 2.45 nm로 내려갑니다. 다만 0.15 아래로는 더 내려가지 않고 <b>이득 부족</b>으로 막힙니다. 빔을 아무리 잘 만들어도 자기장이 약하면 증폭이 안 되기 때문입니다. 세 벽이 서로 자리를 바꿔 가며 발목을 잡습니다.</p>
+        <p><b>답.</b> 660 MeV &middot; 간극 5 mm에서 발진 한계는 <b>약 2.4 nm</b>입니다. 13.5 nm는 한참 안쪽이라 여유가 큽니다. 여기서 더 짧게 가려면 자석이 아니라 <b>에너지를 올려야</b> 합니다. $\lambda \propto 1/\gamma^2$ 이라 효율이 좋습니다 &mdash; 에너지를 두 배로 올리면 파장은 4분의 1이 됩니다. 0.1 nm급 경X선 FEL이 수 GeV에서 십수 GeV를 쓰는 이유가 이것입니다.</p>
+        <div class="fel-caution" style="border-color:var(--line);background:var(--paper)">
+          <b>반대쪽 한계도 있습니다.</b> 파장을 길게 만드는 쪽은 자석 주기를 늘리면 되지만, 주기가 커지면 $K$가 커져 결합 인자 $[JJ]$가 떨어지고 고차 하모닉으로 에너지가 새어 나갑니다. 빛의 회절 각도도 커져 전자빔과 겹쳐 있기 어려워집니다. 실무에서 언듈레이터 주기는 대체로 15~50 mm 사이입니다.
         </div>
       </div>
     </section>
