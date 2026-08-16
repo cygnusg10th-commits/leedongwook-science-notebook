@@ -6,12 +6,12 @@
   <meta name="description" content="자유전자레이저 EUV 광원의 전체 장치를 한 화면에 놓고 전자총부터 빔 분배까지 구간별로 확인하는 시뮬레이션" />
   <title>빛이 전자를 줄 세운다 — FEL EUV 광원 | 과학 수첩</title>
   <link rel="stylesheet" href="../../assets/site.css?v=20260816-1" />
-  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-5" />
+  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-8" />
   <script src="../../assets/site.js?v=20260816-1" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-  <script src="../../assets/fel-euv-model.js?v=20260816-5" defer></script>
-  <script src="../../assets/fel-euv.js?v=20260816-5" defer></script>
+  <script src="../../assets/fel-euv-model.js?v=20260816-8" defer></script>
+  <script src="../../assets/fel-euv.js?v=20260816-8" defer></script>
 </head>
 <body class="fel-page">
   <a class="sr-only" href="#main">본문으로 바로가기</a>
@@ -140,6 +140,24 @@
           <canvas id="felSlip" width="660" height="250" role="img" aria-label="언듈레이터 한 주기를 지나는 동안 빛이 전자보다 한 파장 앞서는 과정"></canvas>
         </div>
         <p class="fel-scrollnote">그림은 가로로 밀어서 볼 수 있습니다.</p>
+
+        <h3 style="margin:24px 0 6px">전자는 10 GHz로 흔들리는데 빛은 22 PHz입니다</h3>
+        <p style="margin-top:0">자석 주기를 줄이면 전자가 방향을 바꾸는 진동수가 올라가고, 나오는 빛의 진동수도 <b>정확히 그만큼</b> 올라갑니다. 그런데 두 진동수의 <b>절대값</b>은 전혀 다릅니다. 3 cm 주기에서 전자는 초당 100억 번(10 GHz) 흔들립니다. 파장으로는 3 cm, 전자레인지 수준입니다. 그런데 나오는 빛은 13.5 nm, 22 PHz입니다. <b>220만 배</b>입니다.</p>
+        <p>그 220만 배가 어디서 오는지가 이 장치의 전부입니다. 감마가 두 번 곱해집니다.</p>
+        <div class="fel-stage overview">
+          <canvas id="felLadder" width="660" height="250" role="img" aria-label="흔드는 진동수가 길이 수축과 도플러 효과를 거쳐 빛의 진동수가 되는 세 단계"></canvas>
+        </div>
+        <p class="fel-scrollnote">그림은 가로로 밀어서 볼 수 있습니다.</p>
+        <p style="margin:10px 0 0;font-size:.86rem;color:var(--muted)">위쪽 조작부의 주기·에너지 슬라이더를 바꾸면 함께 움직입니다. 주기를 절반으로 줄이면 ①이 두 배가 되고 ③도 따라 오릅니다. 다만 조작부는 <b>자석 세기 B가 고정</b>이라 주기를 줄이면 $K = 0.9337\,B\lambda_u$ 도 같이 줄어듭니다. 그래서 ③은 두 배보다 조금 더 짧아집니다 — $K$까지 함께 맞춰 주면 정확히 두 배입니다.</p>
+        <div class="fel-points">
+          <div class="fel-point"><b>① → ② 길이 수축</b><span>전자가 보기에 자석 배열이 진행 방향으로 짜부라져 있습니다. 3 cm 주기가 <b>28 µm</b>로 보입니다. 전자는 그 짧아진 주기에 맞춰 훨씬 빠르게 흔들리고, 그 진동수로 빛을 냅니다.</span></div>
+          <div class="fel-point"><b>② → ③ 도플러</b><span>전자가 자기가 낸 빛을 거의 따라잡습니다. 앞으로 나가는 파형이 압축되어 파장이 다시 <b>2γz배</b> 짧아집니다. 앞서 본 미끄러짐 그림이 바로 이 압축입니다.</span></div>
+          <div class="fel-point"><b>왜 γz인가</b><span>전자는 좌우로도 흔들리므로 앞으로 가는 속도가 그만큼 줄어듭니다. 그래서 유효 감마가 $\gamma_z = \gamma/\sqrt{1+K^2/2}$ 로 낮아집니다. 660 MeV·K=1이면 1292 대신 <b>1055</b>입니다.</span></div>
+        </div>
+        <div class="fel-formula">
+          $$\lambda \;=\; \underbrace{\frac{\lambda_u}{\gamma_z}}_{\text{길이 수축}} \times \underbrace{\frac{1}{2\gamma_z}}_{\text{도플러}} \;=\; \frac{\lambda_u}{2\gamma_z^{2}} \;=\; \frac{\lambda_u}{2\gamma^{2}}\left(1+\frac{K^{2}}{2}\right)$$
+          <small>세 단계를 곱하면 앞에서 쓴 공명식과 소수점 열두 자리까지 같습니다</small>
+        </div>
 
         <h3 style="margin:24px 0 6px">그래서 — 늦게 흔들려도 괜찮습니다. 딱 한 파장만큼 늦으면 됩니다</h3>
         <p style="margin-top:0">뒤따르는 전자는 앞선 전자보다 늦게 같은 자리를 지나갑니다. 그런데 그 늦음이 정확히 빛의 <b>한 주기</b>에 해당하면, 두 빛의 마루가 다시 겹칩니다. 간격을 바꿔 가며 확인해 보세요.</p>
