@@ -234,3 +234,73 @@ test('K를 0으로 보내도 λu/2γ² 아래로는 절대 못 내려간다', ()
     assert.ok(model.resonantWavelengthNm({ gamma, periodCm: 0.5, K }) >= floor);
   });
 });
+
+test('축방향 유효 감마 γz = γ/√(1+K²/2)', () => {
+  const gamma = model.lorentzGamma(660);
+  near(model.axialGamma({ gamma, K: 0 }), gamma, 1e-12);
+  near(model.axialGamma({ gamma, K: 1 }), 1054.6, 0.2);
+  assert.ok(model.axialGamma({ gamma, K: 3 }) < model.axialGamma({ gamma, K: 1 }));
+});
+
+test('진동수 사다리 세 단계를 곱하면 공명식과 정확히 같다', () => {
+  [{ periodCm: 3, E: 660, K: 1 }, { periodCm: 1.5, E: 1000, K: 2 }, { periodCm: 4, E: 350, K: 0.4 }]
+    .forEach(({ periodCm, E, K }) => {
+      const gamma = model.lorentzGamma(E);
+      const L = model.frequencyLadder({ periodCm, gamma, K });
+      const direct = model.resonantWavelengthNm({ gamma, periodCm, K });
+      near(L.lab.wavelengthM * 1e9, direct, direct * 1e-12);
+      // 사다리를 거꾸로 올라가도 맞아야 합니다
+      near(L.wiggle.wavelengthM / L.contractionFactor, L.rest.wavelengthM, 1e-18);
+      near(L.rest.wavelengthM / L.dopplerFactor, L.lab.wavelengthM, 1e-18);
+    });
+});
+
+test('3 cm 언듈레이터: 전자는 10 GHz로 흔들리는데 빛은 22 PHz', () => {
+  const gamma = model.lorentzGamma(660);
+  const L = model.frequencyLadder({ periodCm: 3, gamma, K: 1 });
+  near(L.wiggle.hz / 1e9, 9.993, 0.01);          // 10 GHz — 마이크로파
+  near(L.lab.hz / 1e15, 22.23, 0.05);            // 22 PHz — EUV
+  near(L.totalFactor, 2.224e6, 2e3);
+  // 총 배수는 2γ²/(1+K²/2)
+  near(L.totalFactor, (2 * gamma * gamma) / 1.5, 1);
+});
+
+test('주기를 절반으로 하면 흔드는 진동수도 빛의 진동수도 정확히 두 배', () => {
+  const gamma = model.lorentzGamma(660);
+  const a = model.frequencyLadder({ periodCm: 3, gamma, K: 1 });
+  const b = model.frequencyLadder({ periodCm: 1.5, gamma, K: 1 });
+  near(b.wiggle.hz / a.wiggle.hz, 2, 1e-12);
+  near(b.lab.hz / a.lab.hz, 2, 1e-12);
+  near(b.totalFactor, a.totalFactor, 1e-6);      // 배수 자체는 그대로
+});
+
+test('축방향 속도는 에너지에 의존한다 — 뭉침의 원인', () => {
+  const gamma = model.lorentzGamma(660);
+  const lo = model.axialBeta({ gamma, K: 1, relativeEnergyOffset: -1.71e-3 });
+  const mid = model.axialBeta({ gamma, K: 1, relativeEnergyOffset: 0 });
+  const hi = model.axialBeta({ gamma, K: 1, relativeEnergyOffset: 1.71e-3 });
+  assert.ok(lo < mid && mid < hi, '에너지가 높을수록 축방향으로 빠릅니다');
+  // slipPerMetre는 1차 근사입니다. 정확값과의 차이는 O(δ) 수준이어야 합니다.
+  const d = 1.71e-3;
+  const exact = hi - mid;
+  const linear = model.slipPerMetre({ gamma, K: 1, relativeEnergyOffset: d });
+  const relErr = Math.abs(exact - linear) / linear;
+  assert.ok(relErr < 3 * d, `1차 근사 오차 ${relErr} 가 O(δ)=${d} 를 넘습니다`);
+  assert.ok(relErr > 0.5 * d, '2차 항이 사라져 버렸습니다 — 식을 확인하세요');
+});
+
+test('반 파장 밀림 거리 L = λu/(4δ)', () => {
+  near(model.halfWavelengthSlipDistanceM({ periodCm: 3, relativeEnergyOffset: 1.71e-3 }), 4.386, 0.01);
+  // δ가 두 배면 거리는 절반
+  const a = model.halfWavelengthSlipDistanceM({ periodCm: 3, relativeEnergyOffset: 1e-3 });
+  const b = model.halfWavelengthSlipDistanceM({ periodCm: 3, relativeEnergyOffset: 2e-3 });
+  near(a / b, 2, 1e-12);
+});
+
+test('뭉치는 거리와 포화 거리가 같은 물리에서 나온다', () => {
+  const out = model.solve({ energyMeV: 660, periodCm: 3, fieldT: 0.357, compression: 20, repRateMHz: 10 });
+  const bunchDist = 0.03 / out.rho;                    // λu/ρ
+  // 포화 길이 20Lg 와 λu/ρ 의 비는 4π√3/20 로 고정입니다
+  near(bunchDist / out.saturationLengthM, (4 * Math.PI * Math.sqrt(3)) / 20, 1e-9);
+  assert.ok(Math.abs(bunchDist - out.saturationLengthM) / out.saturationLengthM < 0.1);
+});
