@@ -6,12 +6,12 @@
   <meta name="description" content="자유전자레이저 EUV 광원의 전체 장치를 한 화면에 놓고 전자총부터 빔 분배까지 구간별로 확인하는 시뮬레이션" />
   <title>빛이 전자를 줄 세운다 — FEL EUV 광원 | 과학 수첩</title>
   <link rel="stylesheet" href="../../assets/site.css?v=20260816-1" />
-  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-8" />
+  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-9" />
   <script src="../../assets/site.js?v=20260816-1" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-  <script src="../../assets/fel-euv-model.js?v=20260816-8" defer></script>
-  <script src="../../assets/fel-euv.js?v=20260816-8" defer></script>
+  <script src="../../assets/fel-euv-model.js?v=20260816-9" defer></script>
+  <script src="../../assets/fel-euv.js?v=20260816-9" defer></script>
 </head>
 <body class="fel-page">
   <a class="sr-only" href="#main">본문으로 바로가기</a>
@@ -179,6 +179,53 @@
         <p style="margin-top:18px">전자가 <b>둘</b>일 때 파장 간격이면 세기가 4가 됩니다. 그냥 더한 값 2가 아니라 <b>2² = 4</b>입니다. 이것이 N²의 정체입니다. 반 파장 어긋나면 0이 되고, 4분의 1 파장이면 정확히 2 — 서로 남남인 것과 같아집니다.</p>
         <div class="fel-caution" style="border-color:var(--line);background:var(--paper)">
           <b>정리.</b> 결맞음의 조건은 “같은 순간에 흔들려라”가 아니라 <b>“빛의 파장의 정수배만큼 떨어져 있어라”</b>입니다. 마이크로번칭이 하는 일이 바로 이 간격 맞추기이고, 언듈레이터의 미끄러짐이 그 간격을 자동으로 파장에 맞춰 줍니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 테이퍼링 ────────────────────────────────────── -->
+    <section class="section tinted">
+      <div class="container">
+        <p class="eyebrow">설계자의 숙제</p>
+        <h2>에너지가 빠지면 공명이 깨집니다. 어떻게 보정할까?</h2>
+        <p>자석 주기는 어디서나 같고, 한 층에 모인 전자들의 위상도 같습니다. 그런데 전자가 빛에게 에너지를 주는 순간 $\gamma$가 줄고, 공명 파장 $\lambda = \lambda_u(1+K^2/2)/2\gamma^2$ 가 <b>길어집니다.</b> 빛의 파장은 그대로인데 자석이 요구하는 파장만 밀려 버리는 겁니다.</p>
+        <p>얼마나 예민한지 보면 놀랍습니다. 에너지가 <b>0.17 %</b>만 빠져도 공명 파장이 이득 대역폭의 두 배만큼 밀립니다. 그 순간 증폭이 멈춥니다. <b>이것이 포화의 정체입니다.</b></p>
+
+        <div class="fel-points" style="margin-bottom:16px">
+          <div class="fel-point"><b>0.17 % 손실</b><span>공명 파장이 0.34 % 밀림 &mdash; 이득 대역폭 $\rho$의 <b>2배</b>. 여기서 멈춥니다.</span></div>
+          <div class="fel-point"><b>1 % 손실</b><span>2.03 % 밀림 &mdash; 대역폭의 <b>12배</b>. 보정 없이는 도달조차 못 합니다.</span></div>
+          <div class="fel-point"><b>보정법</b><span>자석을 따라가며 <b>K를 줄입니다.</b> $(1+K^2/2)/\gamma^2$ 을 일정하게 유지하면 공명 파장이 고정됩니다. 실제로는 자석 간극을 서서히 벌립니다.</span></div>
+        </div>
+
+        <div class="fel-formula">
+          $$K(z)^2 \;=\; 2\left[\left(1+\frac{K_0^2}{2}\right)\left(\frac{\gamma(z)}{\gamma_0}\right)^{2} - 1\right]$$
+          <small>이 조건을 지키면 전자가 에너지를 잃어도 공명 파장이 소수점 열두 자리까지 그대로입니다</small>
+        </div>
+
+        <div class="fel-stage overview">
+          <canvas id="felTaper" width="660" height="330" role="img" aria-label="언듈레이터를 따라 자석 간극이 벌어지며 K와 전자 에너지가 함께 줄어드는 테이퍼 구간"></canvas>
+        </div>
+        <p class="fel-scrollnote">그림은 가로로 밀어서 볼 수 있습니다.</p>
+
+        <div class="fel-panel" style="margin-top:14px">
+          <div class="fel-control" style="margin-bottom:12px">
+            <div class="fel-control-label"><label for="felTaperEta">목표 추출률 <span class="note">전자 에너지의 몇 %를 빛으로</span></label><b id="felTaperEtaValue">2.00 %</b></div>
+            <input id="felTaperEta" type="range" min="0.17" max="18" step="0.01" value="2" />
+          </div>
+          <div class="fel-readout">
+            <div><span>K를 이렇게 줄여야</span><b id="felTaperK">&mdash;</b></div>
+            <div><span>자석 간극</span><b id="felTaperGap">&mdash;</b></div>
+            <div><span>EUV 출력</span><b id="felTaperEuv">&mdash;</b></div>
+            <div id="felTaperScannerBox"><span>먹일 수 있는 노광기</span><b id="felTaperScanners">&mdash;</b></div>
+            <div><span>보정 없을 때 (&eta; &asymp; &rho;)</span><b id="felTaperPlain">&mdash;</b></div>
+            <div><span>몇 배로</span><b id="felTaperGain">&mdash;</b></div>
+            <div><span>이 K에서의 상한</span><b id="felTaperCap">&mdash;</b></div>
+          </div>
+        </div>
+
+        <p style="margin-top:18px"><b>왜 이게 중요한가.</b> 보정을 안 하면 추출률이 $\rho$, 즉 <b>0.17 %</b>에 묶입니다. 1.13 kW &mdash; 노광기 두 대분입니다. 테이퍼링으로 <b>2 %</b>까지 뽑으면 13.2 kW, <b>노광기 26대분</b>이 됩니다. 「광원 하나로 스캐너 스무 대」라는 구상이 성립하려면 테이퍼링이 사실상 필수입니다.</p>
+        <div class="fel-caution" style="border-color:var(--line);background:var(--paper)">
+          <b>공짜는 아닙니다.</b> K가 0이 되면 더는 따라갈 수 없습니다. $K_0=1$이면 상한이 <b>18.4 %</b>, $K_0=2$면 42.3 %입니다. K가 클수록 여유가 크다는 뜻인데, K를 키우면 자석 간극을 좁혀야 하고 이번엔 전자빔이 지나갈 통로가 좁아집니다. 그리고 테이퍼 구간은 포화 이후에 붙이는 <b>추가 자석</b>이라 장치가 그만큼 길어집니다. 실제 실험에서 확인된 추출률은 대체로 수 % 수준입니다.
         </div>
       </div>
     </section>
