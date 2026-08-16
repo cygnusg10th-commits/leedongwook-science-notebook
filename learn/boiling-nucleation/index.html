@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="딱 100도의 물은 사실 끓지 못합니다. 기포가 태어나려면 1나노미터에 천 기압이 필요하기 때문입니다. 냄비가 끓는 진짜 이유는 바닥의 흠집이고, 끓임쪽도 같은 원리입니다." />
+  <title>물은 100도에서 끓지 않는다 | 과학 수첩</title>
+  <link rel="stylesheet" href="../../assets/site.css" />
+  <script src="../../assets/site.js" defer></script>
+  <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+  <style>
+    .bl-fig{margin:26px 0}
+    .bl-fig svg.fig{width:100%;height:auto;border-radius:14px;display:block;background:#0f1420}
+    .bl-fig figcaption{font-size:.86rem;opacity:.72;margin-top:10px;line-height:1.7}
+    .bl-key{border-left:3px solid #e878a8;padding:2px 0 2px 18px;margin:26px 0}
+    .bl-key p:first-child{margin-top:0}
+    .bl-key.cy{border-left-color:#5fa8e0}
+    .bl-key.am{border-left-color:#c9922f}
+    .bl-cond{border-left:2px solid var(--line);padding:2px 0 2px 16px;margin:20px 0;font-size:.9rem;opacity:.78}
+    .bl-warn{background:#fff3dd;border:1px solid #e8c98a;border-left:4px solid #9a5a0a;
+      border-radius:0 12px 12px 0;padding:16px 20px;margin:26px 0;font-size:.95rem}
+    .bl-warn b{color:#9a5a0a}
+    .cy{color:#2f7fb8;font-weight:600}
+    .pk{color:#b9457b;font-weight:600}
+    .am{color:#9a5a0a;font-weight:600}
+    .bl-steps{counter-reset:bs;list-style:none;padding:0;margin:22px 0}
+    .bl-steps li{counter-increment:bs;position:relative;padding:14px 0 14px 46px;border-bottom:1px solid var(--line)}
+    .bl-steps li:last-child{border-bottom:0}
+    .bl-steps li::before{content:counter(bs);position:absolute;left:0;top:14px;width:30px;height:30px;
+      border-radius:50%;background:rgba(49,95,219,.08);border:1px solid rgba(49,95,219,.3);
+      color:var(--physics);font-size:.85rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .bl-sym{list-style:none;padding:0;margin:0}
+    .bl-sym li{padding:11px 0;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:baseline}
+    .bl-sym li:last-child{border-bottom:0}
+    .bl-sym b{flex:0 0 76px;color:var(--physics)}
+    .bl-tbl{width:100%;border-collapse:collapse;margin:20px 0}
+    .bl-tbl th,.bl-tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+    .bl-tbl th{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;opacity:.62}
+    .bl-tbl td.n,.bl-tbl th.n{text-align:right;font-variant-numeric:tabular-nums}
+    .bl-tbl tr.hi td{background:rgba(185,69,123,.06);font-weight:600}
+    .chartbox{position:relative}
+    .chartbox .tip{position:absolute;pointer-events:none;background:#0b0f18;border:1px solid #2a3145;
+      border-radius:8px;padding:7px 10px;font-size:.76rem;color:#c8ccd8;opacity:0;transition:opacity .12s;
+      white-space:nowrap;z-index:5;transform:translate(-50%,-120%)}
+    .chartbox .tip.on{opacity:1}
+    .chartbox .tip .k{color:#7a7f95}
+    .tblbtn{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;
+      padding:6px 13px;font-size:.8rem;cursor:pointer;margin-top:10px}
+    .tblbtn:hover{border-color:var(--physics);color:var(--physics)}
+    .dtable{display:none}.dtable.on{display:block}
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>끓음과 핵생성</span></nav>
+      <h1>물은 100도에서 끓지 않는다</h1>
+      <p>정확히 100.0&nbsp;°C인 물은 <b>속에서 기포를 만들지 못합니다.</b>
+      냄비가 부글부글 끓는 진짜 이유는 온도가 아니라 <b>바닥의 흠집</b>이고,
+      실험실에서 쓰는 끓임쪽도 정확히 같은 원리입니다. 그리고 흠집이 없으면 물은 110도까지 조용히 버팁니다.</p>
+    </section>
+
+    <section class="container section">
+      <h2>기포는 태어나기가 어렵다</h2>
+      <p>끓는다는 건 <b>액체 속에서 기포가 생겨 자란다</b>는 뜻입니다. 표면에서 증발하는 것과는 다릅니다.
+      그런데 기포는 처음에 아주 작게 시작할 수밖에 없고, 바로 그 점이 문제가 됩니다.</p>
+
+      <p>휘어진 액체 표면은 오목한 쪽을 안으로 조입니다. 곡면 하나에 대해 <b>영–라플라스 식</b>은 이렇습니다.</p>
+      $$\Delta P=\frac{2\gamma}{R}$$
+      <p><small>물속 기포는 기체–액체 경계가 <b>하나뿐</b>이라 $2\gamma/R$입니다.
+      비눗방울처럼 막이 두 겹인 경우에만 $4\gamma/R$이 됩니다.</small></p>
+
+      <figure class="bl-fig">
+        <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" class="fig" role="img"
+             aria-label="물속 기포의 표면이 사방에서 안쪽으로 조여지는 그림">
+          <defs>
+            <radialGradient id="gv" cx="40%" cy="36%" r="64%">
+              <stop offset="0" stop-color="#8ec8ee" stop-opacity=".45"/>
+              <stop offset=".7" stop-color="#579bce" stop-opacity=".10"/>
+              <stop offset="1" stop-color="#579bce" stop-opacity=".5"/></radialGradient>
+            <marker id="ain" markerUnits="userSpaceOnUse" markerWidth="15" markerHeight="15"
+                    refX="12" refY="7.5" orient="auto"><path d="M0,1 L15,7.5 L0,14 z" fill="#c8ccd8"/></marker>
+          </defs>
+          <rect width="700" height="300" fill="#12203a" opacity=".5"/>
+          <circle cx="350" cy="150" r="72" fill="url(#gv)"/>
+          <circle cx="350" cy="150" r="72" fill="none" stroke="#5fa8e0" stroke-width="4"/>
+          <circle cx="326" cy="126" r="7" fill="#fff" opacity=".7"/>
+          <g>
+            <line x1="350" y1="30"  x2="350" y2="66"  stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="350" y1="270" x2="350" y2="234" stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="230" y1="150" x2="266" y2="150" stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="470" y1="150" x2="434" y2="150" stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="265" y1="65"  x2="292" y2="92"  stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="435" y1="65"  x2="408" y2="92"  stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="265" y1="235" x2="292" y2="208" stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+            <line x1="435" y1="235" x2="408" y2="208" stroke="#c8ccd8" stroke-width="4" marker-end="url(#ain)"/>
+          </g>
+          <text x="350" y="290" fill="#7a7f95" font-size="14" text-anchor="middle" font-family="system-ui">표면장력이 안쪽을 누른다 · 작을수록 세게</text>
+        </svg>
+        <figcaption>$R$이 <b>분모</b>에 있습니다. 기포가 작을수록 안쪽이 더 세게 눌리고,
+        그만큼 높은 압력을 견뎌야 살아남습니다.</figcaption>
+      </figure>
+
+      <h3>얼마나 높은 압력인가</h3>
+      <table class="bl-tbl">
+        <tr><th>기포 반지름</th><th class="n">필요한 압력 $2\gamma/R$</th><th class="n">대기압 대비</th></tr>
+        <tr class="hi"><td>1 nm</td><td class="n">1.18 × 10⁸ Pa</td><td class="n">1,163 배</td></tr>
+        <tr><td>10 nm</td><td class="n">1.18 × 10⁷ Pa</td><td class="n">116 배</td></tr>
+        <tr><td>1 μm</td><td class="n">1.18 × 10⁵ Pa</td><td class="n">1.2 배</td></tr>
+      </table>
+
+      <div class="bl-key cy">
+        <p><b>여기서 승부가 납니다.</b> 반지름 1&nbsp;나노미터짜리 기포가 버티려면 안쪽이 <b>천 기압이 넘어야</b> 합니다.
+        그런데 100&nbsp;°C 수증기가 낼 수 있는 압력은 <b>1기압</b>뿐입니다. 태어나는 즉시 짜부라집니다.</p>
+      </div>
+      <div class="bl-cond">100&nbsp;°C 물의 표면장력 $\gamma = 0.0589\ \mathrm{N/m}$ 기준입니다.
+      표면장력은 온도에 따라 변하지만 100~110&nbsp;°C 구간에서는 약 3% 변화라 위 값에 영향이 없습니다.</div>
+    </section>
+
+    <section class="container section tinted">
+      <h2>살아남는 최소 크기</h2>
+      <p>기포가 평형을 이루려면 안쪽 수증기 압력이 <b>대기압 + 표면장력 몫</b>과 같아야 합니다.
+      이 조건을 만족하는 반지름을 <b>임계 반지름</b> $R^{*}$이라고 합니다.</p>
+      $$P_{\text{증기}}(T)-P_{\text{대기}}=\frac{2\gamma}{R^{*}}
+        \quad\Longrightarrow\quad R^{*}=\frac{2\gamma}{P_{\text{증기}}(T)-P_{\text{대기}}}$$
+
+      <p>$R^{*}$보다 <span class="cy">작으면 짜부라지고</span>, <span class="pk">크면 폭주해서 자랍니다.</span>
+      경계 자체는 <b>불안정</b>합니다. 조금만 어긋나도 한쪽으로 굴러갑니다.</p>
+
+      <h3>딱 100.0도에서는 어떻게 되나</h3>
+      <p>분모가 <b>0</b>이 됩니다. 100.0&nbsp;°C에서 수증기가 낼 수 있는 압력은 대기압과 <b>정확히 같기</b> 때문입니다.
+      표면장력 몫을 치를 여유가 하나도 없다는 뜻이죠.</p>
+
+      <div class="bl-key">
+        <p>$2\gamma/R$은 어떤 유한한 $R$에서도 0보다 큽니다. 따라서 <b>평형을 이루는 기포 크기가 존재하지 않습니다.</b>
+        크든 작든 전부 짜부라집니다. "$R^{*}$가 무한대"라는 말은 그 뜻입니다.</p>
+      </div>
+
+      <p>그런데 딱 하나, <b>$R=\infty$ — 평평한 면</b>은 통합니다. 그리고 그 평평한 면이 바로 <b>수면</b>입니다.
+      그래서 100도 물은 <b>위에서 증발은 하는데 속에서는 끓지 않습니다.</b>
+      주전자에서 김이 오르는데 아직 부글거리지 않는 그 상태가 이것입니다.</p>
+
+      <h3>온도를 올리면</h3>
+      <p>수증기 압력이 대기압을 넘어서면서 분모가 생기고, $R^{*}$가 유한해집니다.</p>
+
+      <figure class="bl-fig">
+        <div class="chartbox" id="chartR"></div>
+        <button class="tblbtn" data-for="tblR" type="button">표로 보기</button>
+        <div class="dtable" id="tblR"></div>
+        <figcaption>100도에 가까울수록 $R^{*}$가 급격히 발산합니다. 105도에서도 <b>6마이크로미터</b>인데,
+        이건 물 분자 지름(약 0.3&nbsp;nm)의 <b>2만 배</b>입니다. "이미 그만한 기포가 있어야 한다"는 조건이
+        얼마나 말이 안 되는지가 이 숫자에 담겨 있습니다.</figcaption>
+      </figure>
+    </section>
+
+    <section class="container section">
+      <h2>그럼 냄비는 왜 끓나</h2>
+      <p>답은 물이 아니라 <b>냄비</b>에 있습니다. 정확히는 바닥의 <b>흠집</b>입니다.</p>
+
+      <p>액체는 뾰족한 홈 속까지 젖어 들어가지 못합니다. 그래서 홈 안에 <b>공기가 갇힌 채</b> 남습니다.
+      이 갇힌 공기의 표면은 <b>곡률이 완만합니다.</b> 곡률반지름이 크다는 건 $2\gamma/R$이 작다는 뜻이고,
+      그만큼 문턱이 낮아집니다.</p>
+
+      <figure class="bl-fig">
+        <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" class="fig" role="img"
+             aria-label="냄비 바닥의 홈에 공기가 갇혀 있고 그 위로 기포가 자라는 그림">
+          <rect width="700" height="180" fill="#12203a" opacity=".5"/>
+          <rect x="0" y="180" width="700" height="100" fill="#39405a"/>
+          <path d="M290 180 L322 268 L378 268 L410 180 Z" fill="#0b0f18"/>
+          <path d="M290 180 L322 268 L378 268 L410 180" fill="none" stroke="#7a7f95" stroke-width="4"/>
+          <path d="M290 180 L322 268 L378 268 L410 180 Z" fill="#5fa8e0" opacity=".22"/>
+          <path d="M290 180 A 78 78 0 0 1 410 180" fill="#5fa8e0" opacity=".18"/>
+          <path d="M290 180 A 78 78 0 0 1 410 180" fill="none" stroke="#5fa8e0" stroke-width="5"/>
+          <text x="530" y="120" fill="#5fa8e0" font-size="15" text-anchor="middle" font-family="system-ui">곡률이 완만하다</text>
+          <text x="530" y="146" fill="#7a7f95" font-size="14" text-anchor="middle" font-family="system-ui">= 문턱이 낮다</text>
+          <text x="165" y="252" fill="#c8ccd8" font-size="15" text-anchor="middle" font-family="system-ui">냄비 바닥</text>
+          <text x="350" y="164" fill="#7a7f95" font-size="13" text-anchor="middle" font-family="system-ui">갇힌 공기</text>
+        </svg>
+        <figcaption>평평한 벽에서는 기포가 시작할 수 없지만, 홈에서는 시작할 수 있습니다.
+        <b>끓는 건 물이 아니라 흠집이 시작합니다.</b></figcaption>
+      </figure>
+
+      <h3>공기는 시동, 수증기가 지속</h3>
+      <p>여기서 흔히 오해가 생깁니다. "갇힌 공기가 기포가 되어 올라간다"고 보면,
+      공기가 다 빠져나간 뒤에는 끓음이 멈춰야 합니다. 실제로는 그렇지 않죠.</p>
+
+      <div class="bl-key am">
+        <p><b>갇힌 공기는 시동 장치일 뿐입니다.</b> 첫 문턱을 낮춰주는 역할까지가 전부입니다.
+        사이클을 지탱하는 것은 <b>수증기</b>입니다. 벽에서 열이 들어오는 동안 홈 주변의 과열된 물이
+        경계면에서 계속 증발해 그 공간을 다시 채웁니다.</p>
+      </div>
+
+      <p>그래서 기포가 떨어져 나가도 <b>남은 자리에 수증기가 곧바로 보충됩니다.</b>
+      매번 처음부터 핵을 만들 필요가 없으니, <b>열이 공급되는 한 반복이 끊기지 않습니다.</b>
+      냄비 바닥의 특정 지점에서만 기포가 줄줄이 올라오는 이유가 이것입니다.</p>
+
+      <p>수증기라는 점이 중요합니다. 수증기는 <b>응축될 수 있기</b> 때문입니다.
+      주변 물이 충분히 뜨겁지 않으면 수증기 주머니가 도로 쪼그라들어 그 자리가 <b>비활성화</b>됩니다.
+      벽이 계속 과열되어 있어야 그 자리가 살아 있습니다.</p>
+
+      <h3>왜 리듬이 생기나</h3>
+      <p>기포가 떠난 직후에는 차가운 물이 밀려들어와 홈 주변이 식습니다. 다시 데워지는 동안 잠깐 쉬죠.
+      그래서 기포가 연속으로 쏟아지지 않고 <b>일정한 박자</b>로 올라옵니다.</p>
+
+      <p>또 하나. 기포가 홈 입구를 빠져나오는 순간, 경계면의 곡률반지름이
+      <b>홈 입구 반지름과 같아지는 지점에서 최소</b>가 되고 그때 필요한 압력이 최대입니다.
+      그 고비만 넘기면 이후 성장은 저절로 진행됩니다.
+      홈이 넓을수록 고비가 낮으므로 <b>넓은 홈부터 먼저 깨어나고</b>, 온도를 더 올리면
+      더 좁은 홈까지 활성화되어 끓음이 격렬해집니다.</p>
+
+      <div class="bl-key cy">
+        <p><b>끓임쪽(boiling chip)이 정확히 같은 원리입니다.</b> 다공성 세라믹 조각의 구멍마다 공기가 갇혀 있어서,
+        시동 걸 자리를 인위적으로 잔뜩 넣어주는 셈입니다. 이후는 마찬가지로 수증기가 이어받습니다.
+        실험실에서 과열을 막고 조용히 끓게 만드는 그 도구가, 여기까지 설명한 메커니즘 그 자체입니다.</p>
+      </div>
+    </section>
+
+    <section class="container section tinted">
+      <h2>흠집이 없으면 — 과열</h2>
+      <p>반대로 <b>매끈한 용기</b>에 <b>기체가 적게 녹은 물</b>을 넣고 조용히 가열하면,
+      시동 걸 자리가 없어 100도를 넘겨도 끓지 못합니다. 이 상태를 <b>과열</b>이라고 합니다.
+      전자레인지는 용기를 데우지 않고 물만 직접 데우기 때문에 특히 잘 일어납니다.</p>
+
+      <p>그리고 이 물은 <b>자극 한 번</b>이면 한꺼번에 끓습니다.
+      한 자리에서 기포가 임계를 넘는 순간 그 교란이 다른 자리를 연쇄로 깨우고,
+      액체 전체가 이미 과열 상태라 기화가 폭발적으로 진행됩니다. 이것을 <b>돌비</b>(bumping)라고 합니다.</p>
+
+      <h3>얼마나 격렬한가</h3>
+      <p>과열로 저장된 열이 잠열을 치르는 데 쓰이므로, 순간적으로 기화하는 질량비는</p>
+      $$x=\frac{c_p\,\Delta T}{h_{fg}}$$
+      <p>이고, 부피비는 여기에 액체와 증기의 밀도비를 곱합니다.</p>
+
+      <table class="bl-tbl">
+        <tr><th>온도</th><th class="n">과열도</th><th class="n">기화 질량비</th><th class="n">수증기 부피 / 원래 물 부피</th></tr>
+        <tr><td>102 °C</td><td class="n">2 K</td><td class="n">0.37 %</td><td class="n">6 배</td></tr>
+        <tr><td>105 °C</td><td class="n">5 K</td><td class="n">0.93 %</td><td class="n">15 배</td></tr>
+        <tr class="hi"><td>110 °C</td><td class="n">10 K</td><td class="n">1.87 %</td><td class="n">30 배</td></tr>
+        <tr><td>115 °C</td><td class="n">15 K</td><td class="n">2.80 %</td><td class="n">45 배</td></tr>
+        <tr><td>120 °C</td><td class="n">20 K</td><td class="n">3.74 %</td><td class="n">60 배</td></tr>
+      </table>
+
+      <div class="bl-key">
+        <p><b>질량의 2%도 안 되는 물이 기화하는데 부피는 30배로 불어납니다.</b>
+        머그컵 200&nbsp;mL 기준이면 수증기가 약 <b>6&nbsp;L</b>입니다. 그것이 순식간에 컵 밖으로 밀려 나옵니다.</p>
+      </div>
+
+      <div class="bl-cond">$c_p = 4216\ \mathrm{J/kg\cdot K}$, $h_{fg} = 2257\ \mathrm{kJ/kg}$,
+      $\rho_{\text{액}} = 958.4\ \mathrm{kg/m^3}$, $\rho_{\text{증기}} = 0.598\ \mathrm{kg/m^3}$ (100&nbsp;°C, 1기압) 기준입니다.
+      1기압으로 단열 방출된다고 본 이상적인 값이라 실제로는 일부만 분출되지만, 자릿수는 이대로입니다.</div>
+
+      <div class="bl-warn">
+        <p style="margin:0"><b>전자레인지로 물을 데울 때 조심하세요.</b>
+        매끈한 머그컵에 물만 넣고 오래 돌리면 과열 상태가 될 수 있습니다.
+        꺼낸 뒤 커피 가루를 넣거나 숟가락을 담그는 순간 끓어 넘쳐 화상을 입는 사고가 실제로 일어납니다.
+        <b>이 글은 과열을 재현해 보라는 뜻이 아닙니다.</b> 나무 젓가락이나 티백을 미리 넣어두면
+        시동 걸 자리가 생겨 안전하게 끓습니다.</p>
+      </div>
+    </section>
+
+    <section class="container section">
+      <h2>안전하게 확인해 보기</h2>
+      <p>과열을 일부러 만들지 않고도 이 글의 내용을 확인할 수 있습니다.</p>
+      <ol class="bl-steps">
+        <li><b>기포가 어디서 나오는지 보세요</b>냄비에 물을 올리고 바닥을 관찰하면, 기포가 아무 데서나 나오지 않고
+        <b>같은 지점 몇 곳</b>에서만 줄줄이 올라옵니다. 그 자리가 활성화된 흠집입니다.</li>
+        <li><b>박자를 세어 보세요</b>한 지점에서 기포가 나오는 간격이 꽤 일정합니다.
+        홈이 다시 데워지는 시간이 그 박자를 만듭니다.</li>
+        <li><b>온도를 올려 보세요</b>불을 키우면 <b>새로운 지점</b>이 추가로 깨어납니다.
+        더 좁은 홈까지 문턱을 넘기 시작한 것입니다.</li>
+        <li><b>냄비를 바꿔 보세요</b>새 냄비와 오래 써서 긁힌 냄비를 비교하면 기포가 나오는 자리 수가 다릅니다.</li>
+        <li><b>사이다로도 보입니다</b>탄산음료를 컵에 따르면 기포가 컵 안쪽의 흠집이나 먼지에서만
+        줄줄이 올라옵니다. 기체 종류만 다를 뿐 같은 이야기입니다.</li>
+      </ol>
+    </section>
+
+    <section class="container section tinted">
+      <h2>기호</h2>
+      <ul class="bl-sym">
+        <li><b>$\Delta P$</b><span>기포 안과 바깥의 압력 차</span></li>
+        <li><b>$\gamma$</b><span>표면장력. 100 °C 물은 0.0589 N/m</span></li>
+        <li><b>$R$</b><span>기포의 곡률반지름</span></li>
+        <li><b>$R^{*}$</b><span>임계 반지름. 이보다 커야 자란다</span></li>
+        <li><b>$\Delta T$</b><span>과열도. 끓는점보다 얼마나 높은가</span></li>
+        <li><b>$c_p$</b><span>물의 비열</span></li>
+        <li><b>$h_{fg}$</b><span>증발잠열</span></li>
+      </ul>
+      <p><small>그림의 색은 숏츠와 같습니다 — <span class="cy">시안</span>은 짜부라지는 쪽,
+      <span class="pk">핑크</span>는 자라는 쪽, <span class="am">앰버</span>는 열과 온도입니다.</small></p>
+    </section>
+  </main>
+
+<script>
+const INK={cyan:'#579bce',pink:'#d56e9b',amber:'#c9922f',muted:'#7a7f95',line:'#2a3145',text:'#c8ccd8',surface:'#0f1420'};
+function lineChart(host,cfg){
+  const W=cfg.w||660,H=cfg.h||320,M={l:82,r:20,t:18,b:48};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  const x0=cfg.xMin,x1=cfg.xMax,y0=cfg.yMin,y1=cfg.yMax;
+  const X=v=>M.l+(v-x0)/(x1-x0)*iw, Y=v=>M.t+ih-(v-y0)/(y1-y0)*ih;
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${cfg.aria}" style="width:100%;height:auto;border-radius:14px;background:${INK.surface}">`;
+  (cfg.yTicks||[]).forEach(v=>{g+=`<line x1="${M.l}" y1="${Y(v)}" x2="${M.l+iw}" y2="${Y(v)}" stroke="${INK.line}" stroke-width="1"/><text x="${M.l-10}" y="${Y(v)+4}" fill="${INK.muted}" font-size="11" text-anchor="end" font-family="system-ui">${cfg.yFmt?cfg.yFmt(v):v}</text>`;});
+  (cfg.xTicks||[]).forEach(v=>{g+=`<text x="${X(v)}" y="${M.t+ih+22}" fill="${INK.muted}" font-size="11" text-anchor="middle" font-family="system-ui">${v}</text>`;});
+  g+=`<line x1="${M.l}" y1="${M.t+ih}" x2="${M.l+iw}" y2="${M.t+ih}" stroke="${INK.line}" stroke-width="1.5"/>`;
+  g+=`<text x="${M.l+iw/2}" y="${H-8}" fill="${INK.muted}" font-size="12" text-anchor="middle" font-family="system-ui">${cfg.xLabel}</text>`;
+  g+=`<text x="18" y="${M.t+ih/2}" fill="${INK.muted}" font-size="12" text-anchor="middle" font-family="system-ui" transform="rotate(-90 18 ${M.t+ih/2})">${cfg.yLabel}</text>`;
+  cfg.series.forEach(s=>{const d=s.pts.filter(p=>p[1]<=y1*1.4).map((p,i)=>`${i?'L':'M'}${X(p[0]).toFixed(1)} ${Y(Math.min(p[1],y1*1.4)).toFixed(1)}`).join(' ');
+    g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;});
+  (cfg.marks||[]).forEach(m=>{g+=`<circle cx="${X(m.x)}" cy="${Y(m.y)}" r="7" fill="${m.color}" stroke="${INK.surface}" stroke-width="2"/>`;
+    if(m.label)g+=`<text x="${X(m.x)+(m.dx||0)}" y="${Y(m.y)+(m.dy||-16)}" fill="${INK.text}" font-size="12.5" font-weight="600" text-anchor="${m.anchor||'middle'}" font-family="system-ui">${m.label}</text>`;
+    if(m.sub)g+=`<text x="${X(m.x)+(m.dx||0)}" y="${Y(m.y)+(m.dy||-16)+17}" fill="${INK.muted}" font-size="11.5" text-anchor="${m.anchor||'middle'}" font-family="system-ui">${m.sub}</text>`;});
+  if(cfg.vline){g+=`<line x1="${X(cfg.vline.x)}" y1="${M.t}" x2="${X(cfg.vline.x)}" y2="${M.t+ih}" stroke="${INK.amber}" stroke-width="2" stroke-dasharray="8 6"/>`;
+    g+=`<text x="${X(cfg.vline.x)+8}" y="${M.t+16}" fill="${INK.amber}" font-size="12" font-weight="600" font-family="system-ui">${cfg.vline.label}</text>`;}
+  g+=`<line class="cross" x1="0" y1="${M.t}" x2="0" y2="${M.t+ih}" stroke="${INK.muted}" stroke-width="1" stroke-dasharray="4 4" opacity="0"/>`;
+  g+=`<circle class="dot" r="5.5" fill="${cfg.series[0].color}" stroke="${INK.surface}" stroke-width="2" opacity="0"/>`;
+  g+=`<rect x="${M.l}" y="${M.t}" width="${iw}" height="${ih}" fill="transparent" class="hit"/></svg><div class="tip"></div>`;
+  host.innerHTML=g;
+  const svg=host.querySelector('svg'),tip=host.querySelector('.tip'),cross=svg.querySelector('.cross'),dot=svg.querySelector('.dot'),S=cfg.series[0];
+  svg.querySelector('.hit').addEventListener('pointermove',e=>{
+    const r=svg.getBoundingClientRect(), vx=(e.clientX-r.left)/r.width*W, val=x0+(vx-M.l)/iw*(x1-x0);
+    let best=S.pts[0]; for(const p of S.pts) if(Math.abs(p[0]-val)<Math.abs(best[0]-val)) best=p;
+    const yy=Math.min(best[1],y1*1.4);
+    cross.setAttribute('x1',X(best[0]));cross.setAttribute('x2',X(best[0]));cross.setAttribute('opacity','.7');
+    dot.setAttribute('cx',X(best[0]));dot.setAttribute('cy',Y(yy));dot.setAttribute('opacity','1');
+    tip.innerHTML=cfg.tip(best); tip.style.left=(X(best[0])/W*100)+'%'; tip.style.top=(Y(yy)/H*r.height)+'px'; tip.classList.add('on');
+  });
+  svg.querySelector('.hit').addEventListener('pointerleave',()=>{cross.setAttribute('opacity','0');dot.setAttribute('opacity','0');tip.classList.remove('on');});
+}
+function dataTable(host,head,rows){host.innerHTML='<table class="bl-tbl"><tr>'+head.map(h=>`<th class="n">${h}</th>`).join('')+'</tr>'+rows.map(r=>'<tr>'+r.map(c=>`<td class="n">${c}</td>`).join('')+'</tr>').join('')+'</table>';}
+(()=>{
+  // 포화증기압 (kPa) — 표준 증기표 보간
+  const T=[100,100.5,101,102,103,104,105,107,110,113,116,120];
+  const P=[101.325,103.2,105.0,108.9,112.9,117.0,120.79,129.6,143.24,158.3,174.9,198.5];
+  const gam=0.0589, Patm=101.325;
+  const pts=[];
+  for(let i=0;i<=300;i++){
+    const t=100.2+ (19.8*i/300);
+    let k=0; while(k<T.length-2 && T[k+1]<t) k++;
+    const p=P[k]+(P[k+1]-P[k])*(t-T[k])/(T[k+1]-T[k]);
+    const dP=(p-Patm)*1000;
+    pts.push([t, dP>0 ? 2*gam/dP*1e6 : 999]);
+  }
+  lineChart(document.getElementById('chartR'),{
+    aria:'임계 반지름이 온도에 따라 변하는 곡선. 100도에 가까울수록 급격히 커진다.',
+    series:[{pts,color:INK.cyan}],
+    xMin:100,xMax:120,yMin:0,yMax:35,
+    xTicks:[100,105,110,115,120],yTicks:[0,10,20,30],
+    yFmt:v=>v+' μm',
+    xLabel:'물의 온도 (°C)',yLabel:'임계 반지름 R*',
+    vline:{x:100,label:'100.0°C → 무한대'},
+    marks:[{x:105,y:6.05,color:INK.pink,label:'105 °C',sub:'6.05 μm',dx:38,dy:-16},
+           {x:110,y:2.81,color:INK.muted,label:'110 °C',sub:'2.81 μm',dx:40,dy:-18}],
+    tip:p=>`<span class="k">온도</span> ${p[0].toFixed(1)} °C &nbsp; <span class="k">R*</span> ${p[1]>100?'∞':p[1].toFixed(2)+' μm'}`});
+  dataTable(document.getElementById('tblR'),['온도 (°C)','포화증기압 (kPa)','R* (μm)'],
+    [[100.0,101.325,'무한대'],[101,105.0,'32.05'],[102,108.9,'15.55'],[105,120.79,'6.05'],[110,143.24,'2.81'],[120,198.5,'1.21']]
+      .map(r=>[typeof r[0]==='number'?r[0].toFixed(1):r[0], r[1].toFixed(2), r[2]]));
+})();
+document.querySelectorAll('.tblbtn').forEach(btn=>btn.addEventListener('click',()=>{
+  const el=document.getElementById(btn.dataset.for); el.classList.toggle('on');
+  btn.textContent=el.classList.contains('on')?'표 닫기':'표로 보기';}));
+</script>
+</body>
+</html>
