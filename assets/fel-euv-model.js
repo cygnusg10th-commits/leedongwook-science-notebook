@@ -108,6 +108,68 @@
     return besselJ(0, xi) - besselJ(1, xi);
   }
 
+  // ── 자석이 낼 수 있는 자기장의 한계 ───────────────────────
+  // Halbach 경험식 (하이브리드 NdFeB + 철 언듈레이터, 축상 최대 자기장)
+  //   B0 = 3.694 · exp[ -5.068 (g/λu) + 1.520 (g/λu)² ]   [T]
+  // 원식의 검증 범위는 0.1 < g/λu < 1 입니다. 그 밖은 외삽입니다.
+  const HALBACH = { a: 3.694, b: 5.068, c: 1.520, maxT: 2.0 };
+
+  function halbachFieldT({ gapMm, periodCm, cap = HALBACH.maxT }) {
+    const ratio = (positive(gapMm, '자석 간극') / 10) / positive(periodCm, '언듈레이터 주기');
+    const raw = HALBACH.a * Math.exp(-HALBACH.b * ratio + HALBACH.c * ratio * ratio);
+    return { fieldT: Math.min(raw, cap), ratio, extrapolated: ratio < 0.1 || ratio > 1, capped: raw > cap };
+  }
+
+  // 회절 한계(에미턴스 조건) εn ≤ γλ/4π 를 파장 쪽으로 뒤집으면
+  //   λ ≥ 4π εn / γ
+  function emittanceFloorNm({ emittanceMmMrad, gamma }) {
+    const en = positive(emittanceMmMrad, '에미턴스') * 1e-6;
+    return (4 * Math.PI * en) / positive(gamma, 'γ') * 1e9;
+  }
+
+  // 주어진 조건에서 실제로 '발진하는' 가장 짧은 파장.
+  // λu만 줄이면 파장은 끝없이 짧아지지만 자기장이 무너져 이득이 죽습니다.
+  function shortestLasingWavelength(input) {
+    const opt = Object.assign({
+      energyMeV: 660, gapMm: 5, currentA: 500, sigmaXum: 40,
+      emittanceMmMrad: 0.25, rhoMin: 1e-4, maxUndulatorM: 60,
+    }, input || {});
+    const gamma = lorentzGamma(opt.energyMeV);
+    const floorNm = emittanceFloorNm({ emittanceMmMrad: opt.emittanceMmMrad, gamma });
+    const scan = [];
+    let best = null;
+    let blocker = '없음';
+    for (let mm = 40; mm >= 2; mm -= 0.1) {
+      const periodCm = mm / 10;
+      const { fieldT } = halbachFieldT({ gapMm: opt.gapMm, periodCm });
+      const K = undulatorK({ fieldT, periodCm });
+      const wavelengthNm = resonantWavelengthNm({ gamma, periodCm, K });
+      const rho = pierceParameter({
+        currentA: opt.currentA, periodCm, K, sigmaXum: opt.sigmaXum, gamma,
+      });
+      const satM = rho > 0 ? gainLengthM({ periodCm, rho }) * DESIGN.saturationGainLengths : Infinity;
+      const fails = rho < opt.rhoMin ? '이득 부족'
+        : wavelengthNm < floorNm ? '빔 품질 한계'
+          : satM > opt.maxUndulatorM ? '자석이 너무 길어짐' : null;
+      scan.push({ periodMm: mm, fieldT, K, wavelengthNm, rho, satM, fails });
+      if (!fails) {
+        if (!best || wavelengthNm < best.wavelengthNm) best = scan[scan.length - 1];
+      } else if (best && blocker === '없음') {
+        blocker = fails;
+      }
+    }
+    return {
+      gamma,
+      emittanceFloorNm: floorNm,
+      shortestNm: best ? best.wavelengthNm : Infinity,
+      atPeriodMm: best ? best.periodMm : null,
+      atRho: best ? best.rho : 0,
+      atSaturationM: best ? best.satM : Infinity,
+      limitedBy: blocker,
+      scan,
+    };
+  }
+
   // ── 다발 압축 ─────────────────────────────────────────────
   // 시케인 압축비 C = 1 / |1 + h·R56|
   function compressionFactor({ chirpPerM, r56M }) {
@@ -335,6 +397,10 @@
     twoElectronIntensity,
     arrayIntensity,
     wavelengthsInBunch,
+    HALBACH,
+    halbachFieldT,
+    emittanceFloorNm,
+    shortestLasingWavelength,
     solve,
   };
 });

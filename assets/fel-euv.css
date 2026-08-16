@@ -180,3 +180,9 @@
   .fel-zone .role { display: none; }
   .fel-compare-row { grid-template-columns: 62px 1fr 78px; font-size: .78rem; }
 }
+
+/* 좁은 화면에서 수식·카드가 문서 폭을 밀어내지 않도록 */
+.fel-point { min-width: 0; overflow-x: auto; }
+.fel-points { grid-template-columns: repeat(auto-fit, minmax(min(210px, 100%), 1fr)); }
+.fel-page mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+.fel-page .fel-detail-body, .fel-page .section p { min-width: 0; }

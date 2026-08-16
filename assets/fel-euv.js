@@ -106,6 +106,14 @@
     ctx.closePath();
   }
 
+  function mixColor(a, b, f) {
+    const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+    const [r1, g1, b1] = hex(a);
+    const [r2, g2, b2] = hex(b);
+    const k = Math.min(1, Math.max(0, f));
+    return `rgb(${Math.round(r1 + (r2 - r1) * k)},${Math.round(g1 + (g2 - g1) * k)},${Math.round(b1 + (b2 - b1) * k)})`;
+  }
+
   function arrow(ctx, x, y, dir, size, color) {
     ctx.save();
     ctx.fillStyle = color;
@@ -368,15 +376,11 @@
           r = 3.4 - 1.1 * spent;
         }
       }
-      const bunched = pt.leg === 'main' && pt.x > SPAN[4][0] + 60;
-      if (bunched) {
-        for (let k = -1; k <= 1; k += 1) {
-          glowDot(ctx, pt.x + k * 5, pt.y, 1.9, color, alpha);
-        }
-      } else {
-        glowDot(ctx, pt.x, pt.y, r, color, alpha);
-      }
+      // 점 하나 = 전자 다발 하나. 어느 구간에서도 개수를 바꾸지 않습니다.
+      glowDot(ctx, pt.x, pt.y, r, color, alpha);
     }
+    label(ctx, '● 하나 = 전자 다발 하나 · 전자 수는 처음부터 끝까지 그대로입니다',
+      20, OH - 12, { size: 11, align: 'left' });
   }
 
   function drawZoneHighlight(ctx) {
@@ -550,87 +554,136 @@
   }
 
   function detail3(ctx, t) {
-    frame(ctx, '③ 뒤쪽 전자가 지름길로 앞을 따라잡습니다');
+    frame(ctx, '③ 기울기를 준 다음, 뒤가 앞을 따라잡게 합니다');
     const cyc = (t * 0.3) % 1;
-    const x0 = 168;
-    const x1 = 508;
-    const yBase = 176;
-    const ampLow = 52;
-    const ampHigh = 24;
+    // 두 판 모두 가로축은 실제 위치입니다. 빔은 오른쪽으로 달리므로 오른쪽이 머리입니다.
+
+    // ══ 윗판 — 왜 꼬리의 에너지가 더 높은가 ══════════════
+    const fy = 92;                 // 전기장 곡선의 중심
+    const fx0 = 56;
+    const fx1 = 330;
+    const field = x => Math.cos((x - fx0) / 58);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(95,168,224,.5)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    for (let x = fx0; x <= fx1; x += 2) {
+      const y = fy - field(x) * 26;
+      if (x === fx0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+    label(ctx, '가속 전기장', fx0, fy - 44, { size: 11, align: 'left', color: C.cyan });
+
+    // 다발이 비탈에 걸쳐 있습니다 (오른쪽이 머리)
+    const bx0 = 128;
+    const bx1 = 214;
+    for (let i = 0; i <= 6; i += 1) {
+      const f = i / 6;
+      const x = bx0 + (bx1 - bx0) * f;
+      const strength = (field(x) + 1) / 2;              // 0~1
+      glowDot(ctx, x, fy - field(x) * 26, 2.8, mixColor(C.cyan, C.pink, strength), 0.95);
+    }
+    ctx.save();
+    ctx.strokeStyle = 'rgba(122,127,149,.45)';
+    ctx.setLineDash([3, 3]);
+    ctx.lineWidth = 1;
+    [[bx0, '꼬리가 받는 전기장'], [bx1, '머리가 받는 전기장']].forEach(([x]) => {
+      ctx.beginPath();
+      ctx.moveTo(x, fy - field(x) * 26);
+      ctx.lineTo(fx1 + 26, fy - field(x) * 26);
+      ctx.stroke();
+    });
+    ctx.restore();
+    label(ctx, '꼬리 — 더 센 곳', fx1 + 32, fy - field(bx0) * 26, { size: 11, align: 'left', color: C.pink });
+    label(ctx, '머리 — 더 약한 곳', fx1 + 32, fy - field(bx1) * 26, { size: 11, align: 'left', color: C.cyan });
+    label(ctx, '꼬리', bx0, fy - field(bx0) * 26 - 22, { size: 11, color: C.pink });
+    label(ctx, '머리', bx1, fy - field(bx1) * 26 + 22, { size: 11, color: C.cyan });
+    arrow(ctx, 250, fy + 34, 1, 7, C.muted);
+    label(ctx, '진행 방향', 262, fy + 34, { size: 11, align: 'left' });
+    label(ctx, '다발을 전기장의 비탈에 걸치면 꼬리가 더 세게 밀립니다 (차이는 실제로 약 1 %)',
+      DW / 2, 158, { size: 11 });
+
+    ctx.save();
+    ctx.strokeStyle = C.line || 'rgba(122,127,149,.25)';
+    ctx.globalAlpha = 0.35;
+    ctx.beginPath();
+    ctx.moveTo(36, 176); ctx.lineTo(DW - 36, 176);
+    ctx.stroke();
+    ctx.restore();
+
+    // ══ 아랫판 — 시케인 ═══════════════════════════════
+    const x0 = 190;
+    const x1 = 470;
+    const yBase = 268;
+    const ampLow = 40;
+    const ampHigh = 18;
     const yOf = (u, amp) => yBase - Math.sin(u * Math.PI) * amp;
 
-    // 입출구 직선 통로
     ctx.save();
     ctx.strokeStyle = C.pipe;
     ctx.lineWidth = 7;
     ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.moveTo(34, yBase);
-    ctx.lineTo(x0, yBase);
-    ctx.moveTo(x1, yBase);
-    ctx.lineTo(DW - 34, yBase);
+    ctx.moveTo(34, yBase); ctx.lineTo(x0, yBase);
+    ctx.moveTo(x1, yBase); ctx.lineTo(DW - 34, yBase);
     ctx.stroke();
     ctx.restore();
 
-    // 두 경로
     const paths = [
-      { amp: ampLow, color: C.cyan, lag: 0 },
-      { amp: ampHigh, color: C.pink, lag: 0.1 },
+      { amp: ampLow, color: C.cyan, lag: 0 },      // 머리 · 에너지 낮음
+      { amp: ampHigh, color: C.pink, lag: 0.1 },   // 꼬리 · 에너지 높음
     ];
-    paths.forEach(p => {
+    paths.forEach(pp => {
       ctx.save();
-      ctx.strokeStyle = p.color;
+      ctx.strokeStyle = pp.color;
       ctx.globalAlpha = 0.4;
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (let i = 0; i <= 70; i += 1) {
         const u = i / 70;
-        const y = yOf(u, p.amp);
         const x = x0 + (x1 - x0) * u;
+        const y = yOf(u, pp.amp);
         if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
       }
       ctx.stroke();
       ctx.restore();
     });
 
-    // 쌍극자 자석 4개 — 두 경로를 함께 감싸도록
     ctx.save();
     ctx.fillStyle = C.device;
     [0.1, 0.36, 0.64, 0.9].forEach(u => {
       const x = x0 + (x1 - x0) * u;
-      const top = yOf(u, ampLow) - 15;
-      const bottom = yOf(u, ampHigh) + 15;
-      roundRect(ctx, x - 8, top, 16, bottom - top, 4);
+      const top = yOf(u, ampLow) - 13;
+      const bottom = yOf(u, ampHigh) + 13;
+      roundRect(ctx, x - 7, top, 14, bottom - top, 4);
       ctx.fill();
     });
     ctx.restore();
-    label(ctx, '쌍극자 자석 네 개', (x0 + x1) / 2, yBase + 40, { size: 12 });
+    label(ctx, '쌍극자 자석 네 개', (x0 + x1) / 2, yBase + 34, { size: 11 });
 
-    // 입구·출구 다발
-    const inLen = 78;
+    // 입구 다발 — 에너지 기울기를 색으로 (왼쪽 꼬리 분홍, 오른쪽 머리 시안)
+    const inLen = 74;
     const outLen = Math.max(5, inLen / state.compression);
-    ctx.save();
-    for (let i = 0; i < 11; i += 1) {
+    for (let i = 0; i <= 10; i += 1) {
       const f = i / 10;
-      glowDot(ctx, 44 + f * inLen, yBase, 2.2, f > 0.5 ? C.cyan : C.pink, 0.85);
-      glowDot(ctx, x1 + 62 + f * outLen, yBase, 2.2, C.pink, 0.9);
+      glowDot(ctx, 44 + f * inLen, yBase, 2.2, mixColor(C.pink, C.cyan, f), 0.9);
+      glowDot(ctx, x1 + 70 + f * outLen, yBase, 2.2, mixColor(C.pink, C.cyan, f), 0.9);
     }
-    ctx.restore();
-    label(ctx, '4 ps', 44 + inLen / 2, yBase + 24, { size: 12, color: C.text });
-    label(ctx, '앞', 44, yBase - 20, { size: 11, color: C.pink });
-    label(ctx, '뒤(에너지 높음)', 44 + inLen, yBase - 20, { size: 11, color: C.cyan });
-    label(ctx, `${out.bunchLengthFs.toFixed(0)} fs`, x1 + 62 + outLen / 2 + 14, yBase + 24, { size: 12, color: C.text });
+    label(ctx, '4 ps', 44 + inLen / 2, yBase + 22, { size: 11, color: C.text });
+    label(ctx, '꼬리', 44, yBase - 18, { size: 11, color: C.pink });
+    label(ctx, '머리', 44 + inLen, yBase - 18, { size: 11, color: C.cyan });
+    label(ctx, `${out.bunchLengthFs.toFixed(0)} fs`, x1 + 70 + outLen / 2 + 16, yBase + 22, { size: 11, color: C.text });
 
-    // 달리는 전자
-    paths.forEach(p => {
-      if (cyc < p.lag) return;
-      const u = Math.min(1, (cyc - p.lag) / 0.74);
-      glowDot(ctx, x0 + (x1 - x0) * u, yOf(u, p.amp), 3.6, p.color, 1);
+    paths.forEach(pp => {
+      if (cyc < pp.lag) return;
+      const u = Math.min(1, (cyc - pp.lag) / 0.74);
+      glowDot(ctx, x0 + (x1 - x0) * u, yOf(u, pp.amp), 3.4, pp.color, 1);
     });
-
-    label(ctx, '에너지가 낮으면 크게 휘어 먼 길', (x0 + x1) / 2, yOf(0.5, ampLow) - 24, { size: 12, color: C.cyan });
-    label(ctx, '에너지가 높으면 덜 휘어 지름길', (x0 + x1) / 2, yOf(0.5, ampHigh) + 22, { size: 12, color: C.pink });
-    label(ctx, `길이 ${state.compression}분의 1 · 첨두 전류 ${out.peakCurrentA.toFixed(0)} A`, DW / 2, DH - 26, { size: 13, color: C.green });
+    label(ctx, '머리는 에너지가 낮아 크게 휘어 먼 길', (x0 + x1) / 2, yOf(0.5, ampLow) - 20, { size: 11, color: C.cyan });
+    label(ctx, '꼬리는 에너지가 높아 덜 휘어 지름길', (x0 + x1) / 2, yOf(0.5, ampHigh) + 20, { size: 11, color: C.pink });
+    label(ctx, `전자 수는 그대로, 길이만 ${state.compression}분의 1 — 첨두 전류 ${out.peakCurrentA.toFixed(0)} A`,
+      DW / 2, DH - 16, { size: 12, color: C.green });
   }
 
   function detail4(ctx, t) {
@@ -702,7 +755,7 @@
     ctx.lineWidth = 1;
     ctx.strokeRect(sx0, boxTop, sx1 - sx0, boxBot - boxTop);
     ctx.restore();
-    label(ctx, '가까이서 본 전자 무리', sx0 + 8, boxTop + 13, { size: 11, align: 'left' });
+    label(ctx, '가까이서 본 전자 무리 — 다발의 3천분의 1 구간', sx0 + 8, boxTop + 13, { size: 11, align: 'left' });
 
     // 빛의 파동
     ctx.save();
@@ -925,6 +978,7 @@
       points: [
         ['압축 전후', '4 ps → 200 fs. 전류로는 25 A → 500 A입니다.'],
         ['왜 필요한가', '전류가 낮으면 빛이 자라기 전에 언듈레이터가 끝나 버립니다.'],
+        ['전자는 늘지 않습니다', '전하량 100 pC은 그대로입니다. 길이만 줄어서 같은 전자가 더 짧은 시간에 지나가고, 그래서 전류가 뜁니다.'],
       ],
     },
     4: {
@@ -1135,6 +1189,7 @@
     }
     if (onScreen(slipCanvas)) drawSlip(fit(slipCanvas, SLIP_W, SLIP_H), state.t);
     if (onScreen(pairCanvas)) drawPair(fit(pairCanvas, PAIR_W, PAIR_H), state.t);
+    if (onScreen(limitCanvas)) drawLimit(fit(limitCanvas, LIM_W, LIM_H));
     requestAnimationFrame(loop);
   }
 
@@ -1346,6 +1401,134 @@
       paintPairReadout();
     });
     paintPairReadout();
+  }
+
+  // ══════════════════════════════════════════════════════════
+  //  한계 계산 — 파장을 어디까지 짧게 만들 수 있나
+  // ══════════════════════════════════════════════════════════
+  const limitCanvas = document.getElementById('felLimit');
+  const LIM_W = 660;
+  const LIM_H = 300;
+  const limState = { energyMeV: 660, gapMm: 5, emittanceMmMrad: 0.25 };
+  let limOut = M.shortestLasingWavelength(limState);
+
+  const PLOT = { x0: 76, x1: 620, y0: 46, y1: 232, lamMin: 0.5, lamMax: 1000, puMin: 2, puMax: 40 };
+  const yOfLam = nm => {
+    const f = (Math.log10(Math.min(PLOT.lamMax, Math.max(PLOT.lamMin, nm))) - Math.log10(PLOT.lamMin))
+      / (Math.log10(PLOT.lamMax) - Math.log10(PLOT.lamMin));
+    return PLOT.y1 - f * (PLOT.y1 - PLOT.y0);
+  };
+  const xOfPu = mm => PLOT.x0 + ((mm - PLOT.puMin) / (PLOT.puMax - PLOT.puMin)) * (PLOT.x1 - PLOT.x0);
+
+  function drawLimit(ctx) {
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, LIM_W, LIM_H);
+
+    ctx.save();
+    ctx.strokeStyle = C.dim;
+    ctx.lineWidth = 1;
+    [0.5, 1, 10, 100, 1000].forEach(nm => {
+      const y = yOfLam(nm);
+      ctx.globalAlpha = 0.35;
+      ctx.beginPath(); ctx.moveTo(PLOT.x0, y); ctx.lineTo(PLOT.x1, y); ctx.stroke();
+      ctx.globalAlpha = 1;
+      label(ctx, String(nm), PLOT.x0 - 8, y, { size: 10, align: 'right' });
+    });
+    [2, 5, 10, 20, 30, 40].forEach(mm => {
+      const x = xOfPu(mm);
+      ctx.globalAlpha = 0.25;
+      ctx.beginPath(); ctx.moveTo(x, PLOT.y0); ctx.lineTo(x, PLOT.y1); ctx.stroke();
+      ctx.globalAlpha = 1;
+      label(ctx, String(mm), x, PLOT.y1 + 14, { size: 10 });
+    });
+    ctx.restore();
+    label(ctx, '나오는 빛의 파장 [nm]', PLOT.x0 - 6, PLOT.y0 - 22, { size: 11, align: 'left' });
+    label(ctx, '언듈레이터 주기 λu [mm]', (PLOT.x0 + PLOT.x1) / 2, PLOT.y1 + 32, { size: 11 });
+
+    const floorY = yOfLam(limOut.emittanceFloorNm);
+    ctx.save();
+    ctx.fillStyle = 'rgba(224,138,95,.13)';
+    ctx.fillRect(PLOT.x0, floorY, PLOT.x1 - PLOT.x0, PLOT.y1 - floorY);
+    ctx.strokeStyle = 'rgba(224,138,95,.8)';
+    ctx.setLineDash([5, 4]);
+    ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(PLOT.x0, floorY); ctx.lineTo(PLOT.x1, floorY); ctx.stroke();
+    ctx.restore();
+    label(ctx, `빔 품질 바닥 ${limOut.emittanceFloorNm.toFixed(2)} nm`, PLOT.x1 - 4,
+      Math.min(PLOT.y1 - 10, floorY + 13), { size: 10, align: 'right', color: '#e08a5f' });
+
+    const ty = yOfLam(13.5);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(127,216,143,.7)';
+    ctx.setLineDash([2, 4]);
+    ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(PLOT.x0, ty); ctx.lineTo(PLOT.x1, ty); ctx.stroke();
+    ctx.restore();
+    label(ctx, 'EUV 13.5 nm', PLOT.x1 - 4, ty - 10, { size: 10, align: 'right', color: C.green });
+
+    const pts = limOut.scan.filter(s => s.periodMm >= PLOT.puMin && s.periodMm <= PLOT.puMax);
+    ctx.save();
+    ctx.lineWidth = 2.6;
+    let prev = null;
+    pts.forEach(s => {
+      const x = xOfPu(s.periodMm);
+      const y = yOfLam(s.wavelengthNm);
+      if (prev) {
+        ctx.strokeStyle = s.fails ? 'rgba(122,127,149,.75)' : C.violet;
+        ctx.beginPath(); ctx.moveTo(prev.x, prev.y); ctx.lineTo(x, y); ctx.stroke();
+      }
+      prev = { x, y };
+    });
+    ctx.restore();
+
+    if (limOut.atPeriodMm) {
+      const x = xOfPu(limOut.atPeriodMm);
+      const y = yOfLam(limOut.shortestNm);
+      glowDot(ctx, x, y, 4.4, C.green, 1);
+      const lx = Math.min(PLOT.x1 - 150, x + 12);
+      label(ctx, `여기가 한계  ${limOut.shortestNm.toFixed(2)} nm`, lx, y - 36, { size: 11, align: 'left', color: C.green });
+      label(ctx, `λu ${limOut.atPeriodMm.toFixed(1)} mm · 자석 ${limOut.atSaturationM.toFixed(0)} m`,
+        lx, y - 21, { size: 10, align: 'left' });
+    }
+
+    const leg = [[C.violet, '발진함'], ['rgba(122,127,149,.9)', '파장은 나오지만 증폭 안 됨']];
+    leg.forEach(([col, txt], i) => {
+      ctx.save();
+      ctx.strokeStyle = col; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(78 + i * 132, LIM_H - 16); ctx.lineTo(100 + i * 132, LIM_H - 16); ctx.stroke();
+      ctx.restore();
+      label(ctx, txt, 106 + i * 132, LIM_H - 16, { size: 10, align: 'left' });
+    });
+    label(ctx, `${limState.energyMeV} MeV · 간극 ${limState.gapMm} mm · εn ${limState.emittanceMmMrad}`,
+      LIM_W - 20, LIM_H - 16, { size: 11, align: 'right', color: C.text });
+  }
+
+  const limEnergy = document.getElementById('felLimitEnergy');
+  const limGap = document.getElementById('felLimitGap');
+  const limEmit = document.getElementById('felLimitEmit');
+
+  function readLimit() {
+    if (!limEnergy) return;
+    limState.energyMeV = Number(limEnergy.value);
+    limState.gapMm = Number(limGap.value);
+    limState.emittanceMmMrad = Number(limEmit.value);
+    limOut = M.shortestLasingWavelength(limState);
+    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    set('felLimitEnergyValue', `${limState.energyMeV} MeV`);
+    set('felLimitGapValue', `${limState.gapMm.toFixed(1)} mm`);
+    set('felLimitEmitValue', `${limState.emittanceMmMrad.toFixed(2)} mm·mrad`);
+    set('felShortest', `${limOut.shortestNm.toFixed(2)} nm`);
+    set('felShortestPu', limOut.atPeriodMm ? `${limOut.atPeriodMm.toFixed(1)} mm` : '—');
+    set('felShortestMag', Number.isFinite(limOut.atSaturationM) ? `${limOut.atSaturationM.toFixed(0)} m` : '—');
+    set('felBlocker', limOut.limitedBy);
+    set('felFloor', `${limOut.emittanceFloorNm.toFixed(2)} nm`);
+    const box = document.getElementById('felShortestBox');
+    if (box) box.className = limOut.shortestNm <= 13.5 ? 'good' : 'warn';
+  }
+
+  if (limEnergy) {
+    [limEnergy, limGap, limEmit].forEach(el => el.addEventListener('input', readLimit));
+    readLimit();
   }
 
   selectZone(state.zone);
