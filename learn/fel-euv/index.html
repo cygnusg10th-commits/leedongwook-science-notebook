@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="자유전자레이저 EUV 광원의 전체 장치를 한 화면에 놓고 전자총부터 빔 분배까지 구간별로 확인하는 시뮬레이션" />
+  <title>빛이 전자를 줄 세운다 — FEL EUV 광원 | 과학 수첩</title>
+  <link rel="stylesheet" href="../../assets/site.css?v=20260816-1" />
+  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-1" />
+  <script src="../../assets/site.js?v=20260816-1" defer></script>
+  <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+  <script src="../../assets/fel-euv-model.js?v=20260816-1" defer></script>
+  <script src="../../assets/fel-euv.js?v=20260816-1" defer></script>
+</head>
+<body class="fel-page">
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="../../" aria-label="과학 수첩 홈"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a><nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav><div class="header-tools"><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div></div></header>
+
+  <main id="main">
+    <section class="container lesson-heading">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>빛과 광학</span></nav>
+      <div class="lesson-heading-grid"><div>
+        <div class="tag-row"><span class="tag physics">물리학</span><span class="tag neutral">빛과 광학</span><span class="tag neutral">시뮬레이션</span></div>
+        <h1>빛이 전자를 줄 세운다</h1>
+        <p>반도체를 그리는 데 쓰는 13.5 nm 빛을, 재료 없이 전자만으로 만드는 장치가 자유전자레이저(FEL)입니다. 전자총부터 노광기까지 장치 전체를 한 화면에 놓고, 구간을 하나씩 열어 보세요.</p>
+      </div></div>
+    </section>
+
+    <!-- ── 전체 장치 ────────────────────────────────────── -->
+    <section class="container fel-machine">
+      <h2>전체 장치는 이렇게 생겼습니다</h2>
+      <p>전자는 왼쪽 전자총에서 태어나 오른쪽으로 달리며 에너지를 얻고, 언듈레이터에서 빛을 낸 뒤 아래 통로로 한 바퀴 돌아와 에너지를 반납합니다. 빛만 오른쪽으로 빠져나가 노광기로 갈라집니다.</p>
+      <div class="fel-stage overview">
+        <span class="fel-hint">구간을 눌러 보세요</span>
+        <canvas id="felOverview" width="1020" height="420" role="img" aria-label="자유전자레이저 EUV 광원의 전체 빔라인. 전자총, 초전도 가속관, 번치 압축기, 언듈레이터, 에너지 회수 통로, 빔 분배로 이어집니다."></canvas>
+      </div>
+      <p class="fel-scrollnote">도면은 가로로 밀어서 볼 수 있습니다. 아래 여섯 칸에서 구간을 고르세요.</p>
+      <div class="fel-zones" id="felZones" role="group" aria-label="구간 선택"></div>
+
+      <div class="fel-detail">
+        <div class="fel-detail-head" id="felDetailHead"></div>
+        <div class="fel-stage detail">
+          <canvas id="felDetail" width="660" height="360" role="img" aria-label="선택한 구간의 확대 시뮬레이션"></canvas>
+        </div>
+        <div class="fel-detail-body" id="felDetailBody"></div>
+        <div class="fel-points" id="felDetailPoints"></div>
+        <div class="fel-caution" id="felDetailCaution" hidden></div>
+      </div>
+    </section>
+
+    <!-- ── 조작부 ──────────────────────────────────────── -->
+    <section class="container">
+      <h2 style="margin-bottom:6px">직접 맞춰 보세요 — 목표는 13.5 nm</h2>
+      <p style="color:var(--muted);margin:0;max-width:62ch">노광에 쓰는 EUV 파장은 13.5 nm 하나뿐입니다. 전자 에너지와 자석 조건을 바꾸면 나오는 빛의 색이 통째로 달라집니다. 오차 1 % 안에 들어오면 합격입니다.</p>
+
+      <div class="fel-console">
+        <div class="fel-panel">
+          <h3>조작</h3>
+          <p>슬라이더를 움직이면 위 시뮬레이션과 아래 수치가 함께 바뀝니다.</p>
+
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felEnergy">전자 에너지 <span class="note">E</span></label><b id="felEnergyValue">660 MeV</b></div>
+            <input id="felEnergy" type="range" min="200" max="1500" step="10" value="660" />
+          </div>
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felPeriod">언듈레이터 주기 <span class="note">λ<sub>u</sub></span></label><b id="felPeriodValue">3.0 cm</b></div>
+            <input id="felPeriod" type="range" min="1.5" max="4" step="0.1" value="3" />
+          </div>
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felField">자석 세기 <span class="note">B</span></label><b id="felFieldValue">0.36 T</b></div>
+            <input id="felField" type="range" min="0.15" max="1.2" step="0.005" value="0.357" />
+          </div>
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felCompression">다발 압축</label><b id="felCompressionValue">× 20</b></div>
+            <input id="felCompression" type="range" min="1" max="40" step="1" value="20" />
+          </div>
+          <div class="fel-control">
+            <div class="fel-control-label"><label for="felRep">반복률</label><b id="felRepValue">10 MHz</b></div>
+            <input id="felRep" type="range" min="1" max="120" step="1" value="10" />
+          </div>
+          <label class="fel-toggle"><input id="felRecovery" type="checkbox" checked /> 에너지 회수 켜기</label>
+
+          <div class="fel-preset">
+            <button type="button" data-preset='{"energyMeV":660,"periodCm":3,"fieldT":0.357,"compression":20,"repRateMHz":10,"recovery":true}'>기준 설계</button>
+            <button type="button" data-preset='{"energyMeV":660,"periodCm":3,"fieldT":0.357,"compression":20,"repRateMHz":90,"recovery":true}'>노광기 20대</button>
+            <button type="button" data-preset='{"energyMeV":660,"periodCm":3,"fieldT":0.357,"compression":3,"repRateMHz":10,"recovery":true}'>압축 없이</button>
+            <button type="button" data-preset='{"energyMeV":660,"periodCm":3,"fieldT":0.357,"compression":20,"repRateMHz":10,"recovery":false}'>회수 끄고</button>
+          </div>
+        </div>
+
+        <div class="fel-panel">
+          <div class="fel-target" id="felTarget">
+            <div class="big"><span id="felWavelength">13.49</span><em>nm — 나오는 빛의 파장</em></div>
+            <div class="bar"><i></i><u id="felMarker"></u></div>
+            <div class="verdict" id="felVerdict"></div>
+          </div>
+
+          <div class="fel-readout">
+            <div><span>로렌츠 인자 γ</span><b id="felGamma">—</b></div>
+            <div><span>속도 (빛의 속도 대비)</span><b id="felBeta">—</b></div>
+            <div><span>언듈레이터 K</span><b id="felK">—</b></div>
+            <div><span>다발 길이</span><b id="felBunchLength">—</b></div>
+            <div><span>첨두 전류</span><b id="felCurrent">—</b></div>
+            <div><span>피어스 파라미터 ρ</span><b id="felRho">—</b></div>
+            <div><span>이득 길이</span><b id="felGain">—</b></div>
+            <div id="felSatBox"><span>포화까지 자석 길이</span><b id="felSaturation">—</b></div>
+            <div><span>평균 빔 전력</span><b id="felBeamPower">—</b></div>
+            <div><span>EUV 출력</span><b id="felEuv">—</b></div>
+            <div id="felScannerBox"><span>먹일 수 있는 노광기</span><b id="felScanners">—</b></div>
+          </div>
+
+          <div class="fel-compare">
+            <h4>같은 EUV 출력을 만드는 데 드는 벽면 전력</h4>
+            <div class="fel-compare-row fel"><span>FEL</span><div class="track"><i id="felBarFel"></i></div><b id="felWall">—</b></div>
+            <div class="fel-compare-row lpp"><span>LPP (현행)</span><div class="track"><i id="felBarLpp"></i></div><b id="felLpp">—</b></div>
+            <p style="margin:8px 0 0;font-size:.84rem;color:var(--muted)">차이 <b id="felRatio">—</b>. LPP는 EUV 1 kW에 벽면 전력 4.4 MW를 쓴다는 보도 수치를 기준으로 잡았습니다.</p>
+          </div>
+
+          <div class="fel-formula">
+            $$\lambda \;=\; \frac{\lambda_u}{2\gamma^{2}}\left(1+\frac{K^{2}}{2}\right),\qquad K = 0.9337\,B[\mathrm{T}]\,\lambda_u[\mathrm{cm}]$$
+            <small>γ는 전자 에너지를 정지 에너지 0.511 MeV로 나눈 값입니다</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 핵심 원리 ───────────────────────────────────── -->
+    <section class="section tinted" style="margin-top:34px">
+      <div class="container">
+        <p class="eyebrow">핵심 원리</p>
+        <h2>줄만 섰을 뿐인데 왜 밝기가 제곱으로 뛸까요?</h2>
+        <p>파동이 겹칠 때 더해지는 것은 세기가 아니라 <b>진폭</b>입니다. 전자 $N$개가 제멋대로 흩어져 있으면 각자 낸 파동의 위상이 무작위라, 더한 진폭은 평균적으로 $\sqrt{N}$ 배밖에 되지 않습니다. 세기는 진폭의 제곱이므로 결국 $N$에 비례합니다.</p>
+        <p>그런데 전자들이 빛의 파장 간격으로 층을 이루면 모든 파동의 마루가 같은 자리에 옵니다. 진폭이 그대로 $N$ 배가 되고, 세기는 <b>$N^2$</b>이 됩니다.</p>
+        <div class="fel-formula" style="text-align:center">
+          $$P \;\propto\; N + N(N-1)\,|b|^{2}, \qquad b=\left|\left\langle e^{i\theta}\right\rangle\right|$$
+          <small>b는 번칭 인자입니다. 0이면 완전히 흩어진 상태, 1이면 완전히 줄을 선 상태입니다</small>
+        </div>
+        <p style="margin-top:14px">놀라운 점은 <b>누가 줄을 세워 주지 않는다</b>는 것입니다. 전자가 낸 빛이 그 전자 무리를 다시 밀고 당겨 스스로 줄을 세웁니다. 줄이 서면 빛이 세지고, 빛이 세지면 줄이 더 잘 섭니다. 이 되먹임이 자석 수십 미터를 지나는 동안 지수적으로 커지다가, 전자의 에너지를 다 짜내면 멈춥니다. 이것을 포화라고 합니다.</p>
+      </div>
+    </section>
+
+    <!-- ── 조건 ────────────────────────────────────────── -->
+    <section class="section">
+      <div class="container">
+        <p class="eyebrow">과학적으로 정확히 말하면</p>
+        <h2>이 시뮬레이션이 담지 않은 것</h2>
+        <p>공명 파장식과 압축비, 결맞은 방출의 $N^2$ 관계는 교과서 그대로입니다. 이득 계산에는 1차원 피어스 파라미터를 썼고, 빔 크기 40 µm와 다발 전하 100 pC은 값을 고정했습니다.</p>
+        <ul class="condition-list">
+          <li>3차원 회절과 빔 방출률(에미턴스)에 의한 이득 저하는 넣지 않았습니다. 실제 포화 길이는 여기 표시된 값보다 깁니다.</li>
+          <li>SASE 특유의 스파이크 구조와 펄스마다의 요동은 그리지 않았습니다.</li>
+          <li>벽면 전력은 냉각·제어 0.55 MW를 고정 소비로 두고, 회수하지 못한 빔 전력을 RF 효율 50 %로 나눈 단순 모형입니다.</li>
+          <li>LPP 비교값은 EUV 1 kW당 4.4 MW라는 보도 수치를 선형으로 늘린 것입니다. 실제로는 출력에 따라 효율이 달라집니다.</li>
+        </ul>
+        <div class="fel-caution" style="margin-top:16px">
+          <b>아직 시제기도 없습니다.</b> FEL-EUV는 구상 단계입니다. 선두 주자인 스타트업 xLight가 미국 정부 지원금 1억 5천만 달러를 받아 2028년 시제기를 목표로 하고 있고, 머스크가 X에 남긴 것도 확정 발표가 아니라 관심 표명이었습니다. 광학계와 마스크는 여전히 기존 노광기에 의존합니다.
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container sources">
+        <h2>출처</h2>
+        <ul class="condition-list">
+          <li><a href="https://bits-chips.com/article/musk-hints-at-free-electron-laser-euv-source-tech-for-terafab/">Musk hints at free-electron laser EUV source tech for Terafab — Bits&amp;Chips</a></li>
+          <li><a href="https://www.trendforce.com/news/2026/08/12/news-musk-signals-interest-in-fel-euv-for-terafab-potentially-cutting-power-vs-asmls-current-light-source/">Musk Signals Interest in FEL-EUV for Terafab — TrendForce</a></li>
+          <li><a href="https://www.tomshardware.com/tech-industry/semiconductors/u-s-government-awards-gelsinger-backed-euv-developer-xlight-with-usd150-million-in-federal-incentives-company-to-develop-new-electron-based-light-source-for-lithography-tools">U.S. government awards xLight $150 million — Tom's Hardware</a></li>
+          <li><a href="https://www.xlight.com/">xLight 공식 사이트</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>전자와 빛을 직접 다뤄 보는 실험</span><a href="../../simulations/">다른 시뮬레이션 보기 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="page"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
