@@ -198,6 +198,45 @@
     return Math.hypot(re, im) / phases.length;
   }
 
+  // ── 결맞음의 근원: 미끄러짐(slippage) ────────────────────
+  // 언듈레이터 안에서 전자의 축방향 평균 속도.
+  // 좌우로 굽이치는 만큼 앞으로 가는 속도가 줄어들어 K가 들어갑니다.
+  function averageAxialBeta({ gamma, K }) {
+    const g = positive(gamma, 'γ');
+    const k = finite(K, 'K');
+    return 1 - (1 + (k * k) / 2) / (2 * g * g);
+  }
+
+  // 언듈레이터 한 주기를 지나는 동안 빛이 전자보다 앞서는 거리.
+  // 이 값이 정확히 공명 파장 한 개와 같다는 것이 FEL이 성립하는 이유입니다.
+  function slippagePerPeriodNm({ gamma, periodCm, K }) {
+    const period = positive(periodCm, '언듈레이터 주기') / 100;
+    const betaZ = averageAxialBeta({ gamma, K });
+    return period * (1 / betaZ - 1) * 1e9;
+  }
+
+  // 세로로 d만큼 떨어진 전자 두 개가 같은 방향으로 내보낸 빛의 세기.
+  // 전자 하나가 내는 세기를 1로 두었을 때의 값입니다.
+  // I = |1 + e^{i·2π·d/λ}|² = 4cos²(π·d/λ)
+  function twoElectronIntensity(dOverLambda) {
+    const d = finite(dOverLambda, '간격');
+    return 4 * Math.pow(Math.cos(Math.PI * d), 2);
+  }
+
+  // 같은 간격 d로 늘어선 전자 N개의 세기 (격자 간섭)
+  function arrayIntensity({ N, dOverLambda }) {
+    const n = Math.round(positive(N, '전자 수'));
+    const phi = Math.PI * finite(dOverLambda, '간격') * 2;
+    if (Math.abs(Math.sin(phi / 2)) < 1e-12) return n * n;
+    return Math.pow(Math.sin((n * phi) / 2) / Math.sin(phi / 2), 2);
+  }
+
+  // 다발 하나에 파장이 몇 개나 들어가는가 — '동시에'가 불가능한 이유
+  function wavelengthsInBunch({ bunchLengthFs, wavelengthNm }) {
+    const metres = positive(bunchLengthFs, '다발 길이') * 1e-15 * 299792458;
+    return metres / (positive(wavelengthNm, '파장') * 1e-9);
+  }
+
   // 결맞은 방출: P ∝ N + N(N-1)b²  (b=0이면 N, b=1이면 N²)
   function coherentPower({ N, b }) {
     const n = positive(N, '전자 수');
@@ -250,6 +289,8 @@
       onTarget: Math.abs(wavelengthNm - design.targetNm) / design.targetNm <= 0.01,
       deflectionRatio: deflectionRatio({ gamma, K }),
       bunchLengthFs: bunch.lengthFs,
+      slippageNm: slippagePerPeriodNm({ gamma, periodCm, K }),
+      wavelengthsInBunch: wavelengthsInBunch({ bunchLengthFs: bunch.lengthFs, wavelengthNm }),
       peakCurrentA: bunch.peakCurrentA,
       rho,
       gainLengthM: gainLength,
@@ -289,6 +330,11 @@
     lppWallPowerMW,
     bunchingFactor,
     coherentPower,
+    averageAxialBeta,
+    slippagePerPeriodNm,
+    twoElectronIntensity,
+    arrayIntensity,
+    wavelengthsInBunch,
     solve,
   };
 });

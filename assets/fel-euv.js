@@ -917,7 +917,8 @@
     },
     3: {
       body: [
-        '가속할 때 다발의 <b>뒤쪽 전자에 일부러 조금 더 높은 에너지</b>를 줍니다. 그다음 자석 네 개로 만든 갈지자 통로(시케인)를 지나게 합니다.',
+        '먼저 <b>왜 뒤쪽 전자의 에너지가 더 높은가</b>부터입니다. 가속관의 전기장 파도에서 다발을 마루의 <b>앞면에 살짝 걸치게</b> 태우면, 같은 다발 안에서도 뒤쪽이 더 센 전기장을 받습니다. 그래서 뒤쪽 전자가 앞쪽보다 조금 높은 에너지를 안고 나옵니다. 이것을 에너지 기울기라고 합니다.',
+        '이 상태로 자석 네 개가 만든 갈지자 통로(시케인)에 넣습니다.',
         '자석은 에너지가 낮은 전자를 더 크게 휘게 합니다. 그래서 앞쪽 전자는 먼 길, 뒤쪽 전자는 지름길을 갑니다. 통로를 빠져나올 때쯤 뒤가 앞을 따라잡아 <b>다발이 세로로 압축됩니다.</b>',
         '전하량은 그대로인데 길이만 줄었으니 첨두 전류가 그만큼 뜁니다. FEL의 이득은 이 첨두 전류에 크게 좌우됩니다.',
       ],
@@ -936,6 +937,7 @@
         ['공명 조건', 'λ = (λu / 2γ²)(1 + K²/2). 전자 에너지와 자석 주기가 파장을 정합니다.'],
         ['자기조직화', '누가 줄을 세우는 것이 아닙니다. 자기가 낸 빛이 자기를 줄 세웁니다.'],
         ['N²의 의미', '전자 10억 개가 줄을 서면 밝기가 10억 배가 아니라 10억의 제곱만큼 뜁니다.'],
+        ['동시가 아닙니다', '전자들이 같은 순간에 흔들릴 필요는 없습니다. 한 파장만큼 늦으면 빛의 한 주기만큼 늦는 것이라 마루가 다시 겹칩니다. 아래 「왜 동시에가 아니라 파장 간격일까」에서 확인하세요.'],
       ],
     },
     5: {
@@ -1094,6 +1096,11 @@
     el('felLpp').textContent = `${out.lppWallMW.toFixed(1)} MW`;
     el('felRatio').textContent = out.wallMW > 0 ? `${(out.lppWallMW / out.wallMW).toFixed(1)}배` : '—';
 
+    const micron = document.getElementById('felBunchMicron');
+    const count = document.getElementById('felLambdaCount');
+    if (micron) micron.textContent = (out.bunchLengthFs * 1e-15 * 299792458 * 1e6).toFixed(0);
+    if (count) count.textContent = Math.round(out.wavelengthsInBunch).toLocaleString('ko-KR');
+
     el('felScannerBox').className = out.scanners >= 20 ? 'good' : '';
     el('felSatBox').className = out.saturationLengthM > 60 ? 'warn' : '';
   }
@@ -1111,6 +1118,12 @@
 
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  function onScreen(el) {
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
+    return r.bottom > -80 && r.top < window.innerHeight + 80;
+  }
+
   function loop(now) {
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
     last = now;
@@ -1120,7 +1133,219 @@
       const fn = DETAIL_DRAW[state.zone];
       if (fn) fn(fit(detail, DW, DH), state.t);
     }
+    if (onScreen(slipCanvas)) drawSlip(fit(slipCanvas, SLIP_W, SLIP_H), state.t);
+    if (onScreen(pairCanvas)) drawPair(fit(pairCanvas, PAIR_W, PAIR_H), state.t);
     requestAnimationFrame(loop);
+  }
+
+  // ══════════════════════════════════════════════════════════
+  //  결맞음 설명 — 미끄러짐과 전자 두 개
+  // ══════════════════════════════════════════════════════════
+  const slipCanvas = document.getElementById('felSlip');
+  const pairCanvas = document.getElementById('felPair');
+  const gapInput = document.getElementById('felGap');
+  const SLIP_W = 660;
+  const SLIP_H = 250;
+  const PAIR_W = 660;
+  const PAIR_H = 360;
+  let gap = 1;   // 전자 두 개의 간격 (파장 단위)
+
+  // ── 미끄러짐 ──
+  function drawSlip(ctx, t) {
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, SLIP_W, SLIP_H);
+    const x0 = 76;
+    const x1 = 566;
+    const yAxis = 112;
+    const p = Math.min(1, (t * 0.22) % 1.35);   // 1까지 진행한 뒤 잠시 멈춥니다
+    const LAM_PX = 74;                          // 과장해 그린 한 파장
+
+    // 언듈레이터 자석 한 주기 (N-S 한 쌍)
+    ctx.save();
+    [0, 1].forEach(i => {
+      const bx = x0 + i * ((x1 - x0) / 2);
+      const w = (x1 - x0) / 2 - 6;
+      ctx.fillStyle = i === 0 ? C.device : C.devDark;
+      roundRect(ctx, bx, 56, w, 14, 4); ctx.fill();
+      ctx.fillStyle = i === 0 ? C.devDark : C.device;
+      roundRect(ctx, bx, 154, w, 14, 4); ctx.fill();
+      label(ctx, i === 0 ? 'N' : 'S', bx + 14, 63, { size: 10, weight: 700, color: i === 0 ? C.bg : C.text });
+      label(ctx, i === 0 ? 'S' : 'N', bx + 14, 161, { size: 10, weight: 700, color: i === 0 ? C.text : C.bg });
+    });
+    ctx.restore();
+
+    // 한 주기 치수선
+    ctx.save();
+    ctx.strokeStyle = C.dim;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x0, 32); ctx.lineTo(x1, 32);
+    ctx.moveTo(x0, 26); ctx.lineTo(x0, 38);
+    ctx.moveTo(x1, 26); ctx.lineTo(x1, 38);
+    ctx.stroke();
+    ctx.restore();
+    label(ctx, '언듈레이터 한 주기  λu = 3 cm', (x0 + x1) / 2, 18, { size: 11 });
+
+    // 굽이치는 궤적
+    ctx.save();
+    ctx.strokeStyle = 'rgba(95,168,224,.3)';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    for (let x = x0; x <= x1; x += 2) {
+      const y = yAxis + Math.sin(((x - x0) / (x1 - x0)) * 2 * Math.PI) * 14;
+      if (x === x0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // 전자와 빛의 선두
+    const ex = x0 + (x1 - x0 - LAM_PX) * p;
+    const ey = yAxis + Math.sin(((ex - x0) / (x1 - x0)) * 2 * Math.PI) * 14;
+    const lx = ex + LAM_PX * p;
+
+    ctx.save();
+    ctx.strokeStyle = C.violet;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(lx, 88); ctx.lineTo(lx, 140);
+    ctx.stroke();
+    ctx.restore();
+    glowDot(ctx, ex, ey, 4, C.cyan, 1);
+    label(ctx, '전자', ex, 82, { size: 11, color: C.cyan });
+    if (p > 0.28) label(ctx, '빛의 선두', lx + 6, 82, { size: 11, color: C.violet, align: 'left' });
+
+    // 벌어진 간격
+    if (p > 0.06) {
+      const done = p >= 0.999;
+      ctx.save();
+      ctx.strokeStyle = done ? C.green : C.muted;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(ex, 192); ctx.lineTo(lx, 192);
+      ctx.moveTo(ex, 186); ctx.lineTo(ex, 198);
+      ctx.moveTo(lx, 186); ctx.lineTo(lx, 198);
+      ctx.stroke();
+      ctx.restore();
+      label(ctx, done ? '정확히 한 파장  λ = 13.5 nm' : '빛이 앞선 거리',
+        Math.min(SLIP_W - 90, Math.max(90, (ex + lx) / 2)), 210,
+        { size: 12, color: done ? C.green : C.muted });
+    }
+
+    label(ctx, '실제 비율은 λ : λu = 1 : 220만입니다. 보이도록 크게 그렸습니다.',
+      SLIP_W / 2, SLIP_H - 16, { size: 11 });
+  }
+
+  // ── 전자 두 개 ──
+  function drawPair(ctx, t) {
+    ctx.fillStyle = C.bg;
+    ctx.fillRect(0, 0, PAIR_W, PAIR_H);
+    const LAM = 108;
+    const phi = 2 * Math.PI * gap;
+    const amp = 2 * Math.abs(Math.cos(Math.PI * gap));   // 합쳐진 진폭 (0~2)
+    const drift = (t * 34) % LAM;
+
+    // 전자 두 개
+    const ax = 452;
+    const bx = ax - gap * LAM;
+    const ey = 74;
+    ctx.save();
+    ctx.strokeStyle = C.pipe;
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(40, ey);
+    ctx.lineTo(PAIR_W - 40, ey);
+    ctx.stroke();
+    ctx.restore();
+    glowDot(ctx, ax, ey, 4, C.cyan, 1);
+    glowDot(ctx, bx, ey, 4, C.pink, 1);
+    label(ctx, '앞선 전자', ax + 6, ey - 22, { size: 11, color: C.cyan, align: 'left' });
+    label(ctx, '뒤따르는 전자', bx - 6, ey - 22, { size: 11, color: C.pink, align: 'right' });
+    arrow(ctx, PAIR_W - 48, ey, 1, 7, C.muted);
+
+    // 간격 치수
+    if (gap > 0.02) {
+      ctx.save();
+      ctx.strokeStyle = C.green;
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(bx, ey + 20); ctx.lineTo(ax, ey + 20);
+      ctx.moveTo(bx, ey + 14); ctx.lineTo(bx, ey + 26);
+      ctx.moveTo(ax, ey + 14); ctx.lineTo(ax, ey + 26);
+      ctx.stroke();
+      ctx.restore();
+      label(ctx, `d = ${gap.toFixed(2)} λ`, (ax + bx) / 2, ey + 38, { size: 11, color: C.green });
+    }
+
+    // 각자 내는 빛
+    const wy = 178;
+    label(ctx, '각자 내보내는 빛', 44, wy - 46, { size: 11, align: 'left' });
+    label(ctx, gap < 0.02 || Math.abs(gap - 1) < 0.02 || Math.abs(gap - 2) < 0.02
+      ? '두 파동이 완전히 겹칩니다' : '두 파동이 어긋나 있습니다',
+      PAIR_W - 44, wy - 46, { size: 11, align: 'right', color: C.muted });
+    const drawWave = (yc, a, shift, color, width, alpha, dash) => {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      if (dash) ctx.setLineDash(dash);
+      ctx.beginPath();
+      for (let x = 44; x <= PAIR_W - 44; x += 2) {
+        const y = yc - Math.cos(((x - drift) / LAM) * 2 * Math.PI + shift) * a;
+        if (x === 44) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+    };
+    drawWave(wy, 24, 0, C.cyan, 3, 0.85);                 // 앞선 전자
+    drawWave(wy, 24, phi, C.pink, 2, 0.95, [7, 5]);        // 뒤따르는 전자 (파선)
+
+    // 합친 빛 — 두 파동의 실제 합
+    const sy = 286;
+    label(ctx, '합친 빛', 44, sy - 60, { size: 11, align: 'left' });
+    ctx.save();
+    ctx.strokeStyle = 'rgba(122,127,149,.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(44, sy); ctx.lineTo(PAIR_W - 44, sy);
+    ctx.stroke();
+    ctx.strokeStyle = C.violet;
+    ctx.lineWidth = 2.6;
+    ctx.beginPath();
+    for (let x = 44; x <= PAIR_W - 44; x += 2) {
+      const th = ((x - drift) / LAM) * 2 * Math.PI;
+      const y = sy - (Math.cos(th) + Math.cos(th + phi)) * 20;
+      if (x === 44) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.restore();
+
+    // 판정
+    const inten = M.twoElectronIntensity(gap);
+    const verdict = inten > 3.6 ? ['보강 — 전자 2개인데 세기 4', C.green]
+      : inten < 0.4 ? ['상쇄 — 빛이 사라집니다', '#e08a5f']
+        : ['어중간 — 남남인 것과 다를 바 없음', C.muted];
+    label(ctx, verdict[0], PAIR_W - 44, sy - 60, { size: 12, align: 'right', color: verdict[1] });
+    label(ctx, `합쳐진 세기 ${inten.toFixed(2)} (전자 하나 = 1)`, PAIR_W / 2, PAIR_H - 14, { size: 12, color: C.text });
+  }
+
+  function paintPairReadout() {
+    const inten = M.twoElectronIntensity(gap);
+    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    set('felGapValue', gap.toFixed(2));
+    set('felPhase', `${(gap * 360).toFixed(0)}°`);
+    set('felPairI', inten.toFixed(2));
+    set('felPairVerdict', inten > 3.6 ? '보강 간섭' : inten < 0.4 ? '상쇄 간섭' : '어중간');
+    const box = document.getElementById('felPairBox');
+    if (box) box.className = inten > 3.6 ? 'good' : inten < 0.4 ? 'warn' : '';
+  }
+
+  if (gapInput) {
+    gapInput.addEventListener('input', () => {
+      gap = Number(gapInput.value);
+      paintPairReadout();
+    });
+    paintPairReadout();
   }
 
   selectZone(state.zone);
