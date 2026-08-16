@@ -139,3 +139,47 @@ test('에너지를 올리면 파장이 짧아지고 스캐너 대수는 늘어�
   const less = model.solve(Object.assign({ energyMeV: 660 }, base));
   assert.ok(more.scanners > less.scanners);
 });
+
+test('언듈레이터 한 주기당 미끄러짐이 공명 파장과 정확히 같다', () => {
+  // FEL이 성립하는 핵심 조건. 여러 조건에서 비가 1인지 확인합니다.
+  const cases = [
+    { energyMeV: 660, periodCm: 3, K: 1 },
+    { energyMeV: 1000, periodCm: 2, K: 0.5 },
+    { energyMeV: 350, periodCm: 4, K: 2 },
+  ];
+  for (const c of cases) {
+    const gamma = model.lorentzGamma(c.energyMeV);
+    const slip = model.slippagePerPeriodNm({ gamma, periodCm: c.periodCm, K: c.K });
+    const lam = model.resonantWavelengthNm({ gamma, periodCm: c.periodCm, K: c.K });
+    near(slip / lam, 1, 1e-4);
+  }
+});
+
+test('축방향 평균 속도는 K가 커질수록 느려진다', () => {
+  const g = 1291.59;
+  assert.ok(model.averageAxialBeta({ gamma: g, K: 2 }) < model.averageAxialBeta({ gamma: g, K: 0 }));
+  near(model.averageAxialBeta({ gamma: g, K: 0 }), 1 - 1 / (2 * g * g), 1e-15);
+});
+
+test('전자 두 개: 파장 간격이면 4배, 반 파장 간격이면 0', () => {
+  near(model.twoElectronIntensity(0), 4, 1e-12);
+  near(model.twoElectronIntensity(0.5), 0, 1e-12);
+  near(model.twoElectronIntensity(1), 4, 1e-12);
+  near(model.twoElectronIntensity(2), 4, 1e-12);
+  // 4분의 1 파장이면 전자 두 개를 그냥 더한 값(=2)과 같아집니다
+  near(model.twoElectronIntensity(0.25), 2, 1e-12);
+});
+
+test('격자 간섭: 파장 간격으로 N개가 늘어서면 세기가 N²', () => {
+  [2, 5, 20].forEach(N => {
+    near(model.arrayIntensity({ N, dOverLambda: 1 }), N * N, 1e-6);
+    near(model.arrayIntensity({ N, dOverLambda: 0 }), N * N, 1e-6);
+  });
+  // 어긋난 간격에서는 N²보다 훨씬 작습니다
+  assert.ok(model.arrayIntensity({ N: 20, dOverLambda: 0.5 }) < 20 * 20 * 0.02);
+});
+
+test('200 fs 다발 안에는 13.5 nm 파장이 4천 개 넘게 들어간다', () => {
+  const n = model.wavelengthsInBunch({ bunchLengthFs: 200, wavelengthNm: 13.5 });
+  assert.ok(n > 4000 && n < 4600, `${n}`);
+});
