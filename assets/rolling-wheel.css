@@ -1,0 +1,60 @@
+/* 「굴러가는 바퀴의 맨 아래는 멈춰 있다」 전용 스타일 */
+
+.wheel-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 300px;
+  overflow: hidden;
+  background: #fcfdff;
+}
+.wheel-stage canvas { display: block; width: 100%; height: 100%; }
+
+.wheel-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  padding: 12px 21px 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+}
+.wheel-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.wheel-legend i { width: 16px; height: 4px; border-radius: 2px; }
+.wheel-legend .swatch-translation { background: #2f6fc4; }
+.wheel-legend .swatch-rotation { background: #b8317a; }
+.wheel-legend .swatch-sum { background: #10714a; }
+.wheel-legend .swatch-marker { background: #a35a06; }
+
+.wheel-readout .readout-item b { font-variant-numeric: tabular-nums; }
+.wheel-readout .contact-value { color: #10714a; }
+.wheel-readout .top-value { color: #b8317a; }
+.wheel-readout .marker-value { color: #a35a06; }
+
+.frame-note {
+  margin: 10px 2px 0;
+  color: #4b5568;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.wheel-table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 13px; }
+.wheel-table caption { margin-bottom: 9px; color: var(--muted); font-size: 12px; text-align: left; }
+.wheel-table th, .wheel-table td { border-bottom: 1px solid var(--line); padding: 9px 8px; text-align: left; }
+.wheel-table th { color: #3f4a5e; font-size: 12px; font-weight: 800; }
+.wheel-table td.numeric, .wheel-table th.numeric { text-align: right; font-variant-numeric: tabular-nums; }
+.wheel-table tbody tr:last-child th, .wheel-table tbody tr:last-child td { border-bottom: 0; }
+
+.misconception {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 15px;
+  background: var(--warning-soft);
+}
+.misconception strong { display: block; font-size: 14px; }
+.misconception p { margin: 7px 0 0; color: #6b4d1d; font-size: 12px; line-height: 1.65; }
+
+@media (max-width: 620px) {
+  .wheel-stage { min-height: 0; aspect-ratio: 4 / 3; }
+  .wheel-legend { padding: 12px 17px 0; font-size: 11px; }
+  .wheel-table { font-size: 12px; }
+}
