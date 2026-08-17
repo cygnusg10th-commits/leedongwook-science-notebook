@@ -1416,7 +1416,7 @@
     set('felTaperK', `${out.K.toFixed(2)} → ${prof.points[prof.points.length - 1].K.toFixed(2)}`);
     const gEnd = prof.points[prof.points.length - 1].gapMm;
     set('felTaperGap', Number.isFinite(gEnd)
-      ? `${prof.points[0].gapMm.toFixed(1)} → ${gEnd.toFixed(1)} mm` : '한계 초과');
+      ? `${prof.points[0].gapMm.toFixed(1)} → ${gEnd.toFixed(1)} mm` : '식 적용 범위 밖');
     set('felTaperEuv', `${(euvW / 1000).toFixed(2)} kW`);
     set('felTaperScanners', `${M.scannerCount({ euvW: Math.max(euvW, 1) })} 대`);
     set('felTaperGain', `${(prof.extraction / out.rho).toFixed(1)}배`);

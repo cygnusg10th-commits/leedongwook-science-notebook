@@ -8,6 +8,7 @@
   const ruler = $('mirrorRuler');
   const status = $('mirrorStatus');
   const spacing = $('mirrorSpacing');
+  const spacingLabel = $('mirrorSpacingLabel');
   const half = $('mirrorHalf');
   const modeButtons = [...document.querySelectorAll('[data-mirror-mode]')];
   const modeStatus = $('mirrorModeStatus');
@@ -15,7 +16,7 @@
   const stage = $('mirrorStage');
   const offsetExplainer = $('offsetRayExplainer');
   const offsetTopView = $('offsetTopView');
-  let mode = 'offset';
+  let mode = 'center';
 
   const causeFigure = document.createElement('figure');
   causeFigure.className = 'point-cause-figure';
@@ -116,6 +117,9 @@
     offsetExplainer.hidden = mode !== 'offset';
     offsetTopView.hidden = mode !== 'offset';
     const step = (2 * state.R) / state.L;
+    // 값은 센서까지의 거리 f를 곱하기 전의 무차원 간격(=tanθ 간격)입니다.
+    // 오프셋·슬릿 모드에는 고리가 없으므로 라벨도 바꿉니다.
+    if (spacingLabel) spacingLabel.textContent = mode === 'center' ? '고리 간격' : '차수 간 간격';
     spacing.textContent = `${step.toFixed(3)} f`;
     half.textContent = state.rho < 1 ? `약 ${model.halfBrightnessOrder(state.rho).toFixed(1)}회` : '감쇠 없음';
     const messages = {
@@ -141,7 +145,11 @@
       group.querySelectorAll('button').forEach(item => item.classList.remove('correct', 'incorrect'));
       const correct = button.dataset.correct === 'true';
       button.classList.add(correct ? 'correct' : 'incorrect');
-      group.querySelector('[data-feedback]').textContent = correct ? button.dataset.feedback : button.dataset.hint;
+      // 버튼에도 data-feedback이 붙어 있으므로 :not(button)으로 걸러야 합니다.
+      // 그러지 않으면 문서 순서상 첫 버튼이 잡혀 버튼 글자가 덮어써집니다.
+      const scope = group.closest('.prediction-panel, .quiz-item, section') || group;
+      const feedback = scope.querySelector('[data-feedback]:not(button)');
+      if (feedback) feedback.textContent = correct ? button.dataset.feedback : button.dataset.hint;
     }));
   });
   render();

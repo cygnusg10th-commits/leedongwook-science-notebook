@@ -48,14 +48,18 @@
     positive(L, 'L');
     const offset = Number(s);
     const max = Number(nMax);
+    const reflectivity = Number(rho);
     if (!Number.isFinite(offset) || Math.abs(offset) >= radius) throw new RangeError('축 이탈량은 원통 반지름보다 작아야 합니다.');
     if (!Number.isInteger(max) || max < 1 || max > 24) throw new RangeError('최대 차수는 1~24의 정수여야 합니다.');
+    if (!Number.isFinite(reflectivity) || reflectivity <= 0 || reflectivity > 1) throw new RangeError('반사율은 0보다 크고 1 이하여야 합니다.');
+    // 마주 보는 두 벽(u = ±R)에 대한 반복 반사상. 위치에서 차수를 되짚지 않고
+    // 차수에서 위치를 직접 만듭니다 — u = ±2nR + s·(−1)ⁿ.
+    // 이렇게 해야 좌우 대칭이 보장되고, nMax에서 짝이 잘리지 않습니다.
     const points = [{ n: 0, uOverR: offset / radius, intensity: 1 }];
-    for (let k = -max; k <= max; k += 1) {
-      const families = [offset + 4 * k * radius, 2 * radius - offset + 4 * k * radius];
-      families.forEach(u => {
-        const n = Math.max(1, Math.round(Math.abs(u - offset) / (2 * radius)));
-        if (n <= max) points.push({ n, uOverR: u / radius, intensity: Math.pow(rho, n) });
+    for (let n = 1; n <= max; n += 1) {
+      const mirrored = n % 2 ? -offset : offset;
+      [2 * n * radius + mirrored, -2 * n * radius + mirrored].forEach(u => {
+        points.push({ n, uOverR: u / radius, intensity: Math.pow(reflectivity, n) });
       });
     }
     return points.sort((a, b) => a.uOverR - b.uOverR);

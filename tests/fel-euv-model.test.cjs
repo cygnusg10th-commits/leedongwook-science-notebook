@@ -376,3 +376,116 @@ test('테이퍼링이 출력을 몇 배로 올리는가 — 스캐너 대수로'
   assert.ok(model.scannerCount({ euvW: tapered }) >= 20, '2 % 추출이면 노광기 20대가 가능합니다');
   assert.ok(model.scannerCount({ euvW: plain }) < 5);
 });
+
+test('자기장은 간극이 벌어질수록 단조 감소한다 — 식의 되돌아오는 가지를 막는다', () => {
+  // 지수식 자체는 g/λu ≈ 1.667 을 지나면 다시 커집니다. 그 인공물이 새어 나오면 안 됩니다.
+  let previous = Infinity;
+  for (let ratio = 0.05; ratio <= 8; ratio += 0.01) {
+    const { fieldT } = model.halbachFieldT({ gapMm: ratio * 30, periodCm: 3 });
+    assert.ok(fieldT <= previous + 1e-12, `g/λu=${ratio.toFixed(2)} 에서 자기장이 다시 커졌습니다`);
+    previous = fieldT;
+  }
+  // 간극을 그대로 두고 주기를 줄이면 자기장이 커질 수 없습니다
+  assert.ok(
+    model.halbachFieldT({ gapMm: 12, periodCm: 0.3 }).fieldT
+    <= model.halbachFieldT({ gapMm: 12, periodCm: 1.0 }).fieldT
+  );
+  assert.ok(model.halbachFieldT({ gapMm: 12, periodCm: 0.24 }).floored);
+  assert.ok(!model.halbachFieldT({ gapMm: 5, periodCm: 3 }).floored);
+});
+
+test('최단 파장은 물리적으로 가능한 자석 조건에서만 나온다', () => {
+  const cases = [
+    { energyMeV: 660, gapMm: 12, emittanceMmMrad: 0.08 },
+    { energyMeV: 4000, gapMm: 12, emittanceMmMrad: 0.08 },
+    { energyMeV: 2000, gapMm: 10, emittanceMmMrad: 0.15 },
+  ];
+  for (const input of cases) {
+    const result = model.shortestLasingWavelength(input);
+    const at = result.scan.find(step => step.periodMm === result.atPeriodMm);
+    assert.ok(at, '최적점이 스캔 안에 있어야 합니다');
+    // 2 T 상한에 붙은 채로 최적점이 잡히면 가짜 가지를 탄 것입니다
+    assert.ok(at.fieldT < model.halbachFieldT({ gapMm: input.gapMm, periodCm: 4 }).fieldT * 40,
+      `간극 ${input.gapMm}mm·주기 ${at.periodMm}mm에서 자기장 ${at.fieldT}T는 불가능합니다`);
+    assert.ok(at.periodMm >= input.gapMm / 2,
+      `주기 ${at.periodMm}mm가 간극 ${input.gapMm}mm에 비해 비현실적으로 짧습니다`);
+  }
+});
+
+test('limitedBy는 최적점 바로 다음에 막은 이유와 일치한다', () => {
+  const cases = [
+    { energyMeV: 200, gapMm: 5.5, emittanceMmMrad: 0.22 },
+    { energyMeV: 660, gapMm: 5, emittanceMmMrad: 0.25 },
+    { energyMeV: 1200, gapMm: 8, emittanceMmMrad: 0.4 },
+    { energyMeV: 3000, gapMm: 3, emittanceMmMrad: 0.6 },
+  ];
+  for (const input of cases) {
+    const result = model.shortestLasingWavelength(input);
+    if (!result.atPeriodMm) continue;
+    const index = result.scan.findIndex(step => step.periodMm === result.atPeriodMm);
+    const next = result.scan.slice(index + 1).find(step => step.fails);
+    assert.equal(result.limitedBy, next ? next.fails : '없음',
+      `${JSON.stringify(input)}: 표시된 병목과 실제 병목이 다릅니다`);
+  }
+});
+
+test('gapForFieldMm은 도달 못 하는 자기장에 경계값을 돌려주지 않는다', () => {
+  // 식이 낼 수 있는 범위 안에서는 정산과 맞물립니다
+  for (const fieldT of [0.1, 0.357, 0.8, 1.5]) {
+    const gapMm = model.gapForFieldMm({ fieldT, periodCm: 3 });
+    assert.ok(Number.isFinite(gapMm));
+    assert.ok(Math.abs(model.halbachFieldT({ gapMm, periodCm: 3 }).fieldT - fieldT) < 1e-6);
+  }
+  // 범위 밖은 Infinity — 조용한 클램프 금지
+  assert.equal(model.gapForFieldMm({ fieldT: 0.01, periodCm: 3 }), Infinity);
+  assert.equal(model.gapForFieldMm({ fieldT: 3.5, periodCm: 3 }), Infinity);
+});
+
+test('테이퍼 간극은 식으로 답할 수 있을 때만 유한하다', () => {
+  const K0 = model.undulatorK({ fieldT: 0.357, periodCm: 3 });
+  const profile = model.taperProfile({ K0, periodCm: 3, extraction: 0.18 });
+  for (const point of profile.points) {
+    if (!Number.isFinite(point.gapMm)) continue;
+    assert.ok(Math.abs(model.halbachFieldT({ gapMm: point.gapMm, periodCm: 3 }).fieldT - point.fieldT) < 1e-6,
+      `z=${point.z}: 표시된 간극이 그 자기장에 대응하지 않습니다`);
+  }
+  assert.ok(Number.isFinite(profile.points[0].gapMm));
+});
+
+test('회수율은 숫자로 줘도 반영된다', () => {
+  const base = { energyMeV: 660, periodCm: 3, fieldT: 0.357, compression: 20, repRateMHz: 10 };
+  const none = model.solve({ ...base, recovery: false }).wallMW;
+  const half = model.solve({ ...base, recovery: 0.5 }).wallMW;
+  const full = model.solve({ ...base, recovery: true }).wallMW;
+  assert.ok(full < half && half < none, `${full} < ${half} < ${none} 이어야 합니다`);
+  assert.equal(model.solve({ ...base, recovery: 0 }).wallMW, none);
+});
+
+test('범위 밖 입력은 조용히 통과하지 않는다', () => {
+  assert.throws(() => model.resonanceDetuning({ energyLossFraction: 1 }), RangeError);
+  assert.throws(() => model.resonanceDetuning({ energyLossFraction: 2 }), RangeError);
+  assert.throws(() => model.resonanceDetuning({ energyLossFraction: -0.1 }), RangeError);
+  assert.ok(Number.isFinite(model.resonanceDetuning({ energyLossFraction: 0.99 })));
+  assert.throws(() => model.halbachFieldT({ gapMm: 0, periodCm: 3 }), RangeError);
+  assert.throws(() => model.gapForFieldMm({ fieldT: 0, periodCm: 3 }), RangeError);
+  assert.throws(() => model.compressionFactor({ chirpPerM: 1, r56M: -1 }), RangeError);
+});
+
+test('슬라이더 정의역 전체에서 최단 파장 결과가 자기 모순을 일으키지 않는다', () => {
+  let checked = 0;
+  for (let energyMeV = 200; energyMeV <= 4000; energyMeV += 400) {
+    for (let gapMm = 3; gapMm <= 12; gapMm += 1.5) {
+      for (let emittanceMmMrad = 0.08; emittanceMmMrad <= 0.8; emittanceMmMrad += 0.12) {
+        const result = model.shortestLasingWavelength({ energyMeV, gapMm, emittanceMmMrad });
+        if (!result.atPeriodMm) continue;
+        const index = result.scan.findIndex(step => step.periodMm === result.atPeriodMm);
+        const next = result.scan.slice(index + 1).find(step => step.fails);
+        assert.equal(result.limitedBy, next ? next.fails : '없음');
+        assert.ok(Number.isFinite(result.shortestNm) && result.shortestNm > 0);
+        assert.ok(result.scan[index].fieldT <= 2);
+        checked += 1;
+      }
+    }
+  }
+  assert.ok(checked > 200, `검사한 조합이 ${checked}개뿐입니다`);
+});

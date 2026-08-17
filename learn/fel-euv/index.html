@@ -5,17 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="자유전자레이저 EUV 광원의 전체 장치를 한 화면에 놓고 전자총부터 빔 분배까지 구간별로 확인하는 시뮬레이션" />
   <title>빛이 전자를 줄 세운다 — FEL EUV 광원 | 과학 수첩</title>
-  <link rel="stylesheet" href="../../assets/site.css?v=20260816-1" />
-  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260816-9" />
-  <script src="../../assets/site.js?v=20260816-1" defer></script>
+  <link rel="stylesheet" href="../../assets/site.css?v=20260817-2" />
+  <link rel="stylesheet" href="../../assets/fel-euv.css?v=20260817-2" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
-  <script src="../../assets/fel-euv-model.js?v=20260816-9" defer></script>
-  <script src="../../assets/fel-euv.js?v=20260816-9" defer></script>
+  <script src="../../assets/fel-euv-model.js?v=20260817-2" defer></script>
+  <script src="../../assets/fel-euv.js?v=20260817-2" defer></script>
 </head>
 <body class="fel-page">
   <a class="sr-only" href="#main">본문으로 바로가기</a>
-  <header class="site-header"><div class="container header-inner"><a class="brand" href="../../" aria-label="과학 수첩 홈"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a><nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav><div class="header-tools"><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div></div></header>
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="../../" aria-label="과학 수첩 홈"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a><nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav><div class="header-tools"><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div></div></header>
 
   <main id="main">
     <section class="container lesson-heading">
@@ -142,7 +142,7 @@
         <p class="fel-scrollnote">그림은 가로로 밀어서 볼 수 있습니다.</p>
 
         <h3 style="margin:24px 0 6px">전자는 10 GHz로 흔들리는데 빛은 22 PHz입니다</h3>
-        <p style="margin-top:0">자석 주기를 줄이면 전자가 방향을 바꾸는 진동수가 올라가고, 나오는 빛의 진동수도 <b>정확히 그만큼</b> 올라갑니다. 그런데 두 진동수의 <b>절대값</b>은 전혀 다릅니다. 3 cm 주기에서 전자는 초당 100억 번(10 GHz) 흔들립니다. 파장으로는 3 cm, 전자레인지 수준입니다. 그런데 나오는 빛은 13.5 nm, 22 PHz입니다. <b>220만 배</b>입니다.</p>
+        <p style="margin-top:0">자석 주기를 줄이면 전자가 방향을 바꾸는 진동수가 올라가고, 나오는 빛의 진동수도 <b>정확히 그만큼</b> 올라갑니다. 그런데 두 진동수의 <b>절대값</b>은 전혀 다릅니다. 3 cm 주기에서 전자는 초당 100억 번(10 GHz) 흔들립니다. 파장으로는 3 cm, 마이크로파 영역입니다(전자레인지가 쓰는 2.45 GHz보다 네 배쯤 높습니다). 그런데 나오는 빛은 13.5 nm, 22 PHz입니다. <b>220만 배</b>입니다.</p>
         <p>그 220만 배가 어디서 오는지가 이 장치의 전부입니다. 감마가 두 번 곱해집니다.</p>
         <div class="fel-stage overview">
           <canvas id="felLadder" width="660" height="250" role="img" aria-label="흔드는 진동수가 길이 수축과 도플러 효과를 거쳐 빛의 진동수가 되는 세 단계"></canvas>
@@ -278,7 +278,7 @@
           <p style="margin:12px 0 0;font-size:.84rem;color:var(--muted)">첨두 전류 500 A, 빔 크기 40 &micro;m, 자석 길이 60 m 이내를 조건으로 두었습니다. <b>자석 간극을 움직여도 주황색 바닥선은 꿈쩍하지 않습니다.</b> 그 선을 움직이는 것은 에너지와 에미턴스뿐입니다.</p>
         </div>
 
-        <p style="margin-top:18px"><b>자석이 정하는 것은 파장이 아니라 길이입니다.</b> 660 MeV에서 자석 간극을 8 mm에서 3 mm로 좁혀 보면 한계 파장은 2.44 nm에서 2.46 nm로 <b>사실상 그대로</b>인데, 필요한 자석 길이는 52 m에서 17 m로 <b>3분의 1</b>이 됩니다. 좋은 자석은 더 짧은 파장을 주는 것이 아니라 <b>같은 파장을 더 싸게</b> 줍니다. 간극이 10 mm를 넘어가면 그제야 자석이 진짜 발목을 잡습니다 &mdash; 포화까지 60 m를 넘겨 버리기 때문입니다.</p>
+        <p style="margin-top:18px"><b>자석이 정하는 것은 파장이 아니라 길이입니다.</b> 660 MeV에서 자석 간극을 8 mm에서 3 mm로 좁혀 보면 한계 파장은 2.44 nm에서 2.46 nm로 <b>사실상 그대로</b>인데, 필요한 자석 길이는 52 m에서 17 m로 <b>3분의 1</b>이 됩니다. 좋은 자석은 더 짧은 파장을 주는 것이 아니라 <b>같은 파장을 더 싸게</b> 줍니다. 간극이 9 mm를 넘어가면 그제야 자석이 진짜 발목을 잡습니다 &mdash; 포화까지 60 m를 넘겨 버리기 때문입니다.</p>
         <p><b>바닥을 정하는 것은 전자빔입니다.</b> 에미턴스를 0.6에서 0.25 mm&middot;mrad로 줄이면 한계가 5.91 nm에서 2.45 nm로 내려갑니다. 다만 0.15 아래로는 더 내려가지 않고 <b>이득 부족</b>으로 막힙니다. 빔을 아무리 잘 만들어도 자기장이 약하면 증폭이 안 되기 때문입니다. 세 벽이 서로 자리를 바꿔 가며 발목을 잡습니다.</p>
         <p><b>답.</b> 660 MeV &middot; 간극 5 mm에서 발진 한계는 <b>약 2.4 nm</b>입니다. 13.5 nm는 한참 안쪽이라 여유가 큽니다. 여기서 더 짧게 가려면 자석이 아니라 <b>에너지를 올려야</b> 합니다. $\lambda \propto 1/\gamma^2$ 이라 효율이 좋습니다 &mdash; 에너지를 두 배로 올리면 파장은 4분의 1이 됩니다. 0.1 nm급 경X선 FEL이 수 GeV에서 십수 GeV를 쓰는 이유가 이것입니다.</p>
         <div class="fel-caution" style="border-color:var(--line);background:var(--paper)">
@@ -334,6 +334,6 @@
   </main>
 
   <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>전자와 빛을 직접 다뤄 보는 실험</span><a href="../../simulations/">다른 시뮬레이션 보기 →</a></div></footer>
-  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="page"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="true"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
 </body>
 </html>

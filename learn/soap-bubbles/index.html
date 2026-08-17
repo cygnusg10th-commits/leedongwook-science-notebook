@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="빨대로 이은 두 비눗방울은 크기가 같아지지 않습니다. 작은 쪽의 공기가 전부 큰 쪽으로 넘어갑니다. 4γ/R의 유도, 폭주하는 이유, 어디서 멈추는지, 고무풍선과 무엇이 다른지를 정리했습니다." />
   <title>작은 비눗방울은 왜 항상 질까? | 과학 수첩</title>
-  <link rel="stylesheet" href="../../assets/site.css" />
-  <script src="../../assets/site.js" defer></script>
+  <link rel="stylesheet" href="../../assets/site.css?v=20260817-2" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
   <style>
@@ -54,7 +54,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
-      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
       <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
     </div>
   </header>
@@ -271,6 +271,8 @@
       <p>같은 실험을 고무풍선으로 하면 결과가 달라질 수 있습니다. 두 풍선이 <b>같은 크기로 안정되는</b> 경우가 실제로 있습니다.
       비눗방울과 무엇이 다른 걸까요.</p>
       <p>비눗방울의 표면장력 $\gamma$는 <b>상수</b>입니다. 얼마나 늘어나든 변하지 않아요.
+      (막을 아주 빠르게 늘리면 계면활성제가 묽어져 $\gamma$가 잠깐 커집니다. 여기서는 계면활성제가
+      충분히 따라붙는 느린 변화를 다룹니다.)
       그래서 $\Delta P$는 $R$에 대해 단조롭게 감소합니다.
       반면 고무는 늘어날수록 <b>뻣뻣해집니다.</b> 사슬이 다 펴지면 더는 늘어나려 하지 않죠.
       이 성질이 곡선의 모양을 바꿉니다.</p>
@@ -292,7 +294,7 @@
 
       <div class="bub-key">
         <p><b>풍선을 처음 불 때가 제일 힘든 이유</b>가 바로 이 봉우리입니다.
-        $\lambda\approx1.38$, 그러니까 원래 지름의 1.4배쯤에서 필요한 압력이 최대가 됩니다.
+        $\lambda\approx1.5$, 그러니까 원래 지름의 1.5배쯤에서 필요한 압력이 최대가 됩니다. (고무를 가장 단순하게 본 네오후크 모형에서는 $7^{1/6}\approx1.38$이고, 위 곡선처럼 뻣뻣해지는 항을 더하면 조금 뒤로 밀립니다.)
         그 고비만 넘기면 뒤는 훨씬 수월하죠. 비눗방울에는 이 고비가 없고, 그래서 탈출구도 없습니다.</p>
       </div>
     </section>
@@ -378,27 +380,29 @@ function dataTable(host,head,rows){host.innerHTML='<table class="bub-tbl"><tr>'+
    b.innerHTML=`<p style="margin:0 0 2px;font-size:.86rem;font-weight:600">${t}</p><p style="margin:0 0 8px;font-size:.78rem;opacity:.66">${s}</p>`;
    const c=document.createElement('div');c.className='chartbox';b.append(c);host.append(b);return c;};
  const a=mk('비눗방울','γ가 상수 — 단조 감소'), b=mk('고무풍선','고무가 뻣뻣해진다 — 봉우리가 생긴다');
- const soap=[];for(let i=0;i<=120;i++){const R=0.6+4.4*i/120;soap.push([R,6/R]);}
+ const soap=[];for(let i=0;i<=120;i++){const R=0.6+4.4*i/120;soap.push([R,10/R]);}
  lineChart(a,{aria:'비눗방울의 압력–반지름 곡선. 반지름이 커질수록 단조롭게 감소한다.',w:330,h:260,
-  series:[{pts:soap,color:INK.cyan}],xMin:0.6,xMax:5,yMin:0,yMax:10.5,xTicks:[1,2,3,4,5],yTicks:[0,2,4,6,8,10],
+  series:[{pts:soap,color:INK.cyan}],xMin:0.6,xMax:5,yMin:0,yMax:18,xTicks:[1,2,3,4,5],yTicks:[0,4,8,12,16],
   xLabel:'반지름 R (cm)',yLabel:'ΔP (Pa)',
-  marks:[{x:1,y:6,color:INK.cyan,label:'작을수록 고압',sub:'탈출구가 없다',dy:-20,dx:52}],
+  marks:[{x:1,y:10,color:INK.cyan,label:'작을수록 고압',sub:'탈출구가 없다',dy:-20,dx:52}],
   tip:p=>`<span class="k">R</span> ${p[0].toFixed(2)} cm &nbsp; <span class="k">ΔP</span> ${p[1].toFixed(1)} Pa`});
  const bal=[];for(let i=0;i<=160;i++){const L=1+5*i/160;bal.push([L,(1/L-1/L**7)*(1+0.1*L*L)]);}
  const peak=bal.reduce((m,p)=>(p[1]>m[1]&&p[0]<2?p:m),bal[0]);
  const dip=bal.filter(p=>p[0]>2).reduce((m,p)=>(p[1]<m[1]?p:m),[0,9]);
- lineChart(b,{aria:'고무풍선의 압력–팽창비 곡선. 팽창비 1.4 부근에서 봉우리를 이룬 뒤 내려갔다가 다시 올라간다.',w:330,h:260,
+ lineChart(b,{aria:'고무풍선의 압력–팽창비 곡선. 팽창비 1.5 부근에서 봉우리를 이룬 뒤 내려갔다가 다시 올라간다.',w:330,h:260,
   series:[{pts:bal,color:INK.cyan}],xMin:1,xMax:6,yMin:0,yMax:0.95,xTicks:[1,2,3,4,5,6],yTicks:[0,0.2,0.4,0.6,0.8],
   xFmt:v=>v.toFixed(0),yFmt:v=>v.toFixed(1),xLabel:'팽창비 λ = R / R₀',yLabel:'ΔP (상대값)',
-  marks:[{x:peak[0],y:peak[1],color:INK.cyan,label:'봉우리',sub:'λ ≈ 1.4',dy:-22,dx:30},
+  marks:[{x:peak[0],y:peak[1],color:INK.cyan,label:'봉우리',sub:'λ ≈ 1.5',dy:-22,dx:30},
     {x:dip[0],y:dip[1],color:INK.pink,label:'두 풍선이 같은 크기로',sub:'안정될 수 있는 구간',dy:34}],
   tip:p=>`<span class="k">λ</span> ${p[0].toFixed(2)} &nbsp; <span class="k">ΔP</span> ${p[1].toFixed(3)}`});
  dataTable(document.getElementById('tblP'),['λ (풍선)','ΔP 상대값','R (비눗방울, cm)','ΔP (Pa)'],
-  [1.2,1.4,2,3,4,5].map((L,i)=>{const R=[1,1.5,2,3,4,5][i];return [L.toFixed(1),((1/L-1/L**7)*(1+0.1*L*L)).toFixed(3),R.toFixed(1),(6/R).toFixed(1)];}));
+  [1.2,1.4,2,3,4,5].map((L,i)=>{const R=[1,1.5,2,3,4,5][i];return [L.toFixed(1),((1/L-1/L**7)*(1+0.1*L*L)).toFixed(3),R.toFixed(1),(10/R).toFixed(1)];}));
 })();
 document.querySelectorAll('.tblbtn').forEach(btn=>btn.addEventListener('click',()=>{
   const el=document.getElementById(btn.dataset.for); el.classList.toggle('on');
   btn.textContent=el.classList.contains('on')?'표 닫기':'표로 보기';}));
 </script>
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>표면장력이 만드는 압력 차를 따라가 봅니다</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="true"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
 </body>
 </html>

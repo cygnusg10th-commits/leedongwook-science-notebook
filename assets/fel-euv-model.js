@@ -114,11 +114,25 @@
   //   B0 = 3.694 · exp[ -5.068 (g/λu) + 1.520 (g/λu)² ]   [T]
   // 원식의 검증 범위는 0.1 < g/λu < 1 입니다. 그 밖은 외삽입니다.
   const HALBACH = { a: 3.694, b: 5.068, c: 1.520, maxT: 2.0 };
+  // 지수식은 g/λu = b/(2c) ≈ 1.667 에서 극소를 지나 '다시 커집니다'. 이것은 식의 꼴이
+  // 만든 인공물일 뿐이고, 실제 자기장은 간극이 벌어질수록 단조 감소합니다.
+  // 그 지점 이후로는 극소값에 고정해 단조성을 지킵니다. 고정된 구간은 clamped로 알립니다.
+  const HALBACH_MONOTONE_LIMIT = HALBACH.b / (2 * HALBACH.c);
+  const HALBACH_FLOOR_T = HALBACH.a * Math.exp(
+    -HALBACH.b * HALBACH_MONOTONE_LIMIT + HALBACH.c * HALBACH_MONOTONE_LIMIT * HALBACH_MONOTONE_LIMIT
+  );
 
   function halbachFieldT({ gapMm, periodCm, cap = HALBACH.maxT }) {
     const ratio = (positive(gapMm, '자석 간극') / 10) / positive(periodCm, '언듈레이터 주기');
-    const raw = HALBACH.a * Math.exp(-HALBACH.b * ratio + HALBACH.c * ratio * ratio);
-    return { fieldT: Math.min(raw, cap), ratio, extrapolated: ratio < 0.1 || ratio > 1, capped: raw > cap };
+    const effective = Math.min(ratio, HALBACH_MONOTONE_LIMIT);
+    const raw = HALBACH.a * Math.exp(-HALBACH.b * effective + HALBACH.c * effective * effective);
+    return {
+      fieldT: Math.min(raw, cap),
+      ratio,
+      extrapolated: ratio < 0.1 || ratio > 1,
+      capped: raw > cap,
+      floored: ratio > HALBACH_MONOTONE_LIMIT,
+    };
   }
 
   // 회절 한계(에미턴스 조건) εn ≤ γλ/4π 를 파장 쪽으로 뒤집으면
@@ -153,11 +167,13 @@
         : wavelengthNm < floorNm ? '빔 품질 한계'
           : satM > opt.maxUndulatorM ? '자석이 너무 길어짐' : null;
       scan.push({ periodMm: mm, fieldT, K, wavelengthNm, rho, satM, fails });
-      if (!fails) {
-        if (!best || wavelengthNm < best.wavelengthNm) best = scan[scan.length - 1];
-      } else if (best && blocker === '없음') {
-        blocker = fails;
-      }
+      if (!fails && (!best || wavelengthNm < best.wavelengthNm)) best = scan[scan.length - 1];
+    }
+    // 병목은 '최적점 바로 다음에 무엇이 막았는가'입니다. 루프를 돌며 처음 만난 실패를
+    // 붙잡아 두면, 그 뒤로 best가 더 갱신됐을 때 이유가 어긋납니다.
+    if (best) {
+      const after = scan.slice(scan.indexOf(best) + 1).find(step => step.fails);
+      blocker = after ? after.fails : '없음';
     }
     return {
       gamma,
@@ -179,9 +195,9 @@
   //   K(z)² = 2[ (1+K0²/2)(γ(z)/γ0)² − 1 ]
 
   // 보정을 안 했을 때 공명 파장이 얼마나 밀리는가 (상대값)
-  function resonanceDetuning({ energyLossFraction, K }) {
+  function resonanceDetuning({ energyLossFraction }) {
     const d = finite(energyLossFraction, '에너지 손실');
-    finite(K, 'K');
+    if (d < 0 || d >= 1) throw new RangeError('에너지 손실 비율은 0 이상 1 미만이어야 합니다.');
     return 1 / Math.pow(1 - d, 2) - 1;   // λ / λ0 − 1
   }
 
@@ -200,16 +216,22 @@
   }
 
   // Halbach 식을 거꾸로 풀어 필요한 자석 간극을 구합니다
+  // 식이 단조 감소하는 구간 [0.02, 1.667] 안에서만 풀 수 있습니다. 목표 자기장이 그
+  // 구간이 낼 수 있는 범위 밖이면 이분법의 전제가 깨지므로, 경계값을 조용히 돌려주는 대신
+  // Infinity를 반환해 '이 식으로는 답을 못 준다'는 사실을 호출부에 알립니다.
+  const GAP_RATIO_MIN = 0.02;
   function gapForFieldMm({ fieldT, periodCm }) {
     const target = positive(fieldT, '자기장');
-    let lo = 0.02;
-    let hi = 2.0;
+    const period = positive(periodCm, '언듈레이터 주기');
+    const field = ratio => HALBACH.a * Math.exp(-HALBACH.b * ratio + HALBACH.c * ratio * ratio);
+    if (target > field(GAP_RATIO_MIN) || target < HALBACH_FLOOR_T) return Infinity;
+    let lo = GAP_RATIO_MIN;
+    let hi = HALBACH_MONOTONE_LIMIT;
     for (let i = 0; i < 80; i += 1) {
       const mid = (lo + hi) / 2;
-      const b = HALBACH.a * Math.exp(-HALBACH.b * mid + HALBACH.c * mid * mid);
-      if (b > target) lo = mid; else hi = mid;
+      if (field(mid) > target) lo = mid; else hi = mid;
     }
-    return lo * positive(periodCm, '언듈레이터 주기') * 10;
+    return lo * period * 10;
   }
 
   // 테이퍼 구간 전체의 K·자기장·간극 변화
@@ -227,7 +249,7 @@
         gammaRatio: 1 - loss,
         K,
         fieldT,
-        gapMm: fieldT > 1e-4 ? gapForFieldMm({ fieldT, periodCm }) : Infinity,
+        gapMm: fieldT > 0 ? gapForFieldMm({ fieldT, periodCm }) : Infinity,
       });
     }
     return { cap, extraction: eta, points: out, clamped: finite(extraction, '추출률') > cap };
@@ -432,7 +454,10 @@
     const fieldT = positive(input.fieldT, '자기장');
     const compression = positive(input.compression, '압축비');
     const repRateMHz = positive(input.repRateMHz, '반복률');
-    const recovery = input.recovery === false ? 0 : design.recoveryRatio;
+    // recovery: false → 회수 없음, 숫자 → 그 값을 회수율로, 생략/true → 설계값
+    const recovery = typeof input.recovery === 'number'
+      ? Math.min(Math.max(input.recovery, 0), 0.99)
+      : (input.recovery === false ? 0 : design.recoveryRatio);
 
     const gamma = lorentzGamma(energyMeV);
     const K = undulatorK({ fieldT, periodCm });

@@ -109,3 +109,5 @@
   .point-cause-figure figcaption { font-size: 11px; overflow-wrap: anywhere; }
 }
 
+
+.mirror-equation-note { margin: 10px 21px 18px; color: var(--muted); font-size: 12px; line-height: 1.6; }

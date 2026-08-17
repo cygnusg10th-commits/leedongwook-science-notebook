@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="딱 100도의 물은 사실 끓지 못합니다. 기포가 태어나려면 1나노미터에 천 기압이 필요하기 때문입니다. 냄비가 끓는 진짜 이유는 바닥의 흠집이고, 끓임쪽도 같은 원리입니다." />
   <title>물은 100도에서 끓지 않는다 | 과학 수첩</title>
-  <link rel="stylesheet" href="../../assets/site.css" />
-  <script src="../../assets/site.js" defer></script>
+  <link rel="stylesheet" href="../../assets/site.css?v=20260817-2" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
   <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
   <style>
@@ -56,7 +56,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
-      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="page">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
       <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
     </div>
   </header>
@@ -67,7 +67,7 @@
       <h1>물은 100도에서 끓지 않는다</h1>
       <p>정확히 100.0&nbsp;°C인 물은 <b>속에서 기포를 만들지 못합니다.</b>
       냄비가 부글부글 끓는 진짜 이유는 온도가 아니라 <b>바닥의 흠집</b>이고,
-      실험실에서 쓰는 끓임쪽도 정확히 같은 원리입니다. 그리고 흠집이 없으면 물은 110도까지 조용히 버팁니다.</p>
+      실험실에서 쓰는 끓임쪽도 정확히 같은 원리입니다. 그리고 흠집이 없으면 물은 100도를 넘겨도 조용히 버팁니다 — 조건이 좋으면 105~110도까지 갑니다.</p>
     </section>
 
     <section class="container section">
@@ -124,7 +124,7 @@
         그런데 100&nbsp;°C 수증기가 낼 수 있는 압력은 <b>1기압</b>뿐입니다. 태어나는 즉시 짜부라집니다.</p>
       </div>
       <div class="bl-cond">100&nbsp;°C 물의 표면장력 $\gamma = 0.0589\ \mathrm{N/m}$ 기준입니다.
-      표면장력은 온도에 따라 변하지만 100~110&nbsp;°C 구간에서는 약 3% 변화라 위 값에 영향이 없습니다.</div>
+      표면장력은 온도에 따라 변하지만 100~110&nbsp;°C 구간에서는 3%쯤 줄어드는 정도라, 위 값의 자릿수에는 영향이 없습니다. 아래 곡선도 100&nbsp;°C의 $\gamma$를 그대로 씁니다. 그리고 대기압 1기압을 가정하며, 냄비 바닥이 받는 수두압(물 10&nbsp;cm에 약 1&nbsp;kPa)은 넣지 않았습니다.</div>
     </section>
 
     <section class="container section tinted">
@@ -147,8 +147,11 @@
       </div>
 
       <p>그런데 딱 하나, <b>$R=\infty$ — 평평한 면</b>은 통합니다. 그리고 그 평평한 면이 바로 <b>수면</b>입니다.
-      그래서 100도 물은 <b>위에서 증발은 하는데 속에서는 끓지 않습니다.</b>
-      주전자에서 김이 오르는데 아직 부글거리지 않는 그 상태가 이것입니다.</p>
+      평평한 면은 표면장력 몫을 치를 필요가 없습니다.
+      그래서 <b>속에서 기포가 못 생기는 온도에서도 수면에서의 증발은 막히지 않습니다.</b>
+      주전자에서 김이 오르는데 아직 부글거리지 않는 그 상태가 이것입니다.
+      (증발 자체는 100도와 무관합니다. 주변 공기의 수증기 분압이 포화증기압보다 낮으면 상온에서도 일어납니다.
+      100도가 특별한 것은 <b>속에서</b> 기포가 자랄 수 있게 되는 문턱이라는 점입니다.)</p>
 
       <h3>온도를 올리면</h3>
       <p>수증기 압력이 대기압을 넘어서면서 분모가 생기고, $R^{*}$가 유한해집니다.</p>
@@ -167,7 +170,7 @@
       <h2>그럼 냄비는 왜 끓나</h2>
       <p>답은 물이 아니라 <b>냄비</b>에 있습니다. 정확히는 바닥의 <b>흠집</b>입니다.</p>
 
-      <p>액체는 뾰족한 홈 속까지 젖어 들어가지 못합니다. 그래서 홈 안에 <b>공기가 갇힌 채</b> 남습니다.
+      <p>잘 젖지 않는 홈이라면 액체가 속까지 들어가지 못합니다. 그래서 홈 안에 <b>공기가 갇힌 채</b> 남습니다. (갇히는지 여부는 접촉각과 홈 모양에 달려 있습니다. 입구가 좁고 안이 넓은 홈은 잘 젖는 액체에서도 공기를 붙잡습니다.)
       이 갇힌 공기의 표면은 <b>곡률이 완만합니다.</b> 곡률반지름이 크다는 건 $2\gamma/R$이 작다는 뜻이고,
       그만큼 문턱이 낮아집니다.</p>
 
@@ -279,7 +282,7 @@
         더 좁은 홈까지 문턱을 넘기 시작한 것입니다.</li>
         <li><b>냄비를 바꿔 보세요</b>새 냄비와 오래 써서 긁힌 냄비를 비교하면 기포가 나오는 자리 수가 다릅니다.</li>
         <li><b>사이다로도 보입니다</b>탄산음료를 컵에 따르면 기포가 컵 안쪽의 흠집이나 먼지에서만
-        줄줄이 올라옵니다. 기체 종류만 다를 뿐 같은 이야기입니다.</li>
+        줄줄이 올라옵니다. 핵생성 자리가 필요하다는 구조는 같습니다. 다만 밀어주는 힘이 과열도가 아니라 녹아 있는 이산화탄소의 과포화라는 점이 다릅니다입니다.</li>
       </ol>
     </section>
 
@@ -326,7 +329,8 @@ function lineChart(host,cfg){
   const svg=host.querySelector('svg'),tip=host.querySelector('.tip'),cross=svg.querySelector('.cross'),dot=svg.querySelector('.dot'),S=cfg.series[0];
   svg.querySelector('.hit').addEventListener('pointermove',e=>{
     const r=svg.getBoundingClientRect(), vx=(e.clientX-r.left)/r.width*W, val=x0+(vx-M.l)/iw*(x1-x0);
-    let best=S.pts[0]; for(const p of S.pts) if(Math.abs(p[0]-val)<Math.abs(best[0]-val)) best=p;
+    const shown=S.pts.filter(p=>p[1]<=y1*1.4); const pool=shown.length?shown:S.pts;
+    let best=pool[0]; for(const p of pool) if(Math.abs(p[0]-val)<Math.abs(best[0]-val)) best=p;
     const yy=Math.min(best[1],y1*1.4);
     cross.setAttribute('x1',X(best[0]));cross.setAttribute('x2',X(best[0]));cross.setAttribute('opacity','.7');
     dot.setAttribute('cx',X(best[0]));dot.setAttribute('cy',Y(yy));dot.setAttribute('opacity','1');
@@ -346,7 +350,7 @@ function dataTable(host,head,rows){host.innerHTML='<table class="bl-tbl"><tr>'+h
     let k=0; while(k<T.length-2 && T[k+1]<t) k++;
     const p=P[k]+(P[k+1]-P[k])*(t-T[k])/(T[k+1]-T[k]);
     const dP=(p-Patm)*1000;
-    pts.push([t, dP>0 ? 2*gam/dP*1e6 : 999]);
+    pts.push([t, 2*gam/dP*1e6]);   // t가 100.2에서 시작하므로 dP는 항상 0보다 큽니다
   }
   lineChart(document.getElementById('chartR'),{
     aria:'임계 반지름이 온도에 따라 변하는 곡선. 100도에 가까울수록 급격히 커진다.',
@@ -367,5 +371,7 @@ document.querySelectorAll('.tblbtn').forEach(btn=>btn.addEventListener('click',(
   const el=document.getElementById(btn.dataset.for); el.classList.toggle('on');
   btn.textContent=el.classList.contains('on')?'표 닫기':'표로 보기';}));
 </script>
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>끓음을 정하는 것은 온도가 아니라 흠집입니다</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="true"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
 </body>
 </html>
