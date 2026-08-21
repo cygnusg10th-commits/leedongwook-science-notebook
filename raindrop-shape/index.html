@@ -79,9 +79,14 @@
   .refs li{margin-bottom:5px}
   footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);
          font-size:13px;color:var(--grey)}
+  .page-nav,.mobile-nav{max-width:760px;margin:0 auto;padding:16px 22px;display:flex;gap:18px}
+  .page-nav{justify-content:space-between;border-bottom:1px solid var(--line);font-size:13px}
+  .mobile-nav{justify-content:center;border-top:1px solid var(--line);font-size:13px}
 </style>
 </head>
 <body>
+<nav class="page-nav" aria-label="문서 메뉴"><a href="../">← 과학 수첩</a><a href="../learn/">전체 문서 9개</a></nav>
+<main>
 <div class="wrap">
 
 <div class="kicker">물리학 · 일상 속 과학</div>
@@ -248,11 +253,13 @@
   <li>Rayleigh, Lord (1879). On the Capillary Phenomena of Jets. <i>Proc. R. Soc. Lond.</i>, 29, 71–97.</li>
 </ul>
 
-<footer>
+<footer class="site-footer">
   영상·도표·소리 모두 코드로 계산해 렌더했습니다. 나레이션 대본은
   <a href="script/narration-script.html">여기</a>에 있습니다.
 </footer>
 
 </div>
+</main>
+<nav class="mobile-nav" aria-label="빠른 이동"><a href="../">홈</a><a href="../learn/">전체 문서</a><a href="../subjects/earth-science/">지구과학</a></nav>
 </body>
 </html>
