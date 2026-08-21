@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="공기 1L는 1.204g인데 주사기로 넣어도 저울은 0.000g에서 움직이지 않습니다. 부력이 정확히 상쇄하기 때문입니다. 영상과 시뮬레이터로 확인해 보세요." />
+  <title>공기 1L를 넣었는데 저울이 0g | 과학 수첩</title>
+  <link rel="stylesheet" href="../../assets/site.css?v=20260821-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <script src="../../assets/air-weight.js?v=20260821-1" defer></script>
+  <style>
+    .air-hero h1 { max-width: 780px; }
+    .video-layout { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 42px; align-items: center; }
+    .shorts-frame { position: relative; width: min(100%, 400px); margin: 0 auto; padding: 10px; border-radius: 34px; background: #07101f; box-shadow: 0 22px 60px rgba(14, 28, 52, .24); }
+    .shorts-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 25px; background: #07101f; object-fit: cover; }
+    .video-note { margin: 14px 0 0; color: var(--muted); font-size: .92rem; text-align: center; }
+    .key-list { display: grid; gap: 14px; margin: 24px 0 0; }
+    .key-item { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; padding: 18px; border: 1px solid #dfe5ef; border-radius: 18px; background: #fff; }
+    .key-number { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #fff; background: var(--physics); font-weight: 800; }
+    .key-item strong { display: block; margin-bottom: 5px; color: var(--navy); }
+    .key-item p { margin: 0; color: var(--muted); }
+
+    /* 숏츠와 같은 색 규약을 쓰는 어두운 시각 패널 */
+    .air-dark { border-radius: 26px; background: linear-gradient(168deg, #10141e 0%, #161a2c 46%, #181830 100%); }
+    .air-sim { display: grid; grid-template-columns: minmax(280px, 1fr) 1fr; gap: 0; overflow: hidden; }
+    .air-sim-stage { padding: 22px 20px 26px; }
+    .air-sim-stage svg { display: block; width: 100%; height: auto; }
+    .air-sim-panel { padding: 26px 26px 30px; background: #fff; border-left: 1px solid var(--line); }
+    .air-readout { display: grid; grid-template-columns: repeat(3, 1fr); margin: 22px 0 0; border: 1px solid #e5e8f5; border-radius: 14px; overflow: hidden; background: #f8f9ff; }
+    .air-readout div { padding: 11px 10px; text-align: center; }
+    .air-readout div + div { border-left: 1px solid #e5e8f5; }
+    .air-readout span { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .air-readout b { display: block; margin-top: 3px; font-size: 15px; font-variant-numeric: tabular-nums; }
+    .air-verdict { margin: 20px 0 0; min-height: 4.6em; color: var(--muted); font-size: .95rem; line-height: 1.7; }
+    .air-verdict strong { color: var(--ink); }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    input[type="range"] { width: 100%; accent-color: var(--physics); height: 22px; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 18px; color: var(--muted); font-size: .86rem; }
+    .legend i { display: inline-block; width: 11px; height: 11px; margin-right: 7px; border-radius: 3px; vertical-align: baseline; }
+
+    .compare-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; background: #fff; box-shadow: 0 12px 36px rgba(30, 51, 80, .08); }
+    .compare-table th, .compare-table td { padding: 15px 17px; border-bottom: 1px solid #e6ebf3; text-align: left; }
+    .compare-table th { color: var(--navy); background: var(--physics-soft); font-size: .9rem; }
+    .compare-table tr:last-child td { border-bottom: 0; }
+    .compare-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; }
+    .v-zero { color: var(--muted); } .v-neg { color: #2c6fa8; } .v-pos { color: #b8437a; }
+    .science-caution { margin-top: 22px; padding: 18px 20px; border-left: 5px solid var(--physics); border-radius: 12px; background: var(--physics-soft); color: #2a3a63; }
+    .science-caution.warn { border-left-color: var(--warning); background: var(--warning-soft); color: #6b4406; }
+    .steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: st; }
+    .steps li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px; background: #fff; }
+    .steps li::before { counter-increment: st; content: counter(st, decimal-leading-zero); color: var(--muted); font-weight: 850; font-size: .9rem; padding-top: 2px; }
+    .steps strong { display: block; color: var(--navy); margin-bottom: 4px; }
+    .steps p { margin: 0; color: var(--muted); }
+    @media (max-width: 900px) { .air-sim { grid-template-columns: 1fr; } .air-sim-panel { border-left: 0; border-top: 1px solid var(--line); } }
+    @media (max-width: 820px) { .video-layout { grid-template-columns: 1fr; } .video-copy { order: -1; } }
+    @media (max-width: 520px) {
+      .shorts-frame { width: min(100%, 390px); border-radius: 28px; }
+      .shorts-frame video { border-radius: 20px; }
+      .compare-table th, .compare-table td { padding: 12px 10px; font-size: .88rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero air-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>공기의 무게</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag physics">◉ 물리학</span><span class="tag neutral">1분 2초</span><span class="tag everyday">숏츠</span><span class="tag neutral">시뮬레이션</span></div>
+      <h1>공기 1L를 넣었는데<br />저울이 0g</h1>
+      <p>공기 1리터는 <strong>1.204 g</strong>입니다. 그런데 주사기로 그 1리터를 빨아들여 저울에 올려도 눈금은 <strong>0.000 g</strong>에서 움직이지 않습니다. 노즐을 막고 당기면 오히려 가벼워집니다. 범인은 부력이고, 바꿀 수 있는 건 밀도 하나뿐입니다.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video id="airVideo" controls playsinline preload="metadata" poster="poster.jpg" src="media/air-weight.mp4" aria-label="공기의 무게 설명 영상"></video>
+          </div>
+          <p class="video-note">재생 버튼을 누르면 약 1분 2초 동안 이어집니다.</p>
+        </div>
+        <div class="video-copy">
+          <p class="eyebrow">영상에서 확인할 세 가지</p>
+          <h2>저울은 무게가 아니라<br />무게 − 부력을 읽습니다</h2>
+          <div class="key-list">
+            <div class="key-item"><span class="key-number">1</span><div><strong>상쇄</strong><p>공기 1L가 들어오면 겉보기 부피도 1L 늘어납니다. 질량 +1.204 g과 부력 −1.204 g이 정확히 지워집니다.</p></div></div>
+            <div class="key-item"><span class="key-number">2</span><div><strong>주사기는 범인이 아니다</strong><p>재질 부피를 0에서 500 cm³까지 바꿔도 Δ의 변동은 2.8×10⁻¹⁴ g. 계산 오차 수준입니다.</p></div></div>
+            <div class="key-item"><span class="key-number">3</span><div><strong>남는 변수는 밀도</strong><p>안쪽을 바깥보다 조밀하게 만드는 것 — 압축 — 외에는 방법이 없습니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>궁금증에서 해결까지</h2><p>영상과 같은 순서입니다. 틀린 가설을 하나 세웠다가 버리는 과정이 들어 있습니다.</p></div>
+        <ol class="steps">
+          <li><div><strong>영점을 맞춘다</strong><p>빈 주사기를 올린 상태에서 0을 맞춥니다(TARE). 이제 눈금은 용기 자체의 질량을 제외한 <strong>변화량 Δ</strong>만 보여줍니다.</p></div></li>
+          <li><div><strong>예상: +1.204 g</strong><p>해수면 근처 공기의 밀도는 1.204 g/L(20 ℃, 1기압). 1리터를 넣었으니 그만큼 올라가야 합니다.</p></div></li>
+          <li><div><strong>실제: 0.000 g</strong><p>눈금이 하나도 움직이지 않습니다. 여기서 대부분 "공기는 무게가 없나?"로 착각합니다. 아닙니다 — 저울이 그걸 못 볼 뿐입니다.</p></div></li>
+          <li><div><strong>더 이상한 일: −1.204 g</strong><p>노즐을 막고 1리터까지 당깁니다. 안은 거의 진공, 아무것도 넣지 않았는데 오히려 가벼워집니다.</p></div></li>
+          <li><div><strong>첫 번째 의심을 버린다</strong><p>주사기가 두꺼워서일까요? 벽을 종잇장처럼 얇게 해도 결과는 똑같습니다. 용의자 기각.</p></div></li>
+          <li><div><strong>범인은 부력</strong><p>담은 공기만큼 밀어낸 공기도 늘었습니다. 진공에서 가벼워진 것도 같은 이유 — 부피는 늘었는데 안에 질량이 없으니 부력만 남습니다.</p></div></li>
+          <li><div><strong>그래서 눌러 담는다</strong><p>같은 1리터 공간에 공기 2리터어치를 넣으면 안쪽 밀도가 2배가 되고, 그제야 +1.204 g이 나타납니다.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>무게 차이를 만드는 건 딱 하나</h2></div>
+        <div class="formula">Δ = V<sub>내부</sub> × ( ρ<sub>안쪽</sub> − ρ<sub>바깥</sub> )　　　ρ<sub>대기</sub> = 1.204 g/L</div>
+        <p>주사기의 질량도, 재질 부피도 이 식에 없습니다. 같은 용기를 영점 상태와 비교하면 두 항은 소거되고, 밀봉된 내부 공간에 들어 있는 기체 질량과 그 공간이 받는 추가 부력만 남기 때문입니다.</p>
+        <p class="science-caution"><strong>이 식은 이상화한 변화량 모델입니다.</strong> 온도·습도·기압이 일정하고, 용기가 새거나 부풀지 않으며, 손이나 연결관의 힘이 저울에 전달되지 않는다고 가정합니다.</p>
+        <p class="science-caution"><strong>극한을 보면 감이 옵니다.</strong> 질량 0, 부피 0인 이상적인 주머니에 대기압 공기 1리터를 담으면 저울은 정확히 <strong>0.000 g</strong>을 가리킵니다. 1.204 g짜리 공기를 담고 있는데도요. 완전 중성부력이라 사실상 "떠 있는" 셈입니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>직접 움직여 보기</h2><p>내부 부피와 넣은 공기량을 바꿔 보세요. 저울은 영점 조정된 Δ 전용입니다.</p></div>
+        <div class="side-card air-sim">
+          <div class="air-dark air-sim-stage">
+            <svg id="airSyringe" viewBox="0 0 880 280" role="img" aria-label="주사기 단면"></svg>
+            <svg id="airScale" viewBox="0 0 880 600" role="img" aria-label="영점 조정된 저울"></svg>
+          </div>
+          <div class="air-sim-panel">
+            <div class="control-group">
+              <label class="control-label" for="airVolume"><span>내부 공간 부피 V<sub>내부</sub></span><b id="airVolumeOut">1.00 L</b></label>
+              <input id="airVolume" type="range" min="0.1" max="2" step="0.05" value="1" />
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="airAmount"><span>넣은 공기량 (대기압 환산)</span><b id="airAmountOut">1.00 L</b></label>
+              <input id="airAmount" type="range" min="0" max="4" step="0.05" value="1" />
+            </div>
+            <div class="air-readout">
+              <div><span>내부 기체 밀도</span><b id="airRhoOut">1.204 g/L</b></div>
+              <div><span>기체 질량</span><b id="airMassOut">1.204 g</b></div>
+              <div><span>부력</span><b id="airBuoyOut">−1.204 g</b></div>
+            </div>
+            <div class="chip-row" id="airPresets"></div>
+            <p class="air-verdict" id="airVerdict"></p>
+            <div class="formula" id="airEquation">Δ = 1.00 L × ( 1.204 − 1.204 ) g/L = +0.000 g</div>
+            <div class="legend">
+              <span><i style="background:#7a7f95"></i>변화 없음</span>
+              <span><i style="background:#5fa8e0"></i>희박 · 진공</span>
+              <span><i style="background:#e878a8"></i>압축 · 정답</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>집에서 재현하기</h2><p>주사기 안에 압축 상태를 유지하려면 피스톤을 계속 붙잡아야 하고, 손을 대면 그 힘이 저울에 실립니다. 부피가 고정된 단단한 용기가 필요합니다.</p></div>
+        <ol class="steps">
+          <li><div><strong>1 L 탄산음료 페트병을 준비합니다</strong><p>병째로 저울에 올리고 영점을 맞춥니다.</p></div></li>
+          <li><div><strong>100 mL 주사기로 10번 펌프합니다</strong><p>짧은 실리콘 튜브와 체크밸브로 연결하면 공기가 새지 않습니다. 공기 1 L가 더 들어가 내부는 2기압이 됩니다.</p></div></li>
+          <li><div><strong>+1.204 g을 읽습니다</strong><p>저울은 0.001 g / 200 g급이면 충분합니다.</p></div></li>
+        </ol>
+        <p class="science-caution warn"><strong>압축 실험에는 손상 없는 탄산음료용 페트병과 보안경을 사용하고, 병의 허용 압력을 넘기지 마세요.</strong> 일반 생수병은 부풀거나 파손될 수 있어 적합하지 않습니다. 병이 5 mL 부풀면 측정값은 약 −0.5%, 10 mL면 −1.0%, 20 mL면 −2.0% 작아집니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>한눈에 보기</h2></div>
+        <div class="table-scroll">
+          <table class="compare-table">
+            <thead><tr><th>상태</th><th>내부 부피</th><th>내부 기체</th><th>Δ</th></tr></thead>
+            <tbody>
+              <tr><td>빈 주사기 (영점)</td><td class="num">0 L</td><td class="num">—</td><td class="num v-zero">기준</td></tr>
+              <tr><td>노즐 열고 1 L 흡입 후 밀봉</td><td class="num">1 L</td><td class="num">1.204 g</td><td class="num v-zero">± 0.000 g</td></tr>
+              <tr><td>노즐 막고 1 L까지 당김 (진공)</td><td class="num">1 L</td><td class="num">0 g</td><td class="num v-neg">− 1.204 g</td></tr>
+              <tr><td>1 L 흡입 → 0.5 L로 압축</td><td class="num">0.5 L</td><td class="num">1.204 g</td><td class="num v-pos">+ 0.602 g</td></tr>
+              <tr><td>1 L 공간에 공기 2 L 주입</td><td class="num">1 L</td><td class="num">2.408 g</td><td class="num v-pos">+ 1.204 g</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="science-caution">그 가벼운 공기가, 손바닥 하나(약 100 cm²) 위로만 <strong>100 kg</strong>씩 쌓여 있습니다. 교실 하나(7×8×3 m)의 공기는 약 200 kg, 지구 대기 전체는 약 5,100조 톤입니다. 우리가 못 느끼는 건 공기가 사방에서 똑같이 누르고 몸 안에서도 같은 압력으로 밀어내기 때문입니다. 그리고 오늘 본 것처럼 — <strong>저울조차 그 무게를 그냥은 보지 못합니다.</strong></p>
+        <div class="sources">
+          <p>ρ<sub>대기</sub> = 1.204 g/L (20 ℃, 101.325 kPa) 기준 · 모든 값은 Δ = V<sub>내부</sub>(ρ<sub>안쪽</sub> − ρ<sub>바깥</sub>)로 계산했습니다.<br />
+          색의 뜻은 채널 전체에서 하나로 유지합니다 — 회색=변화 없음 · 시안=희박·진공 · 핑크=압축·정답</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>물리학 · 공기의 무게</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/" aria-current="true"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
