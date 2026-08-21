@@ -132,9 +132,14 @@
     .script{font-size:18px} .tc{margin-left:0;width:100%} .timer{margin-left:0}
     .kv{grid-template-columns:1fr}
   }
+  .page-nav,.site-footer,.mobile-nav{max-width:960px;margin:0 auto;padding:15px 22px;display:flex;gap:18px}
+  .page-nav{justify-content:space-between;border-bottom:1px solid var(--line);font-size:13px}
+  .site-footer,.mobile-nav{justify-content:center;border-top:1px solid var(--line);font-size:13px;color:var(--grey)}
 </style>
 </head>
 <body>
+<nav class="page-nav" aria-label="작업본 메뉴"><a href="../">← 과학 수첩</a><a href="../raindrop-shape/">빗방울 문서</a></nav>
+<main>
 <div class="wrap">
 
 <header>
@@ -223,6 +228,9 @@
 </div>
 
 </div>
+</main>
+<footer class="site-footer">8월 6일 이후 제작한 빗방울 영상의 나레이션 작업본</footer>
+<nav class="mobile-nav" aria-label="빠른 이동"><a href="../">홈</a><a href="../learn/">전체 문서</a></nav>
 
 <script>
 const T = 0.35;
