@@ -20,9 +20,14 @@
     .assumption-card b { display: block; color: var(--physics); font-size: .82rem; }
     .assumption-card strong { display: block; margin: 15px 0 8px; font-size: 1.08rem; }
     .assumption-card p { margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.6; }
-    .shell-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .shell-explainer { display: grid; grid-template-columns: minmax(340px, .9fr) minmax(0, 1.15fr); gap: 24px; align-items: start; }
+    .shell-diagram { position: sticky; top: 90px; margin: 0; padding: 22px; border: 1px solid var(--line); border-radius: 26px; background: linear-gradient(160deg, #071526, #102d46); box-shadow: 0 18px 45px rgba(16, 36, 62, .16); }
+    .shell-diagram svg { display: block; width: 100%; height: auto; }
+    .shell-diagram figcaption { margin-top: 12px; color: #c4daee; font-size: .86rem; line-height: 1.6; }
+    .shell-steps { display: grid; gap: 16px; }
+    .shell-steps, .derivation-card, .motion-layout > *, .formula-panel { min-width: 0; }
     .derivation-card { padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: #fff; }
-    .derivation-card h3 { margin: 14px 0 10px; font-size: 1.08rem; }
+    .derivation-card h3 { margin: 14px 0 10px; font-size: 1.12rem; }
     .derivation-card p { margin: 0; color: var(--muted); line-height: 1.7; }
     .step-badge { display: inline-grid; place-items: center; min-width: 34px; height: 34px; padding: 0 10px; border-radius: 999px; color: #fff; background: var(--physics); font-size: .82rem; font-weight: 800; }
     .shell-result { margin-top: 18px; padding: 24px; border: 1px solid #b9d5ff; border-radius: 22px; background: #eef5ff; }
@@ -33,7 +38,12 @@
     .motion-figure svg { display: block; width: 100%; height: 100%; min-height: 360px; }
     .formula-panel { padding: 26px; border: 1px solid var(--line); border-radius: 24px; background: #fff; }
     .formula-panel h2 { margin-top: 0; }
-    .formula { overflow-x: auto; margin: 15px 0; padding: 14px 16px; border-radius: 13px; color: #263b94; background: var(--physics-soft); font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: nowrap; }
+    .math-display { position: relative; display: flex; align-items: center; justify-content: center; min-height: 72px; margin: 15px 0 0; padding: 14px 50px 14px 18px; border: 1px solid #d9e3fb; border-radius: 15px; color: #173b9d; background: linear-gradient(135deg, #eef3ff, #e7efff); overflow-x: auto; }
+    .math-display math { flex: 0 0 auto; font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif; font-size: clamp(1.05rem, 1.8vw, 1.28rem); }
+    .math-display[data-eq]::after { content: attr(data-eq); position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #8090b8; font: 700 .76rem/1 ui-sans-serif, system-ui, sans-serif; }
+    .math-display.compact { min-height: 62px; }
+    .math-group { display: grid; gap: 10px; margin-top: 16px; }
+    .math-group .math-display { margin-top: 0; }
     .result-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
     .result-card { margin: 0; min-height: 145px; padding: 20px; border-radius: 18px; background: #fff; }
     .result-card span { color: var(--muted); font-size: .82rem; }
@@ -47,12 +57,16 @@
     .condition-note p { margin: 0; color: #4e596b; line-height: 1.65; }
     .source-note { margin-top: 22px; color: var(--muted); font-size: .9rem; line-height: 1.7; }
     @media (max-width: 900px) {
-      .motion-layout { grid-template-columns: 1fr; }
-      .key-list, .shell-grid { grid-template-columns: 1fr; }
+      .motion-layout, .shell-explainer { grid-template-columns: 1fr; }
+      .shell-diagram { position: static; max-width: 620px; margin-inline: auto; }
+      .key-list { grid-template-columns: 1fr; }
       .assumption-grid, .result-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 560px) {
       .assumption-grid, .result-grid, .condition-note { grid-template-columns: 1fr; }
+      .shell-diagram, .derivation-card, .shell-result { padding: 18px; border-radius: 19px; }
+      .math-display { justify-content: flex-start; min-height: 64px; padding: 12px 40px 12px 14px; }
+      .math-display math { font-size: 1rem; }
       .motion-figure { min-height: 340px; padding: 14px; }
       .motion-figure svg { min-height: 300px; }
     }
@@ -110,32 +124,80 @@
           <h2>구각 안쪽의 중력이 왜 0인지 직접 적분합니다</h2>
           <p>반지름 <em>a</em>, 표면질량밀도 <em>σ</em>인 얇은 구각을 생각합니다. 관찰점 <em>P</em>는 중심에서 <em>r</em>만큼 떨어져 있고, 먼저 <em>r &lt; a</em>인 내부를 계산합니다.</p>
         </div>
-        <div class="shell-grid">
-          <article class="derivation-card">
-            <span class="step-badge">1단계</span>
-            <h3>같은 위도의 고리를 잡습니다</h3>
-            <p>중심축과 각 <em>θ</em>를 이루는 작은 고리의 면적과 질량, 고리에서 <em>P</em>까지의 거리는 다음과 같습니다.</p>
-            <div class="formula">dm = σ · 2πa² sinθ dθ</div>
-            <div class="formula">s² = a² + r² − 2ar cosθ</div>
-          </article>
-          <article class="derivation-card">
-            <span class="step-badge">2단계</span>
-            <h3>중력 퍼텐셜을 적분합니다</h3>
-            <p>고리 전체는 <em>P</em>에서 같은 거리 <em>s</em>에 있으므로 퍼텐셜을 먼저 더하면 벡터 성분을 따로 나눌 필요가 없습니다.</p>
-            <div class="formula">Φ(r) = −2πGσa² ∫₀<sup>π</sup> sinθ dθ / s</div>
-            <div class="formula">sinθ dθ / s = ds / ar</div>
-          </article>
-          <article class="derivation-card">
-            <span class="step-badge">3단계</span>
-            <h3>적분 구간을 거리로 바꿉니다</h3>
-            <p><em>θ</em>가 0에서 <em>π</em>로 갈 때 내부점에서 구각까지의 거리는 <em>a−r</em>에서 <em>a+r</em>로 변합니다.</p>
-            <div class="formula">Φ(r) = −2πGσa/r [s]₍a−r₎<sup>a+r</sup></div>
-            <div class="formula">Φ(r) = −4πGσa = −GM<sub>shell</sub>/a</div>
-          </article>
+        <div class="shell-explainer">
+          <figure class="shell-diagram">
+            <svg viewBox="0 0 520 440" role="img" aria-labelledby="shellDiagramTitle shellDiagramDesc">
+              <title id="shellDiagramTitle">얇은 구각과 고리 질량 요소의 기하</title>
+              <desc id="shellDiagramDesc">구각 중심 O, 내부 관찰점 P, 각도 세타에 놓인 고리 위 질량 요소 dm과 세 거리 a, r, s의 관계</desc>
+              <defs>
+                <radialGradient id="shellInterior" cx="42%" cy="42%" r="60%"><stop offset="0" stop-color="#194365"/><stop offset=".72" stop-color="#0d2942"/><stop offset="1" stop-color="#071522"/></radialGradient>
+                <linearGradient id="shellRim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ce8ff"/><stop offset=".55" stop-color="#46bfe8"/><stop offset="1" stop-color="#2478c8"/></linearGradient>
+                <filter id="pointGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <circle cx="240" cy="210" r="170" fill="url(#shellInterior)" stroke="url(#shellRim)" stroke-width="7"/>
+              <circle cx="240" cy="210" r="157" fill="none" stroke="#72d7f7" stroke-width="1.5" opacity=".22"/>
+              <line x1="60" y1="210" x2="430" y2="210" stroke="#8aa9c2" stroke-width="2" stroke-dasharray="7 8" opacity=".55"/>
+              <ellipse cx="349" cy="210" rx="23" ry="130" fill="#67d8ff" fill-opacity=".08" stroke="#6fddff" stroke-width="3"/>
+              <path d="M349 80 A23 130 0 0 1 372 210" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".9"/>
+              <line x1="240" y1="210" x2="349" y2="80" stroke="#71dbff" stroke-width="3"/>
+              <line x1="240" y1="210" x2="320" y2="210" stroke="#ffd66b" stroke-width="5" stroke-linecap="round"/>
+              <line x1="320" y1="210" x2="349" y2="80" stroke="#ff7ea3" stroke-width="4" stroke-linecap="round"/>
+              <path d="M283 210 A43 43 0 0 0 268 177" fill="none" stroke="#fff" stroke-width="3"/>
+              <circle cx="240" cy="210" r="7" fill="#fff"/>
+              <circle cx="320" cy="210" r="10" fill="#ffd66b" stroke="#fff" stroke-width="3" filter="url(#pointGlow)"/>
+              <circle cx="349" cy="80" r="9" fill="#ff7ea3" stroke="#fff" stroke-width="3" filter="url(#pointGlow)"/>
+              <g font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif" font-weight="800">
+                <text x="220" y="235" fill="#fff" font-size="17">O</text>
+                <text x="311" y="238" fill="#ffd66b" font-size="17">P</text>
+                <text x="362" y="72" fill="#ffafc5" font-size="16">dm</text>
+                <text x="288" y="142" fill="#72dcff" font-size="20" font-style="italic">a</text>
+                <text x="275" y="200" fill="#ffe391" font-size="20" font-style="italic">r</text>
+                <text x="346" y="147" fill="#ffadc3" font-size="20" font-style="italic">s</text>
+                <text x="281" y="181" fill="#fff" font-size="20" font-style="italic">θ</text>
+                <text x="382" y="278" fill="#8be3ff" font-size="15">같은 θ의 고리</text>
+              </g>
+              <g transform="translate(54 392)" font-family="Malgun Gothic, Apple SD Gothic Neo, sans-serif" font-size="14">
+                <circle cx="0" cy="0" r="5" fill="#72dcff"/><text x="12" y="5" fill="#cfeeff">a: 구각 반지름</text>
+                <circle cx="150" cy="0" r="5" fill="#ffd66b"/><text x="162" y="5" fill="#fff0ba">r: 중심에서 P까지</text>
+                <circle cx="326" cy="0" r="5" fill="#ff7ea3"/><text x="338" y="5" fill="#ffd0dc">s: dm에서 P까지</text>
+              </g>
+            </svg>
+            <figcaption>구각을 같은 <em>θ</em>를 가진 얇은 고리들로 나눕니다. 고리 위 모든 질량 요소는 관찰점 <em>P</em>에서 같은 거리 <em>s</em>에 있습니다.</figcaption>
+          </figure>
+          <div class="shell-steps">
+            <article class="derivation-card">
+              <span class="step-badge">1단계</span>
+              <h3>같은 위도의 고리를 잡습니다</h3>
+              <p>고리의 면적에 표면질량밀도 <em>σ</em>를 곱해 질량 요소를 만들고, 코사인 법칙으로 거리 <em>s</em>를 씁니다.</p>
+              <div class="math-group">
+                <div class="math-display" data-eq="(1)"><math display="block" aria-label="dm equals sigma dA equals sigma times 2 pi a squared sine theta d theta"><mrow><mi>d</mi><mi>m</mi><mo>=</mo><mi>σ</mi><mi>d</mi><mi>A</mi><mo>=</mo><mi>σ</mi><mo>(</mo><mn>2</mn><mi>π</mi><msup><mi>a</mi><mn>2</mn></msup><mi mathvariant="normal">sin</mi><mi>θ</mi><mi>d</mi><mi>θ</mi><mo>)</mo></mrow></math></div>
+                <div class="math-display compact" data-eq="(2)"><math display="block" aria-label="s squared equals a squared plus r squared minus 2 a r cosine theta"><mrow><msup><mi>s</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>r</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>a</mi><mi>r</mi><mi mathvariant="normal">cos</mi><mi>θ</mi></mrow></math></div>
+              </div>
+            </article>
+            <article class="derivation-card">
+              <span class="step-badge">2단계</span>
+              <h3>중력 퍼텐셜을 적분합니다</h3>
+              <p>고리 전체가 <em>P</em>에서 같은 거리 <em>s</em>에 있으므로, 방향이 있는 힘보다 스칼라인 퍼텐셜을 먼저 더합니다.</p>
+              <div class="math-group">
+                <div class="math-display" data-eq="(3)"><math display="block" aria-label="Phi of r equals minus G integral dm over s equals minus 2 pi G sigma a squared integral from 0 to pi of sine theta over s d theta"><mtable columnalign="left" rowspacing=".35em"><mtr><mtd><mrow><mi>Φ</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mo>−</mo><mi>G</mi><msub><mo>∫</mo><mtext>shell</mtext></msub><mfrac><mrow><mi>d</mi><mi>m</mi></mrow><mi>s</mi></mfrac></mrow></mtd></mtr><mtr><mtd><mrow><mo>=</mo><mo>−</mo><mn>2</mn><mi>π</mi><mi>G</mi><mi>σ</mi><msup><mi>a</mi><mn>2</mn></msup><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mfrac><mrow><mi mathvariant="normal">sin</mi><mi>θ</mi></mrow><mi>s</mi></mfrac><mi>d</mi><mi>θ</mi></mrow></mtd></mtr></mtable></math></div>
+                <div class="math-display compact" data-eq="(4)"><math display="block" aria-label="2 s ds equals 2 a r sine theta d theta, therefore sine theta d theta over s equals ds over a r"><mtable columnalign="left" rowspacing=".35em"><mtr><mtd><mrow><mn>2</mn><mi>s</mi><mi>d</mi><mi>s</mi><mo>=</mo><mn>2</mn><mi>a</mi><mi>r</mi><mi mathvariant="normal">sin</mi><mi>θ</mi><mi>d</mi><mi>θ</mi></mrow></mtd></mtr><mtr><mtd><mrow><mo>⇒</mo><mspace width=".5em"/><mfrac><mrow><mi mathvariant="normal">sin</mi><mi>θ</mi><mi>d</mi><mi>θ</mi></mrow><mi>s</mi></mfrac><mo>=</mo><mfrac><mrow><mi>d</mi><mi>s</mi></mrow><mrow><mi>a</mi><mi>r</mi></mrow></mfrac></mrow></mtd></mtr></mtable></math></div>
+              </div>
+            </article>
+            <article class="derivation-card">
+              <span class="step-badge">3단계</span>
+              <h3>적분 구간을 거리로 바꿉니다</h3>
+              <p>내부점에서는 <em>θ: 0 → π</em>일 때 <em>s: a−r → a+r</em>입니다. 적분 결과에서 <em>r</em>이 사라집니다.</p>
+              <div class="math-group">
+                <div class="math-display" data-eq="(5)"><math display="block" aria-label="Phi of r equals minus 2 pi G sigma a over r times integral from a minus r to a plus r ds"><mrow><mi>Φ</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mo>−</mo><mfrac><mrow><mn>2</mn><mi>π</mi><mi>G</mi><mi>σ</mi><mi>a</mi></mrow><mi>r</mi></mfrac><msubsup><mo>∫</mo><mrow><mi>a</mi><mo>−</mo><mi>r</mi></mrow><mrow><mi>a</mi><mo>+</mo><mi>r</mi></mrow></msubsup><mi>d</mi><mi>s</mi></mrow></math></div>
+                <div class="math-display" data-eq="(6)"><math display="block" aria-label="Phi of r equals minus 4 pi G sigma a equals minus G M shell over a"><mrow><mi>Φ</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mo>−</mo><mn>4</mn><mi>π</mi><mi>G</mi><mi>σ</mi><mi>a</mi><mo>=</mo><mo>−</mo><mfrac><mrow><mi>G</mi><msub><mi>M</mi><mtext>shell</mtext></msub></mrow><mi>a</mi></mfrac></mrow></math></div>
+              </div>
+            </article>
+          </div>
         </div>
         <div class="shell-result">
           <h3>결론: 내부 퍼텐셜은 위치 <em>r</em>과 무관합니다</h3>
           <p><em>M</em><sub>shell</sub> = 4πa²σ이므로 구각 내부의 퍼텐셜은 어디서나 같은 상수입니다. 따라서 <strong>g(r) = −dΦ/dr = 0</strong>입니다. 반대로 <em>r &gt; a</em>에서는 적분 구간이 <em>r−a</em>부터 <em>r+a</em>가 되어 <strong>Φ(r) = −GM<sub>shell</sub>/r</strong>가 됩니다. 즉 구각 바깥에서는 모든 질량이 중심에 모인 것처럼 작용합니다.</p>
+          <div class="math-display" data-eq="(7)"><math display="block" aria-label="g inside of r equals minus derivative of Phi with respect to r equals 0"><mrow><msub><mi>g</mi><mtext>inside</mtext></msub><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mo>−</mo><mfrac><mrow><mi>d</mi><mi>Φ</mi></mrow><mrow><mi>d</mi><mi>r</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow></math></div>
         </div>
       </div>
     </section>
@@ -171,12 +233,11 @@
           <p class="eyebrow">원리</p>
           <h2>구각 정리에서 복원력까지</h2>
           <p>현재 위치보다 바깥쪽 구각은 모두 0을 기여합니다. 균일 밀도 <em>ρ</em>에서 반지름 <em>r</em> 안쪽의 질량만 합치면 다음과 같습니다.</p>
-          <div class="formula">M(r) = (4/3)πρr³ = M(r/R)<sup>3</sup></div>
-          <div class="formula">a(r) = −GM(r)/r² = −(GM/R³)r</div>
-          <div class="formula">g<sub>0</sub> = GM/R²  ⇒  a(r) = −(g<sub>0</sub>/R)r</div>
+          <div class="math-display" data-eq="(8)"><math display="block" aria-label="M of r equals four pi over three rho r cubed equals M times r over R cubed"><mrow><mi>M</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mn>4</mn><mi>π</mi></mrow><mn>3</mn></mfrac><mi>ρ</mi><msup><mi>r</mi><mn>3</mn></msup><mo>=</mo><mi>M</mi><msup><mrow><mo>(</mo><mfrac><mi>r</mi><mi>R</mi></mfrac><mo>)</mo></mrow><mn>3</mn></msup></mrow></math></div>
+          <div class="math-display" data-eq="(9)"><math display="block" aria-label="a of r equals minus G M of r over r squared equals minus G M over R cubed times r equals minus g zero over R times r"><mtable columnalign="left" rowspacing=".35em"><mtr><mtd><mrow><mi>a</mi><mo>(</mo><mi>r</mi><mo>)</mo><mo>=</mo><mo>−</mo><mfrac><mrow><mi>G</mi><mi>M</mi><mo>(</mo><mi>r</mi><mo>)</mo></mrow><msup><mi>r</mi><mn>2</mn></msup></mfrac></mrow></mtd></mtr><mtr><mtd><mrow><mo>=</mo><mo>−</mo><mfrac><mrow><mi>G</mi><mi>M</mi></mrow><msup><mi>R</mi><mn>3</mn></msup></mfrac><mi>r</mi><mo>=</mo><mo>−</mo><mfrac><msub><mi>g</mi><mn>0</mn></msub><mi>R</mi></mfrac><mi>r</mi></mrow></mtd></mtr></mtable></math></div>
           <p>가속도가 중심에서의 거리에 비례하고 방향은 항상 중심 쪽이므로 단순 조화 운동입니다.</p>
-          <div class="formula">d²r/dt² + (g<sub>0</sub>/R)r = 0</div>
-          <div class="formula">r(t) = R cos(ωt),  ω = √(g<sub>0</sub>/R)</div>
+          <div class="math-display" data-eq="(10)"><math display="block" aria-label="second derivative of r with respect to t plus g zero over R times r equals zero"><mrow><mfrac><mrow><msup><mi>d</mi><mn>2</mn></msup><mi>r</mi></mrow><mrow><mi>d</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><msub><mi>g</mi><mn>0</mn></msub><mi>R</mi></mfrac><mi>r</mi><mo>=</mo><mn>0</mn></mrow></math></div>
+          <div class="math-display" data-eq="(11)"><math display="block" aria-label="r of t equals R cosine omega t, omega equals square root of g zero over R"><mrow><mi>r</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mi>R</mi><mi mathvariant="normal">cos</mi><mo>(</mo><mi>ω</mi><mi>t</mi><mo>)</mo><mo>,</mo><mspace width="1em"/><mi>ω</mi><mo>=</mo><msqrt><mfrac><msub><mi>g</mi><mn>0</mn></msub><mi>R</mi></mfrac></msqrt></mrow></math></div>
           <p class="source-note">R = 6,371 km, g<sub>0</sub> = 9.80665 m/s²를 쓰면 ω = 0.00124067 s⁻¹입니다. 중심에서는 위 식의 극한으로 가속도가 0이 됩니다.</p>
         </div>
       </div>
