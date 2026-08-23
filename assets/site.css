@@ -13,6 +13,8 @@
   --biology-soft: #e5f6ef;
   --earth: #b65d20;
   --earth-soft: #fff0e4;
+  --math: #0f7d8c;
+  --math-soft: #e2f4f7;
   --everyday: #a66f00;
   --everyday-soft: #fff3c9;
   --success: #16835a;
@@ -137,6 +139,7 @@ main p, main li, main td, main th, main figcaption, main section, main div { ove
 .tag.chemistry { color: #593299; background: var(--chemistry-soft); }
 .tag.biology { color: #16694b; background: var(--biology-soft); }
 .tag.earth { color: #8a4216; background: var(--earth-soft); }
+.tag.math { color: #0b5b66; background: var(--math-soft); }
 .tag.everyday { color: #735000; background: var(--everyday-soft); }
 .tag.neutral { color: #545e70; background: #f0efea; }
 .feature-copy .tag { color: #dce2ff; background: rgba(255,255,255,.1); }
