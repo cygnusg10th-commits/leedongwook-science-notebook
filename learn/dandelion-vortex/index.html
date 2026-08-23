@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="민들레 갓털은 투영 면적의 91.6%가 빈 공간입니다. 바로 그 구멍 때문에 갓털 뒤에 붙지도 떠내려가지도 않는 소용돌이 고리가 멈춰 섭니다. 분리 와류환과 임계 공극률 0.93을 확인합니다." />
+  <title>민들레 홀씨는 구멍투성이인데 왜 더 잘 뜰까? | 과학 수첩</title>
+  <meta property="og:title" content="민들레 홀씨는 구멍투성이인데 왜 더 잘 뜰까?" />
+  <meta property="og:description" content="낙하산은 공기를 막아서 뜹니다. 민들레는 통과시켜서 뜹니다. 정반대입니다." />
+  <meta property="og:image" content="video/dandelion-vortex-poster.jpg" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260822-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <style>
+    .dandelion-hero h1 { max-width: 780px; }
+    .video-layout { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 42px; align-items: center; }
+    .shorts-frame { position: relative; width: min(100%, 400px); margin: 0 auto; padding: 10px; border-radius: 34px; background: #0d1626; box-shadow: 0 22px 60px rgba(14, 28, 52, .24); }
+    .shorts-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 25px; background: #0d1626; }
+    .video-note { margin: 14px 0 0; color: var(--muted); font-size: .92rem; text-align: center; }
+    .key-list { display: grid; gap: 14px; margin: 24px 0 0; }
+    .key-item { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; padding: 18px; border: 1px solid #dfe5f4; border-radius: 18px; background: #fff; }
+    .key-number { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #fff; background: var(--physics); font-weight: 800; }
+    .key-item strong { display: block; margin-bottom: 5px; color: var(--navy); }
+    .key-item p { margin: 0; color: var(--muted); }
+
+    .data-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; background: #fff; box-shadow: 0 12px 36px rgba(30, 51, 80, .08); }
+    .data-table th, .data-table td { padding: 15px 18px; border-bottom: 1px solid #e9ecf4; text-align: left; }
+    .data-table th { color: var(--navy); background: var(--physics-soft); font-size: .92rem; }
+    .data-table td b { font-variant-numeric: tabular-nums; color: var(--navy); }
+    .data-table tr:last-child td { border-bottom: 0; }
+    .table-note { margin: 10px 2px 0; color: var(--muted); font-size: .88rem; }
+
+    .science-caution { margin-top: 22px; padding: 18px 20px; border-left: 5px solid var(--physics); border-radius: 12px; background: var(--physics-soft); color: #26365e; }
+    .science-caution strong { color: #263b94; }
+
+    .figure-card { margin: 0; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: #10141e; box-shadow: var(--shadow); }
+    .figure-card img { display: block; width: 100%; }
+    .figure-card figcaption { padding: 14px 18px; color: var(--muted); background: #fff; font-size: .92rem; line-height: 1.6; }
+
+    .formula-box { margin: 22px 0; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; text-align: center; }
+    .formula-box code { font-size: 1.02rem; color: var(--navy); }
+    .formula-box .result { display: block; margin-top: 8px; color: var(--muted); font-size: .92rem; }
+    .formula-box .result b { color: var(--physics); }
+
+    .method-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .method-list li { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--muted); }
+    .method-list li strong { color: var(--navy); }
+
+    .legend-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 0; }
+    .swatch { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--muted); font-size: .88rem; }
+    .swatch i { width: 12px; height: 12px; border-radius: 50%; }
+
+    .more-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+    .more-card { padding: 20px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+    .more-card h3 { margin: 0 0 8px; color: var(--navy); font-size: 1.02rem; }
+    .more-card p { margin: 0; color: var(--muted); font-size: .94rem; }
+    .refs { color: var(--muted); font-size: .9rem; line-height: 1.85; }
+
+    @media (max-width: 820px) {
+      .video-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero dandelion-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>민들레 갓털의 와류</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag physics">힘과 유체</span><span class="tag neutral">1분 6초</span><span class="tag everyday">숏츠</span></div>
+      <h1>민들레 홀씨는 구멍투성이인데 왜 더 잘 뜰까?</h1>
+      <p>낙하산은 공기를 막아서 뜹니다. 그런데 민들레 갓털은 투영 면적의 91.6%가 빈 공간이고, 공기는 그 사이로 그냥 새어 나갑니다. 그런데도 더 잘 뜹니다. 정반대의 방법으로 같은 일을 해내는 셈입니다.</p>
+      <p class="table-note" style="margin-top:14px">「홀씨」는 원래 포자를 가리키는 말이라 식물학적으로는 정확하지 않습니다. 이 글에서 다루는 것은 <strong>갓털(관모)이 달린 씨앗, 즉 수과</strong>입니다. 제목은 굳어진 관용에 따랐습니다.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video controls playsinline preload="metadata" poster="video/dandelion-vortex-poster.jpg" aria-label="민들레 갓털의 분리 와류환 설명 영상">
+              <source src="video/dandelion-vortex.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="video-note">소리를 켜고 보세요. 1분 6초입니다.</p>
+        </div>
+        <div class="video-copy">
+          <p class="eyebrow">영상에서 확인할 세 가지</p>
+          <h2>구멍이 뚫려 있어서<br />더 잘 뜹니다</h2>
+          <div class="key-list">
+            <div class="key-item"><span class="key-number">1</span><div><strong>낙하산과 정반대다</strong><p>낙하산은 막아서 뜨고, 갓털은 통과시켜서 뜹니다. 강모 100개가 차지하는 면적은 전체의 8.4%뿐입니다.</p></div></div>
+            <div class="key-item"><span class="key-number">2</span><div><strong>갓털 뒤에 소용돌이가 멈춰 선다</strong><p>붙어 있지도, 떠내려가지도 않는 고리입니다. 2018년에 자연에서 처음 확인된 흐름입니다.</p></div></div>
+            <div class="key-item"><span class="key-number">3</span><div><strong>흔들리는 한계선 바로 앞이다</strong><p>더 촘촘하면 고리가 진동하며 떨어져 나가고, 더 성기면 공기가 그냥 지나갑니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>갓털은 거의 빈 공간이다</h2><p>먼저 크기를 봅니다. 손가락 한 마디만 한 이 구조가 1초에 39 cm씩 내려옵니다. 걷는 속도의 약 4분의 1입니다.</p></div>
+        <figure class="figure-card">
+          <img src="figures/pappus-anatomy.png" alt="민들레 갓털의 치수. 갓털 지름 13.8 mm, 강모 100개, 강모 길이 7.41 mm, 지름 16 마이크로미터, 공극률 0.916." loading="lazy" />
+          <figcaption>강모는 갓털 반지름과 거의 같은 길이여서 거의 수평으로 누워 있고, 끝이 허브보다 0.2 지름만큼만 올라옵니다. 그림의 강모 개수와 밀도는 공극률에서 계산한 값입니다.</figcaption>
+        </figure>
+        <table class="data-table" style="margin-top:26px">
+          <thead><tr><th>항목</th><th>측정값</th><th>비교</th></tr></thead>
+          <tbody>
+            <tr><td>갓털 지름</td><td><b>13.8 mm</b></td><td>손가락 한 마디</td></tr>
+            <tr><td>강모 개수</td><td><b>100개</b></td><td>95 ~ 106개</td></tr>
+            <tr><td>강모 길이 · 지름</td><td><b>7.41 mm · 16 μm</b></td><td>머리카락의 약 5분의 1 굵기</td></tr>
+            <tr><td>공극률</td><td><b>0.916</b></td><td>투영 면적의 91.6%가 빈 공간</td></tr>
+            <tr><td>종단속도</td><td><b>39.1 cm/s</b></td><td>걷는 속도의 약 4분의 1</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">Cummins et al. (2018)의 실측값입니다. 강모는 속이 50% 이상 비어 있어, 재료를 쓴 양은 이 수치보다도 더 적습니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>두 개의 레이놀즈수</h2><p>공기가 새어 나가는데도 왜 떠 있을까요. 답은 갓털 전체가 아니라 <strong>강모 한 가닥</strong>의 크기에 있습니다.</p></div>
+        <table class="data-table">
+          <thead><tr><th>기준 길이</th><th>레이놀즈수</th><th>그 스케일에서 벌어지는 일</th></tr></thead>
+          <tbody>
+            <tr><td>갓털 지름 13.8 mm</td><td><b>Re ≈ 350 ~ 430</b></td><td>후류에 큰 소용돌이가 생길 수 있는 영역</td></tr>
+            <tr><td>강모 지름 16 μm</td><td><b>Re<sub>f</sub> ≈ 0.42</b></td><td>점성이 관성을 압도 — 경계층이 두껍게 부푼다</td></tr>
+          </tbody>
+        </table>
+        <div class="formula-box">
+          <code>Re<sub>f</sub> = U · d / ν = 0.391 × 16×10⁻⁶ / 1.5×10⁻⁵ ≈ 0.42</code>
+          <span class="result">강모 한 가닥의 레이놀즈수가 <b>1보다 작다</b>는 것이 이 이야기의 출발점입니다</span>
+        </div>
+        <p>레이놀즈수가 1보다 작으면 점성이 지배해 경계층이 강모 지름보다 훨씬 두껍게 자랍니다. 강모 사이 간격보다 껍질이 두꺼워지면 이웃한 껍질끼리 겹치고, 그 겹친 영역이 <strong>반쯤 열린 막</strong>처럼 작동합니다. 공기가 완전히 막히지도, 자유롭게 통과하지도 않는 상태입니다.</p>
+        <p class="science-caution"><strong>이 중간 상태가 핵심입니다.</strong> 완전히 막으면 후류가 불안정해지고, 완전히 통과시키면 붙잡을 것이 없습니다. 갓털은 공기를 <em>느리게 통과시키는</em> 쪽을 택했습니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>분리 와류환 — 공중에 못 박힌 소용돌이</h2><p>느려진 채로 빠져나간 공기는 갓털 뒤에서 고리 모양으로 말립니다. 그리고 그 고리가 <strong>그 자리에 멈춰 섭니다.</strong></p></div>
+        <figure class="figure-card">
+          <img src="figures/svr-anatomy.png" alt="민들레 갓털 뒤의 분리 와류환. 주황색이 고리에 갇힌 공기, 갓털에서 0.22 지름만큼 떨어져 있고 고리 길이는 갓털 지름 한 개분이다." loading="lazy" />
+          <figcaption>주황색 입자는 궤적이 재순환 영역을 벗어나지 못하는, 즉 고리에 갇힌 공기입니다. 흰 궤적은 그중 한 덩이를 따라간 것입니다.</figcaption>
+        </figure>
+        <p style="margin-top:24px">보통 물체 뒤의 소용돌이는 둘 중 하나입니다. 몸체에 <strong>붙어</strong> 있거나, 떨어져 나가 하류로 <strong>흘러가거나</strong>. 민들레의 고리는 둘 다 아닙니다. 갓털에서 떨어져 있으면서, 흘러가지도 않고 일정한 거리에 정지합니다. 논문은 이것을 <em>“유체에 잠긴 물체 주위 흐름의 새로운 분류”</em>라고 표현했습니다.</p>
+        <table class="data-table" style="margin-top:22px">
+          <thead><tr><th>고리의 성질</th><th>값</th><th>뜻</th></tr></thead>
+          <tbody>
+            <tr><td>갓털 끝과의 간격</td><td><b>약 0.22 D</b></td><td>붙어 있지 않다 — 그래서 “분리”</td></tr>
+            <tr><td>흐름 방향 길이</td><td><b>약 1.0 D</b></td><td>갓털 지름 한 개분</td></tr>
+            <tr><td>축 방향 최대 역류</td><td><b>−10 %U</b></td><td>고리 한가운데서는 공기가 거꾸로 내려온다</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">D는 갓털 지름(13.8 mm), U는 자유류 속도(종단속도 39.1 cm/s)입니다. 위 그림의 유동장은 이 세 값에 맞춰 보정한 모형으로 그렸습니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>왜 하필 0.92인가</h2><p>공극률만 바꿔 보면 답이 보입니다. 민들레의 값은 우연이 아니라 <strong>흔들리기 시작하는 한계선 바로 앞</strong>입니다.</p></div>
+        <figure class="figure-card">
+          <img src="figures/porosity-three-states.png" alt="공극률 0.50, 0.92, 0.99 세 상태의 후류 비교. 0.50에서는 와류가 진동하며 떨어져 나가고, 0.92에서만 고리가 멈춰 서며, 0.99에서는 공기가 그대로 지나간다." loading="lazy" />
+          <figcaption>같은 모형에 공극률만 바꿔 넣은 것입니다. 세 그림 모두 같은 함수를 같은 방식으로 호출했고, 달라진 값은 공극률 하나뿐입니다.</figcaption>
+        </figure>
+        <div class="legend-row">
+          <span class="swatch"><i style="background:#e0a458"></i>주황 — 고리에 갇힌 공기</span>
+          <span class="swatch"><i style="background:#e878a8"></i>분홍 — 민들레 갓털</span>
+          <span class="swatch"><i style="background:#7a7f95"></i>회색 — 너무 촘촘</span>
+          <span class="swatch"><i style="background:#5fa8e0"></i>시안 — 너무 성김</span>
+        </div>
+        <p style="margin-top:24px">Ledda 등(2019)은 다공 원반 주위 흐름의 선형 안정성을 풀어, <strong>공극률이 약 0.93을 넘으면 모든 레이놀즈수에서 후류가 정상·축대칭으로 유지된다</strong>는 결과를 얻었습니다. 그보다 촘촘하면 임계 레이놀즈수를 넘는 순간 와류가 진동하며 떨어져 나갑니다.</p>
+        <p class="science-caution"><strong>숫자를 단정하지는 마세요.</strong> Cummins의 실측 공극률은 0.916, Ledda의 임계값은 0.93입니다. 두 값은 정의와 모형이 조금 다르므로 소수점 둘째 자리로 대소를 따지는 것은 의미가 없습니다. 확실한 것은 <em>민들레가 안정성이 무너지는 문턱 근처에 있고, 그 바로 앞에서 항력을 최대로 끌어냈다</em>는 쪽입니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>“항력 네 배”는 무엇에 대한 네 배인가</h2><p>가장 자주 잘못 인용되는 대목입니다. 기준을 정하지 않으면 같은 사실이 정반대로 읽힙니다.</p></div>
+        <p>종단속도 39.1 cm/s에서 지름 13.8 mm 갓털과 <strong>같은 항력</strong>을 내는 막힌 원반의 지름은 8.6 mm입니다. 이 하나의 사실을 두 가지 기준으로 나눠 보면 이렇게 갈립니다.</p>
+        <table class="data-table" style="margin-top:22px">
+          <thead><tr><th>기준</th><th>갓털</th><th>같은 항력의 막힌 원반</th><th>비</th></tr></thead>
+          <tbody>
+            <tr><td>지름</td><td><b>13.8 mm</b></td><td><b>8.6 mm</b></td><td>—</td></tr>
+            <tr><td>투영 면적</td><td><b>149.6 mm²</b></td><td><b>58.1 mm²</b></td><td>0.39배</td></tr>
+            <tr><td>실제 고체(재료) 면적</td><td><b>12.6 mm²</b></td><td><b>58.1 mm²</b></td><td><b>4.6배</b></td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">갓털의 고체 면적 = 투영 면적 149.6 mm² × (1 − 0.916) = 12.6 mm².</p>
+        <p class="science-caution"><strong>“단위 면적당 항력 네 배”는 재료 면적 기준입니다.</strong> 투영 면적으로 따지면 갓털이 오히려 불리합니다(0.39배). 민들레가 뛰어난 지점은 「같은 크기에서 더 큰 항력」이 아니라 <em>「같은 재료로 훨씬 큰 항력」</em>입니다. 강모가 속까지 절반 넘게 비어 있다는 점을 감안하면 격차는 더 벌어집니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>영상에 담지 못한 이야기</h2><p>1분짜리 숏츠에서는 넘어갔지만, 민들레의 비행에는 아직 세 갈래가 더 있습니다.</p></div>
+        <div class="more-grid">
+          <article class="more-card">
+            <h3>갓털은 날씨를 읽는다</h3>
+            <p>습해지면 갓털이 오므라들어 낙하속도가 2~3배 빨라지고, 씨앗이 잘 떨어지지도 않습니다. 씨앗 밑 원판의 조직들이 서로 다른 정도로 물을 먹으며 갓털을 접습니다. 분산 모형에 실제 기상 자료를 넣으면 중앙 분산거리가 3.9 m에서 4.8 m로 늘어납니다.</p>
+          </article>
+          <article class="more-card">
+            <h3>바람을 마주 본 씨앗이 먼저 떠난다</h3>
+            <p>2025년 연구에 따르면 씨앗의 부착 구조가 비대칭이어서, 당기는 방향에 따라 떨어지는 데 필요한 힘이 다릅니다. 결과적으로 씨앗은 무작위로 흩날리는 것이 아니라 바람 방향에 맞춰 순서대로 방출됩니다.</p>
+          </article>
+          <article class="more-card">
+            <h3>멀리 보내는 것은 바람이 아니다</h3>
+            <p>대부분의 씨앗은 2 m 안에 떨어집니다. 100 m를 넘는 것은 0.05% 남짓입니다. 그리고 그 장거리 비행을 결정하는 것은 수평 풍속이 아니라 <strong>상승기류</strong>입니다. 낙하속도 0.39 m/s는 여름 낮의 열기둥에 그대로 실려 올라가는 구간입니다.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>어떻게 확인했나</h2><p>영상과 그림의 유동장은 모두 계산으로 만들었고, 논문 값과 대조해 검산했습니다.</p></div>
+        <ul class="method-list">
+          <li><strong>유동 모형</strong> — 균일류에 Lamb–Oseen 와류환 코어를 겹친 축대칭 모형입니다. 계수는 논문의 세 값(축 방향 최대 역류 −10 %U, 재순환 길이 1.0 D, 갓털면 통과 유속)에 맞춰 보정했습니다.</li>
+          <li><strong>독립 검산</strong> — 보정에 쓰지 않은 지표 여덟 개를 따로 두어 통과 여부를 판정합니다. 갓털 끝과 고리 사이 간격, 막힌 원반에서는 반대로 붙어 있는지, 공극률에 따른 통과 유속의 단조성, 고리 위치의 시간 불변성 등입니다.</li>
+          <li><strong>갓털 렌더</strong> — 강모를 황금각으로 방위 배치한 뒤 앙각 14°로 투영해 3차원 돔으로 그립니다. 강모 개수는 공극률에 비례시켜, 그림의 밀도와 계산에 쓰인 공극률이 항상 같은 값을 가리키도록 했습니다.</li>
+          <li><strong>갇힌 공기의 판정</strong> — 소용돌이를 그려 넣지 않았습니다. 각 입자의 궤적을 실제로 적분해 재순환 영역을 벗어나지 못하는 것만 색을 입혔습니다. 고리 모양은 그 결과로 저절로 떠오른 것입니다.</li>
+        </ul>
+        <p class="refs" style="margin-top:26px">
+          참고: Cummins, Seale, Macente, Certini, Mastropaolo, Viola &amp; Nakayama (2018) <i>Nature</i> 562, 414 ·
+          Ledda, Siconolfi, Viola, Camarri &amp; Gallaire (2019) <i>Phys. Rev. Fluids</i> 4, 071901 ·
+          Seale et al. (2022) <i>eLife</i> 11, e81962 ·
+          Shields et al. (2025) <i>J. R. Soc. Interface</i> 22, 20250227 ·
+          Tackenberg, Poschlod &amp; Bonn (2003) <i>Plant Biol.</i> 5, 451
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>물리학 · 민들레 갓털의 와류</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>

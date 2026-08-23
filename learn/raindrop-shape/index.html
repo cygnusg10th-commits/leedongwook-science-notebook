@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="빗방울은 눈물방울 모양이 아닙니다. 위가 둥글고 아래가 눌린 실제 형상과 사선 잔상의 정체, 5 mm 부근의 분열을 Young–Laplace 방정식으로 확인합니다." />
+  <title>하늘에서 떨어지는 빗방울은 어떤 모양일까? | 과학 수첩</title>
+  <meta property="og:title" content="하늘에서 떨어지는 빗방울은 어떤 모양일까?" />
+  <meta property="og:description" content="우리가 그리는 비는 두 번 틀렸습니다. 사선은 잔상이고, 눈물방울은 앞뒤가 뒤집혀 있습니다." />
+  <meta property="og:image" content="video/raindrop-shape-poster.jpg" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260822-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <style>
+    .raindrop-hero h1 { max-width: 760px; }
+    .video-layout { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 42px; align-items: center; }
+    .shorts-frame { position: relative; width: min(100%, 400px); margin: 0 auto; padding: 10px; border-radius: 34px; background: #0d1626; box-shadow: 0 22px 60px rgba(14, 28, 52, .24); }
+    .shorts-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 25px; background: #0d1626; }
+    .video-note { margin: 14px 0 0; color: var(--muted); font-size: .92rem; text-align: center; }
+    .key-list { display: grid; gap: 14px; margin: 24px 0 0; }
+    .key-item { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; padding: 18px; border: 1px solid #efe3d4; border-radius: 18px; background: #fff; }
+    .key-number { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #fff; background: var(--earth); font-weight: 800; }
+    .key-item strong { display: block; margin-bottom: 5px; color: var(--navy); }
+    .key-item p { margin: 0; color: var(--muted); }
+
+    .data-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 18px; background: #fff; box-shadow: 0 12px 36px rgba(30, 51, 80, .08); }
+    .data-table th, .data-table td { padding: 15px 18px; border-bottom: 1px solid #eee7dc; text-align: left; }
+    .data-table th { color: var(--navy); background: var(--earth-soft); font-size: .92rem; }
+    .data-table td b { font-variant-numeric: tabular-nums; color: var(--navy); }
+    .data-table tr:last-child td { border-bottom: 0; }
+    .table-note { margin: 10px 2px 0; color: var(--muted); font-size: .88rem; }
+
+    .science-caution { margin-top: 22px; padding: 18px 20px; border-left: 5px solid var(--earth); border-radius: 12px; background: var(--earth-soft); color: #5c3a20; }
+    .science-caution strong { color: #8a4216; }
+
+    .figure-card { margin: 0; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: #10141e; box-shadow: var(--shadow); }
+    .figure-card img { display: block; width: 100%; }
+    .figure-card figcaption { padding: 14px 18px; color: var(--muted); background: #fff; font-size: .92rem; line-height: 1.6; }
+
+    .clip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .clip-grid figure { margin: 0; }
+    .clip-grid video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 20px; background: #0d1626; box-shadow: 0 14px 40px rgba(14, 28, 52, .2); }
+    .clip-grid figcaption { margin-top: 10px; color: var(--muted); font-size: .9rem; text-align: center; }
+
+    .formula-box { margin: 22px 0; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; text-align: center; }
+    .formula-box code { font-size: 1.02rem; color: var(--navy); }
+    .formula-box .result { display: block; margin-top: 8px; color: var(--muted); font-size: .92rem; }
+    .formula-box .result b { color: var(--earth); }
+
+    .method-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .method-list li { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--muted); }
+    .method-list li strong { color: var(--navy); }
+    .refs { color: var(--muted); font-size: .9rem; line-height: 1.85; }
+
+    @media (max-width: 820px) {
+      .video-layout { grid-template-columns: 1fr; }
+      .clip-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/" aria-current="true">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero raindrop-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/earth-science/">지구과학</a><span>›</span><span>빗방울의 모양</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag earth">◉ 대기와 날씨</span><span class="tag neutral">1분 1초</span><span class="tag everyday">숏츠</span></div>
+      <h1>하늘에서 떨어지는 빗방울은 어떤 모양일까?</h1>
+      <p>비를 그려 보라고 하면 사람들은 두 가지를 그립니다. 길쭉한 사선, 그리고 위가 뾰족한 물방울. 둘 다 실제 빗방울의 모습이 아닙니다. 사선은 잔상이고, 눈물방울은 앞뒤까지 뒤집혀 있습니다.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video controls playsinline preload="metadata" poster="video/raindrop-shape-poster.jpg" aria-label="빗방울의 진짜 모양 설명 영상">
+              <source src="video/raindrop-shape.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="video-note">소리를 켜고 보세요. 약 1분입니다.</p>
+        </div>
+        <div class="video-copy">
+          <p class="eyebrow">영상에서 확인할 세 가지</p>
+          <h2>우리가 그리는 비는<br />두 번 틀렸습니다</h2>
+          <div class="key-list">
+            <div class="key-item"><span class="key-number">1</span><div><strong>사선은 모양이 아니라 잔상</strong><p>눈이 빛을 모으는 20분의 1초 동안 빗방울은 30 cm를 지나갑니다. 늘어난 건 시간입니다.</p></div></div>
+            <div class="key-item"><span class="key-number">2</span><div><strong>위는 둥글고 아래가 눌린다</strong><p>표면장력과 공기 압력의 균형이 만드는 실제 형상입니다. 눈물방울과는 위아래가 반대입니다.</p></div></div>
+            <div class="key-item"><span class="key-number">3</span><div><strong>5 mm를 넘으면 터진다</strong><p>바닥이 낙하산처럼 부풀다 쪼개지기 때문에 자연의 빗방울은 5~6 mm를 넘지 못합니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>사선의 정체 — 늘어난 것은 시간</h2><p>지름 2 mm 빗방울은 초속 6.5 m로 떨어집니다. 카메라도 눈도 빛을 일정 시간 모아서 보기 때문에, 빠른 것은 선으로 남습니다.</p></div>
+        <table class="data-table">
+          <thead><tr><th>보는 방법</th><th>노출 시간</th><th>맺히는 길이</th><th>보이는 종횡비</th></tr></thead>
+          <tbody>
+            <tr><td>고속 촬영</td><td>1/10000초</td><td><b>2.7 mm</b></td><td><b>1.3 : 1</b></td></tr>
+            <tr><td>일반 영상</td><td>1/60초</td><td><b>11 cm</b></td><td><b>56 : 1</b></td></tr>
+            <tr><td>사람 눈의 잔상</td><td>약 1/20초</td><td><b>33 cm</b></td><td><b>165 : 1</b></td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">길이 = 지름 + 속도 × 노출 시간. 고속 촬영이 나오기 전까지 인류는 빗방울의 모양을 눈으로 확인할 방법이 없었습니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>실제 형상 — 방정식을 풀어서 그렸습니다</h2><p>종단속도로 떨어지는 물방울은 가속하지 않으므로, 내부 정수압과 외부 공기 압력이 표면장력과 균형을 이룹니다. 이 Young–Laplace 방정식을 수치적으로 풀면 아래 모양이 나옵니다.</p></div>
+        <figure class="figure-card">
+          <img src="figures/drop-shapes-raytraced.png" alt="지름 1 mm, 3 mm, 5.5 mm 빗방울의 광선추적 렌더. 클수록 아래가 눌린다." loading="lazy" />
+          <figcaption>왼쪽부터 지름 1 · 3 · 5.5 mm. 물의 굴절률(1.331~1.337)로 광선추적한 결과이며, 물방울 안에 뒤편 풍경이 렌즈처럼 180° 뒤집혀 맺힙니다.</figcaption>
+        </figure>
+        <table class="data-table" style="margin-top:26px">
+          <thead><tr><th>지름</th><th>종단속도</th><th>축비(세로÷가로) 계산</th><th>측정식(Beard–Chuang)</th><th>편차</th></tr></thead>
+          <tbody>
+            <tr><td>1 mm</td><td>4.0 m/s</td><td><b>0.97</b></td><td>0.98</td><td>−1.4%</td></tr>
+            <tr><td>3 mm</td><td>8.0 m/s</td><td><b>0.84</b></td><td>0.86</td><td>−2.0%</td></tr>
+            <tr><td>5 mm</td><td>9.1 m/s</td><td><b>0.71</b></td><td>0.71</td><td>+0.8%</td></tr>
+          </tbody>
+        </table>
+        <p class="science-caution"><strong>눈물방울은 앞뒤가 뒤집혀 있습니다.</strong> 「빠른 건 앞이 뾰족하다」는 직관대로라면 진행 방향인 아래가 뾰족해야 하는데, 우리는 위를 뾰족하게 그립니다. 실제 빗방울은 정반대로 위가 둥글고 아래가 눌립니다. 물방울은 유체라 유선형을 유지할 수 없고, 표면장력이 늘 구로 되돌리려 하기 때문입니다.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>한계와 떨림</h2><p>지름이 5 mm를 넘으면 바닥이 파이며 낙하산처럼 부풀다 터집니다. 그리고 그 아래 크기에서도 모양은 고정이 아닙니다.</p></div>
+        <div class="formula-box">
+          <code>f = (1/2π) √( n(n−1)(n+2) σ / ρa³ )</code>
+          <span class="result">레일리(1879)의 액적 진동식 · n = 2, 지름 4 mm → 초당 <b>43회</b> 진동</span>
+        </div>
+        <div class="clip-grid">
+          <figure>
+            <video controls playsinline preload="none" poster="video/raindrop-shape-poster.jpg" src="video/clip-oscillation-43hz.mp4" aria-label="빗방울의 43헤르츠 진동, 20배 슬로우모션"></video>
+            <figcaption>43 Hz 진동 · 20배 느리게. 축비가 0.71과 0.84 사이를 오갑니다.</figcaption>
+          </figure>
+          <figure>
+            <video controls playsinline preload="none" poster="video/raindrop-shape-poster.jpg" src="video/clip-hero-drop.mp4" aria-label="지름이 커지며 바닥이 눌리는 과정"></video>
+            <figcaption>지름 1 → 5.5 mm. 커질수록 바닥이 눌립니다.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>어떻게 확인했나</h2><p>영상과 그림, 소리까지 전부 계산으로 만들었습니다.</p></div>
+        <ul class="method-list">
+          <li><strong>형상</strong> — Young–Laplace 자유경계 문제를 호길이 매개화 경계값 문제로 수치해석. 축비를 Beard &amp; Chuang(1987) 측정식과 대조해 최대 편차 2.4%를 확인했습니다.</li>
+          <li><strong>렌더</strong> — 회전체 부호거리장을 스피어 트레이싱. 프레넬 분기와 2회 굴절, 파장별 굴절률로 색수차까지 재현했습니다.</li>
+          <li><strong>굴절상 검증</strong> — 배경에 위치 표지 세 개를 심어, 물방울 속에서 상이 상하·좌우 모두 뒤집히는 것을 확인했습니다.</li>
+          <li><strong>소리</strong> — 빗소리는 물방울이 수면에 가둔 공기 방울의 공명(f ≈ 3.26/d kHz·mm)을 크기 분포에 따라 초당 900개 쌓아 합성했습니다.</li>
+        </ul>
+        <figure class="figure-card" style="margin-top:26px">
+          <img src="figures/refraction-inversion.png" alt="물방울 굴절상의 180도 반전 검증. 배경의 색 표지가 물방울 안에서 상하좌우가 바뀐다." loading="lazy" />
+          <figcaption>굴절상 검증 — 물방울 속에서 빨강↔초록이 자리를 바꾸고(좌우), 노랑이 위로 올라갑니다(상하).</figcaption>
+        </figure>
+        <figure class="figure-card" style="margin-top:22px">
+          <img src="figures/physics-validation.png" alt="빗방울 형상 물리 검증 시트" loading="lazy" />
+          <figcaption>물리 검증 시트 — 크기별 평형 형상(점선은 같은 부피의 구), 축비·종단속도 검증, 노출 시간별 종횡비.</figcaption>
+        </figure>
+        <p class="refs" style="margin-top:26px">
+          참고: Beard &amp; Chuang (1987) <i>J. Atmos. Sci.</i> 44, 1509 · Atlas, Srivastava &amp; Sekhon (1973) <i>Rev. Geophys.</i> 11, 1 ·
+          Pruppacher &amp; Pitter (1971) <i>J. Atmos. Sci.</i> 28, 86 · Rayleigh (1879) <i>Proc. R. Soc. Lond.</i> 29, 71
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>지구과학 · 빗방울의 모양</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/earth-science/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
