@@ -278,6 +278,27 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
 .footer-inner strong { color: var(--ink); }
 .mobile-nav { display: none; }
 
+/* 영상에서 이어지는 심화 노트 공통 구성 */
+.video-note-layout { display: grid; grid-template-columns: minmax(270px, 400px) minmax(0, 1fr); gap: 38px; align-items: start; }
+.shorts-stack { display: grid; gap: 20px; }
+.shorts-item { margin: 0; }
+.youtube-short { position: relative; width: min(100%, 390px); margin-inline: auto; padding: 9px; border-radius: 30px; background: #0b1423; box-shadow: 0 20px 55px rgba(14, 28, 52, .22); }
+.youtube-short iframe { display: block; width: 100%; aspect-ratio: 9 / 16; border: 0; border-radius: 22px; background: #0b1423; }
+.shorts-caption { margin: 10px auto 0; max-width: 390px; color: var(--muted); font-size: .86rem; line-height: 1.55; text-align: center; }
+.note-lead { padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 10px 28px rgba(30, 51, 80, .06); }
+.note-lead h2 { margin: 8px 0 13px; color: var(--navy); font-size: clamp(28px, 4vw, 42px); letter-spacing: -.04em; }
+.note-lead > p { color: var(--muted); line-height: 1.75; }
+.fact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.fact-card { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+.fact-card b { display: block; margin-bottom: 9px; color: var(--physics); font-size: .82rem; }
+.fact-card h3 { margin: 0 0 9px; color: var(--navy); font-size: 1.08rem; }
+.fact-card p { margin: 0; color: var(--muted); font-size: .91rem; line-height: 1.68; }
+.science-callout { padding: 25px 27px; border-left: 6px solid var(--physics); border-radius: 16px; background: var(--physics-soft); }
+.science-callout h2 { margin: 0 0 10px; color: var(--navy); font-size: 1.35rem; }
+.science-callout p { margin: 0; color: #46536d; line-height: 1.72; }
+.source-list { display: grid; gap: 10px; margin: 0; padding-left: 20px; color: var(--muted); font-size: .91rem; line-height: 1.65; }
+.source-list a { color: var(--physics); font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+
 @media (max-width: 940px) {
   .site-nav { display: none; }
   .site-nav[data-open="true"] { position: absolute; left: 17px; right: 17px; top: 58px; display: flex; flex-direction: column; align-items: stretch; padding: 12px; border: 1px solid var(--line); border-radius: 15px; background: #fff; box-shadow: var(--shadow); }
@@ -287,6 +308,7 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
   .subject-grid { grid-template-columns: 1fr 1fr; }
   .lesson-grid { grid-template-columns: 1fr; }
   .side-stack { display: grid; grid-template-columns: 1fr 1fr; }
+  .video-note-layout { grid-template-columns: 340px minmax(0, 1fr); gap: 26px; }
 }
 
 @media (max-width: 620px) {
@@ -338,6 +360,10 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
   .mobile-nav a { display: grid; place-items: center; align-content: center; gap: 3px; color: var(--muted); font-size: 10px; font-weight: 750; }
   .mobile-nav a b { color: var(--ink); font-size: 17px; }
   .mobile-nav a[aria-current] { color: var(--physics); }
+  .video-note-layout { grid-template-columns: 1fr; }
+  .fact-grid { grid-template-columns: 1fr; }
+  .note-lead { padding: 22px; }
+  .youtube-short { width: min(100%, 360px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
