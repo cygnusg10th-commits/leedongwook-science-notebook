@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="일식 날 나뭇잎 사이의 작은 틈이 핀홀 카메라가 되어 바닥에 초승달 모양의 태양상을 만드는 원리를 영상과 계산으로 설명합니다." />
+  <title>일식 날, 나뭇잎 아래 초승달이 쏟아지는 이유 | 과학 수첩</title>
+  <meta property="og:title" content="일식 날, 나뭇잎 아래 초승달이 쏟아지는 이유" />
+  <meta property="og:description" content="삼각형 잎 틈도 태양의 초승달 상을 만들 수 있습니다. 자연이 만든 핀홀 카메라의 원리를 확인하세요." />
+  <meta property="og:image" content="video/solar-eclipse-pinhole-poster.png" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260821-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <style>
+    .eclipse-hero h1 { max-width: 850px; }
+    .video-layout { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 42px; align-items: center; }
+    .shorts-frame { position: relative; width: min(100%, 400px); margin: 0 auto; padding: 10px; border-radius: 34px; background: #081321; box-shadow: 0 22px 60px rgba(14, 28, 52, .26); }
+    .shorts-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 25px; background: #081321; }
+    .video-note { margin: 14px 0 0; color: var(--muted); font-size: .92rem; text-align: center; }
+    .key-list { display: grid; gap: 14px; margin: 24px 0 0; }
+    .key-item { display: grid; grid-template-columns: 46px 1fr; gap: 14px; align-items: start; padding: 18px; border: 1px solid #eadfce; border-radius: 18px; background: #fff; }
+    .key-number { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #fff; background: var(--earth); font-weight: 800; }
+    .key-item strong { display: block; margin-bottom: 5px; color: var(--navy); }
+    .key-item p { margin: 0; color: var(--muted); }
+
+    .principle-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: principle; }
+    .principle-card { position: relative; padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 10px 28px rgba(30, 51, 80, .06); }
+    .principle-card::before { counter-increment: principle; content: counter(principle); display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 18px; border-radius: 50%; color: #fff; background: var(--earth); font-weight: 800; }
+    .principle-card h3 { margin: 0 0 9px; color: var(--navy); }
+    .principle-card p { margin: 0; color: var(--muted); }
+
+    .aperture-demo { display: grid; grid-template-columns: .9fr 1.1fr; gap: 28px; align-items: center; padding: 30px; border-radius: 24px; color: #eaf2ff; background: linear-gradient(145deg, #071320, #102c3c); box-shadow: var(--shadow); }
+    .triangle-window { position: relative; width: min(100%, 360px); aspect-ratio: 1; margin: 0 auto; overflow: hidden; border-radius: 24px; background: radial-gradient(circle at 50% 46%, #fff 0 5%, #ffd86e 6%, rgba(255, 190, 67, .34) 12%, transparent 28%), linear-gradient(#2f75af, #8ac0df); clip-path: polygon(50% 82%, 12% 20%, 88% 20%); }
+    .aperture-demo h2 { margin: 0 0 14px; color: #fff; }
+    .aperture-demo p { color: #c8d7e6; }
+    .aperture-demo strong { color: #ffd77a; }
+
+    .formula-box { margin: 22px 0; padding: 22px; border: 1px solid #eadfce; border-radius: 18px; background: #fff; text-align: center; }
+    .formula-box code { display: block; color: var(--navy); font-size: clamp(1rem, 2.5vw, 1.2rem); }
+    .formula-box span { display: block; margin-top: 10px; color: var(--muted); }
+    .distance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+    .distance-card { padding: 18px; border-radius: 16px; background: var(--earth-soft); text-align: center; }
+    .distance-card strong { display: block; color: #8a4216; font-size: 1.6rem; }
+    .distance-card span { color: var(--muted); font-size: .9rem; }
+
+    .safety { padding: 24px; border-left: 6px solid #d24632; border-radius: 16px; background: #fff1ee; }
+    .safety h2 { margin-top: 0; color: #852b21; }
+    .safety p { margin-bottom: 0; color: #71362f; }
+    .method-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .method-list li { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: var(--muted); }
+    .method-list li strong { color: var(--navy); }
+    .refs { color: var(--muted); font-size: .92rem; line-height: 1.85; }
+    .refs a { color: var(--physics); font-weight: 700; }
+
+    @media (max-width: 820px) {
+      .video-layout, .aperture-demo { grid-template-columns: 1fr; }
+      .principle-grid, .distance-grid { grid-template-columns: 1fr; }
+      .aperture-demo { padding: 22px; }
+      .triangle-window { width: min(78vw, 320px); }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero eclipse-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/earth-science/">지구과학</a><span>›</span><span>일식과 나뭇잎 핀홀</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag earth">태양계와 우주</span><span class="tag physics">빛과 광학</span><span class="tag neutral">1분 14초</span><span class="tag everyday">숏츠</span></div>
+      <h1>일식 날, 나뭇잎 아래 초승달이 쏟아지는 이유</h1>
+      <p>나뭇잎이 만드는 작은 틈 하나하나는 렌즈가 없는 카메라입니다. 평소에는 둥근 태양을, 부분일식 때는 달에 가려진 초승달 모양의 태양을 바닥에 거꾸로 투영합니다.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video controls playsinline preload="metadata" poster="video/solar-eclipse-pinhole-poster.png" aria-label="일식 날 나뭇잎 핀홀 효과 설명 영상">
+              <source src="video/solar-eclipse-pinhole.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="video-note">소리를 켜고 보세요. 1분 14초입니다.</p>
+        </div>
+        <div>
+          <p class="eyebrow">영상에서 확인할 세 가지</p>
+          <h2>잎의 틈이<br />태양을 복사합니다</h2>
+          <div class="key-list">
+            <div class="key-item"><span class="key-number">1</span><div><strong>달은 태양 원반 앞을 지나간다</strong><p>달과 태양은 하늘에서 보이는 크기가 비슷해, 달이 지나가는 동안 태양의 밝은 부분이 초승달처럼 줄어듭니다.</p></div></div>
+            <div class="key-item"><span class="key-number">2</span><div><strong>작은 틈에서 빛의 방향이 갈린다</strong><p>태양의 서로 다른 지점에서 온 빛은 틈을 통과한 뒤 서로 교차해 바닥의 서로 다른 위치에 닿습니다.</p></div></div>
+            <div class="key-item"><span class="key-number">3</span><div><strong>바닥에는 뒤집힌 태양상이 생긴다</strong><p>잎 틈이 많으면 같은 방향을 향한 초승달 상이 수십, 수백 개 반복됩니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>핀홀에서 바닥까지</h2><p>렌즈는 없지만, 구멍이 충분히 작으면 한 점으로 들어오는 빛의 방향을 좁힐 수 있습니다.</p></div>
+        <div class="principle-grid">
+          <article class="principle-card"><h3>가려진 태양</h3><p>부분일식 중 실제 광원은 둥근 태양 전체가 아니라 달에 가려지고 남은 밝은 부분입니다.</p></article>
+          <article class="principle-card"><h3>잎 사이의 작은 틈</h3><p>겹친 잎 사이의 구멍이 여러 방향의 빛을 아주 좁은 영역으로 제한합니다.</p></article>
+          <article class="principle-card"><h3>바닥의 태양상</h3><p>틈에서 교차한 빛이 다시 퍼져, 스크린 역할을 하는 바닥에 180° 돌아간 상을 만듭니다.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="aperture-demo">
+          <div class="triangle-window" role="img" aria-label="세 나뭇잎 사이의 삼각형 틈 안으로 보이는 태양"></div>
+          <div>
+            <p class="eyebrow">구멍이 삼각형이어도 될까?</p>
+            <h2>작다면, 상의 모양은 태양이 결정합니다</h2>
+            <p>가까운 바닥에서는 구멍 모양이 밝은 얼룩에 섞여 보입니다. 하지만 틈이 충분히 작고 바닥이 멀어지면, 각 태양 지점이 만드는 작은 삼각형 얼룩들이 모여 <strong>태양 원반의 모양</strong>을 드러냅니다.</p>
+            <p>즉 삼각형은 상을 약간 흐리게 만드는 모양이고, 전체 윤곽은 광원인 태양이 정합니다. 부분일식 때는 같은 원리로 초승달 윤곽이 나타납니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>왜 멀수록 상이 커질까?</h2><p>태양의 시지름은 약 0.53°입니다. 투영 거리를 알면 바닥에 생기는 태양상의 크기를 바로 어림할 수 있습니다.</p></div>
+        <div class="formula-box">
+          <code>태양상 지름 ≈ 투영 거리 × tan(0.53°) ≈ 투영 거리 × 0.0093</code>
+          <span>거리를 미터로 넣으면 결과도 미터입니다.</span>
+        </div>
+        <div class="distance-grid">
+          <div class="distance-card"><strong>약 9 mm</strong><span>잎 틈에서 바닥까지 1 m</span></div>
+          <div class="distance-card"><strong>약 19 mm</strong><span>잎 틈에서 바닥까지 2 m</span></div>
+          <div class="distance-card"><strong>약 47 mm</strong><span>잎 틈에서 바닥까지 5 m</span></div>
+        </div>
+        <p style="margin-top:22px;color:var(--muted)">구멍이 너무 크면 각 지점의 빛이 넓게 겹쳐 상이 흐려집니다. 반대로 지나치게 작으면 회절 때문에 밝기가 약해지고 경계가 퍼집니다. 나뭇잎은 크기와 거리가 제각각이어서 선명도가 다른 상들을 한꺼번에 만듭니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="safety">
+          <h2>바닥의 상만 보세요</h2>
+          <p><strong>핀홀을 통해 태양을 직접 바라보면 안 됩니다.</strong> 부분일식과 금환일식에서는 일반 선글라스도 안전하지 않습니다. 태양을 등지고 바닥이나 흰 종이에 맺힌 투영상만 관찰하세요. 카메라·쌍안경·망원경으로 태양을 볼 때는 장비 앞쪽에 맞는 전용 태양 필터가 필요합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>직접 확인하는 방법</h2><p>일식이 아니어도 핀홀 카메라의 기본 원리는 맑은 날 확인할 수 있습니다.</p></div>
+        <ul class="method-list">
+          <li><strong>1. 태양을 등집니다.</strong> 태양 쪽을 돌아보지 않고, 흰 종이나 밝은 바닥을 스크린으로 정합니다.</li>
+          <li><strong>2. 작은 틈을 만듭니다.</strong> 종이에 작은 구멍을 뚫거나 양손의 손가락을 격자처럼 겹칩니다. 구멍은 원형일 필요가 없습니다.</li>
+          <li><strong>3. 거리를 바꿉니다.</strong> 구멍과 스크린 사이를 멀리할수록 상은 커지고 어두워집니다. 약 1 m부터 비교해 보세요.</li>
+          <li><strong>4. 상의 방향을 비교합니다.</strong> 부분일식 때 여러 구멍이 만드는 초승달은 모두 같은 방향을 향하며, 실제 태양의 밝은 부분과는 180° 돌아가 있습니다.</li>
+        </ul>
+        <p class="refs" style="margin-top:26px">
+          참고: <a href="https://science.nasa.gov/eclipses/safety/" rel="noopener noreferrer">NASA Science — Eclipse Viewing Safety</a> ·
+          <a href="https://eclipse.gsfc.nasa.gov/SEhelp/safety2.html" rel="noopener noreferrer">NASA GSFC — Eye Safety During Solar Eclipses</a> ·
+          <a href="https://science.nasa.gov/wp-content/uploads/2024/01/2024-total-solar-eclipse-pinhole-projector-activity.pdf" rel="noopener noreferrer">NASA HEAT — Pinhole Projector Activity</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>지구과학 × 빛과 광학 · 일식 핀홀</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/earth-science/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
