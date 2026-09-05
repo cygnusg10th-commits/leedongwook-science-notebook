@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="코일 용수철이 늘어난 길이에 비례해 힘을 내는 이유를 철사의 비틀림, 전단탄성률과 에너지로 유도하고 44초 영상의 제작 과정을 공개합니다." />
+  <title>용수철은 왜 늘어난 만큼 더 세게 당길까? | 과학 수첩</title>
+  <meta property="og:title" content="용수철은 왜 늘어난 만큼 더 세게 당길까?" />
+  <meta property="og:description" content="겉으로는 늘어나지만, 코일을 이루는 철사는 비틀리고 있습니다. 그 비틀림에서 훅의 법칙을 유도합니다." />
+  <meta property="og:image" content="media/poster.png" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260821-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <style>
+    .spring-hero h1{max-width:850px}
+    .video-layout{display:grid;grid-template-columns:minmax(280px,400px) 1fr;gap:42px;align-items:center}
+    .shorts-frame{position:relative;width:min(100%,400px);margin:0 auto;padding:10px;border-radius:34px;background:#071215;box-shadow:0 22px 60px rgba(8,31,35,.25)}
+    .shorts-frame video{display:block;width:100%;aspect-ratio:9/16;border-radius:25px;background:#05090d;object-fit:cover}
+    .video-note{margin:14px 0 0;color:var(--muted);font-size:.92rem;text-align:center;line-height:1.65}
+    .key-list{display:grid;gap:14px;margin:24px 0 0}
+    .key-item{display:grid;grid-template-columns:46px 1fr;gap:14px;align-items:start;padding:18px;border:1px solid #dfe8e8;border-radius:18px;background:#fff}
+    .key-number{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;color:#fff;background:#28777a;font-weight:800}
+    .key-item strong{display:block;margin-bottom:5px;color:var(--navy)}
+    .key-item p{margin:0;color:var(--muted)}
+    .spring-figure{margin:0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#05090d;box-shadow:var(--shadow)}
+    .spring-figure svg{display:block;width:100%;height:auto}
+    .spring-figure figcaption{padding:15px 19px;color:var(--muted);background:#fff;font-size:.92rem;line-height:1.7}
+    .formula-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .formula-card{min-width:0;padding:22px;border:1px solid var(--line);border-radius:20px;background:#fff}
+    .formula-card .step{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;background:var(--physics);font-weight:800}
+    .formula-card h3{margin:15px 0 8px;color:var(--navy)}
+    .formula-card p{margin:0;color:var(--muted);line-height:1.7}
+    .math-display{display:flex;align-items:center;justify-content:center;min-height:76px;margin:16px 0 0;padding:14px;border:1px solid #d7e4ef;border-radius:14px;color:#173b7c;background:#eef6fb;overflow-x:auto}
+    .math-display math{flex:0 0 auto;font-family:"Cambria Math","STIX Two Math","Times New Roman",serif;font-size:clamp(1.04rem,1.8vw,1.28rem)}
+    .result-box{margin-top:20px;padding:24px;border:1px solid #9ed2cf;border-radius:20px;background:#edf8f7;text-align:center}
+    .result-box strong{display:block;color:#145e63;font-size:1.12rem}
+    .result-box .math-display{margin:12px auto 0;border:0;background:transparent}
+    .symbol-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}
+    .symbol-grid div{padding:14px;border-radius:14px;background:#fff;text-align:center}
+    .symbol-grid b{display:block;color:var(--physics);font-size:1.08rem}
+    .symbol-grid span{color:var(--muted);font-size:.84rem}
+    .explain-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .explain-card{padding:22px;border:1px solid var(--line);border-radius:18px;background:#fff}
+    .explain-card h3{margin:0 0 9px;color:var(--navy)}
+    .explain-card p{margin:0;color:var(--muted);line-height:1.75}
+    .science-caution{margin-top:22px;padding:18px 20px;border-left:5px solid var(--physics);border-radius:12px;background:var(--physics-soft);color:#26365e}
+    .science-caution strong{color:#263b94}
+    .method-list{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+    .method-list li{padding:17px 19px;border:1px solid var(--line);border-radius:15px;background:#fff;color:var(--muted);line-height:1.7}
+    .method-list li strong{color:var(--navy)}
+    .more-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .more-card{padding:20px;border:1px solid var(--line);border-radius:18px;background:#fff}
+    .more-card h3{margin:0 0 8px;color:var(--navy);font-size:1.02rem}
+    .more-card p{margin:0;color:var(--muted);font-size:.94rem}
+    .more-card a{color:var(--physics);font-weight:800}
+    .refs{color:var(--muted);font-size:.9rem;line-height:1.85}
+    @media(max-width:850px){.video-layout,.formula-grid,.explain-grid{grid-template-columns:1fr}.symbol-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero spring-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>코일 용수철의 탄성력</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag physics">탄성과 진동</span><span class="tag neutral">44초</span><span class="tag everyday">영상 해설</span></div>
+      <h1>용수철은 왜<br />늘어난 만큼 더 세게 당길까?</h1>
+      <p>겉으로 보면 코일의 길이가 늘어납니다. 하지만 철사 한 조각을 확대해 따라가면, 핵심 변형은 길이 방향의 인장이 아니라 원형 철사의 비틀림입니다.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video controls playsinline preload="metadata" poster="media/poster.png" aria-label="코일 용수철이 철사의 비틀림으로 늘어나는 원리를 설명하는 44초 영상">
+              <source src="media/coil-spring-elasticity.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="video-note">소리를 켜고 보세요. 44초입니다.<br />주황색 선은 코일 표면의 같은 재료점을 계속 추적합니다.</p>
+        </div>
+        <div>
+          <p class="eyebrow">영상에서 확인할 세 단계</p>
+          <h2>길이 변화 안에는<br />철사의 비틀림이 숨어 있습니다</h2>
+          <div class="key-list">
+            <div class="key-item"><span class="key-number">1</span><div><strong>추가 내려가면 코일이 길어진다</strong><p>위·평형·아래 기준선은 고정하고, 추와 용수철만 움직여 변형량을 비교합니다.</p></div></div>
+            <div class="key-item"><span class="key-number">2</span><div><strong>같은 철사를 확대한다</strong><p>카메라가 코일을 따라 들어가도 주황색 재료 표시는 끊기지 않습니다.</p></div></div>
+            <div class="key-item"><span class="key-number">3</span><div><strong>단면이 함께 회전한다</strong><p>추가 아래로 갈수록 단면의 회전이 커지고, 올라갈수록 작아집니다.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>축 방향 힘이 왜 철사를 비트나</h2><p>힘의 작용선과 철사 중심 사이에 코일 반지름만큼의 거리가 있기 때문입니다.</p></div>
+        <figure class="spring-figure">
+          <svg viewBox="0 0 860 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="축 방향 힘 F가 코일 반지름 R의 지레팔을 통해 철사에 토크 T=FR을 만드는 모식도">
+            <defs>
+              <linearGradient id="wire" x1="0" x2="1"><stop offset="0" stop-color="#315f63"/><stop offset=".5" stop-color="#9bd0c9"/><stop offset="1" stop-color="#315f63"/></linearGradient>
+              <marker id="arrowOrange" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#ff8733"/></marker>
+              <marker id="arrowMint" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5L0 11Z" fill="#b4ddd6"/></marker>
+            </defs>
+            <rect width="860" height="430" fill="#05090d"/>
+            <g fill="none" stroke="url(#wire)" stroke-width="24">
+              <ellipse cx="270" cy="105" rx="150" ry="42"/>
+              <ellipse cx="270" cy="175" rx="150" ry="42"/>
+              <ellipse cx="270" cy="245" rx="150" ry="42"/>
+              <ellipse cx="270" cy="315" rx="150" ry="42"/>
+            </g>
+            <line x1="270" y1="70" x2="270" y2="370" stroke="#5c7f83" stroke-width="2" stroke-dasharray="7 8"/>
+            <line x1="270" y1="360" x2="270" y2="408" stroke="#ff8733" stroke-width="5" marker-end="url(#arrowOrange)"/>
+            <text x="292" y="404" fill="#ffb27c" font-size="23" font-weight="800">F</text>
+            <line x1="270" y1="178" x2="420" y2="178" stroke="#b4ddd6" stroke-width="4" marker-end="url(#arrowMint)"/>
+            <text x="330" y="163" fill="#b4ddd6" font-size="20" font-weight="700">R</text>
+            <path d="M540 248C540 150 650 120 714 174C770 222 738 316 650 312" fill="none" stroke="#ff8733" stroke-width="6" marker-end="url(#arrowOrange)"/>
+            <circle cx="650" cy="230" r="76" fill="none" stroke="#8bc1bd" stroke-width="20"/>
+            <line x1="650" y1="230" x2="706" y2="188" stroke="#f3eee5" stroke-width="5"/>
+            <text x="575" y="92" fill="#f2eee4" font-size="26" font-weight="800">철사 단면의 회전</text>
+            <text x="590" y="370" fill="#ff9a51" font-size="27" font-weight="800">T = F R</text>
+          </svg>
+          <figcaption>축 방향 하중 <b>F</b>는 코일의 중심축에서 평균 반지름 <b>R</b>만큼 떨어진 철사를 당깁니다. 따라서 철사에는 <b>T = FR</b>의 토크가 걸리고, 원형 단면이 조금씩 회전합니다.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>비례가 나오는 세 단계</h2><p>촘촘히 감긴 원형 철사 코일, 작은 변형과 선형 탄성 범위를 가정합니다.</p></div>
+        <div class="formula-grid">
+          <article class="formula-card">
+            <span class="step">1</span><h3>힘이 토크가 된다</h3>
+            <p>코일 축으로 잡아당기는 힘은 반지름 R의 지레팔을 통해 철사를 비틉니다.</p>
+            <div class="math-display"><math display="block"><mi>T</mi><mo>=</mo><mi>F</mi><mi>R</mi></math></div>
+          </article>
+          <article class="formula-card">
+            <span class="step">2</span><h3>토크가 비틀림이 된다</h3>
+            <p>선형 탄성 범위의 원형 철사에서 비틀린 각도 φ는 토크 T에 비례합니다.</p>
+            <div class="math-display"><math display="block"><mi>φ</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>L</mi></mrow><mrow><mi>G</mi><mi>J</mi></mrow></mfrac><mo>,</mo><mspace width=".7em"/><mi>J</mi><mo>=</mo><mfrac><mrow><mi>π</mi><msup><mi>d</mi><mn>4</mn></msup></mrow><mn>32</mn></mfrac></math></div>
+          </article>
+          <article class="formula-card">
+            <span class="step">3</span><h3>비틀림이 길이가 된다</h3>
+            <p>전체 철사의 작은 회전을 코일 기하로 투영하면 축 방향 변위 δ가 됩니다.</p>
+            <div class="math-display"><math display="block"><mi>δ</mi><mo>=</mo><mi>R</mi><mi>φ</mi><mo>,</mo><mspace width=".7em"/><mi>L</mi><mo>≈</mo><mn>2</mn><mi>π</mi><mi>R</mi><mi>n</mi></math></div>
+          </article>
+        </div>
+        <div class="result-box">
+          <strong>세 식을 합치면</strong>
+          <div class="math-display"><math display="block"><mi>δ</mi><mo>=</mo><mfrac><mrow><mn>64</mn><mi>F</mi><msup><mi>R</mi><mn>3</mn></msup><mi>n</mi></mrow><mrow><mi>G</mi><msup><mi>d</mi><mn>4</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><mn>8</mn><mi>F</mi><msup><mi>D</mi><mn>3</mn></msup><mi>n</mi></mrow><mrow><mi>G</mi><msup><mi>d</mi><mn>4</mn></msup></mrow></mfrac></math></div>
+          <div class="math-display"><math display="block"><mi>F</mi><mo>=</mo><munder><mover><mrow><mfrac><mrow><mi>G</mi><msup><mi>d</mi><mn>4</mn></msup></mrow><mrow><mn>8</mn><msup><mi>D</mi><mn>3</mn></msup><mi>n</mi></mrow></mfrac></mrow><mo>⏞</mo></mover><mi>k</mi></munder><mi>δ</mi><mo>=</mo><mi>k</mi><mi>δ</mi></math></div>
+        </div>
+        <div class="symbol-grid">
+          <div><b>F</b><span>축 방향 힘</span></div><div><b>δ</b><span>늘어난 길이</span></div><div><b>G</b><span>전단탄성률</span></div><div><b>D, d</b><span>코일·철사 지름</span></div><div><b>n</b><span>유효 감김 수</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>에너지와 원자 수준에서 보면</h2><p>힘으로 보든 에너지로 보든, 같은 선형 탄성이 다른 언어로 나타납니다.</p></div>
+        <div class="explain-grid">
+          <article class="explain-card"><h3>포텐셜 에너지의 관점</h3><p>철사를 조금 비틀 때 저장되는 변형 에너지는 비틀림 각도의 제곱에 비례합니다. 따라서 에너지를 변위로 미분해 얻는 복원력은 변위의 1제곱, 즉 늘어난 길이에 비례합니다. 에너지 곡선의 바닥이 작은 범위에서 포물선처럼 보이는 이유와 같습니다.</p></article>
+          <article class="explain-card"><h3>원자 사이 힘의 관점</h3><p>전단 변형은 원자 사이 거리와 결합각을 평형 위치에서 조금 벗어나게 합니다. 평형점 가까이에서는 원자 포텐셜도 2차식으로 근사되므로 응력은 변형률에 비례합니다. 코일만 특별한 물질 법칙을 쓰는 것이 아니라, 같은 미시적 탄성을 기하 구조가 비틀림으로 바꿔 보여 주는 것입니다.</p></article>
+        </div>
+        <p class="science-caution"><strong>직선 철사와 코일은 미시적 원리는 같지만 변형 방식은 다릅니다.</strong> 직선 철사는 주로 인장·압축되고, 촘촘한 코일 스프링의 철사는 주로 비틀립니다. 느슨한 줄은 압축력을 전달하지 못하고, 고무줄은 큰 변형에서 비선형이므로 언제나 F∝δ라고 말할 수는 없습니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>언제 이 식에서 벗어날까</h2><p>훅의 법칙은 재료와 구조가 선형으로 반응하는 범위의 근사입니다.</p></div>
+        <div class="explain-grid">
+          <article class="explain-card"><h3>탄성 한계를 넘었을 때</h3><p>철사가 영구 변형되면 힘을 빼도 원래 모양으로 돌아오지 않습니다. 원자 배열의 변화가 더 이상 평형점 주변의 작은 변화가 아니기 때문입니다.</p></article>
+          <article class="explain-card"><h3>코일끼리 닿거나 크게 휘어질 때</h3><p>유효 감김 수와 코일 반지름이 바뀌고 직접 전단·굽힘·곡률 효과도 커집니다. 이때는 단순한 k 하나로 전체 구간을 설명하기 어렵습니다.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>이 영상은 어떻게 만들었나</h2><p>완전한 3D 렌더러 대신, 브라우저 Canvas에서 수학으로 만든 코일과 정밀한 카메라 제어를 결합했습니다.</p></div>
+        <ul class="method-list">
+          <li><strong>매개변수 코일</strong> — 나선 중심선과 원형 단면을 수식으로 만들고, 260×30개의 작은 면을 깊이 순서대로 그렸습니다. 실제 3D 모델 파일 없이도 카메라 각도와 코일 길이를 프레임마다 제어할 수 있습니다.</li>
+          <li><strong>같은 재료점 추적</strong> — 주황색 선을 화면 위에 얹은 장식이 아니라 코일 표면 좌표에 붙였습니다. 확대 전후에도 같은 철사를 본다는 사실이 끊기지 않습니다.</li>
+          <li><strong>카메라와 공간감</strong> — 첫 1.15초는 하단 코일과 추를 1.35배 가까이 보여 주고, 1.42초까지 전체 샷으로 빠집니다. 확대 구간에서는 카메라가 추 움직임의 15%만 0.12초 늦게 따라가며, 배경 창과 기둥은 서로 다른 속도로 움직여 패럴랙스를 만듭니다.</li>
+          <li><strong>쇼츠 안전 영역</strong> — 1080×1920 화면에서 우측 220px와 하단 480px를 인터페이스 위험 구간으로 보고, 주요 피사체가 보수적 내부 영역을 벗어나지 않는지 1320프레임 전체를 검사했습니다. 위치 라벨과 기준선은 카메라에서 분리해 화면에 고정했습니다.</li>
+          <li><strong>소리</strong> — 나레이션의 긴 쉼을 줄여 44초에 맞추고, 과학 쇼츠용 미니멀 앰비언트 기타곡 <i>The Anatomy of Stillness</i>를 낮게 섞었습니다. 시작 1.2초와 마지막 4초에는 페이드를 적용했습니다.</li>
+        </ul>
+        <p class="science-caution"><strong>영상 속 진동은 정량 시뮬레이션이 아니라 설명용 모션입니다.</strong> 감쇠와 카메라 타이밍은 44초 안에서 비교가 잘 보이도록 설계했습니다. 유도식은 촘촘히 감긴 원형 철사 코일의 작은 변형 모델에 해당합니다.</p>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>이어 읽기</h2><p>탄성력이 만든 진동과 회전 운동을 다른 장면으로 연결합니다.</p></div>
+        <div class="more-grid">
+          <article class="more-card"><h3>지구를 관통하면 왜 왕복할까?</h3><p>위치에 비례하는 힘이 단순 조화 운동을 만드는 과정을 계산합니다.</p><p style="margin-top:12px"><a href="../earth-tunnel/">중력과 단순 조화 운동 보기 →</a></p></article>
+          <article class="more-card"><h3>굴러가는 바퀴의 맨 아래는 왜 멈출까?</h3><p>병진과 회전을 나누어 한 점의 실제 움직임을 추적합니다.</p><p style="margin-top:12px"><a href="../rolling-wheel/">회전 운동 시뮬레이션 보기 →</a></p></article>
+        </div>
+        <p class="refs" style="margin-top:28px">주요 참고 자료: IIT Kharagpur NPTEL, <a href="https://archive.nptel.ac.in/content/storage2/courses/112105125/pdf/mod7les1.pdf"><i>Design of Springs</i>, Lecture 27</a>; MIT OpenCourseWare 2.017J, <a href="https://ocw.mit.edu/courses/2-017j-design-of-electromechanical-robotic-systems-fall-2009/resources/16cb0f850752422026a85d838f30e340_mit2_017jf09_machines/"><i>Topics in Machine Elements — Helical Springs</i></a>; MIT OpenCourseWare 16.01, <a href="https://ocw.mit.edu/courses/16-01-unified-engineering-i-ii-iii-iv-fall-2005-spring-2006/resources/gm9_10notes/"><i>Shafts and Torsion of Circular Shafts</i></a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>물리학 · 코일 용수철의 탄성력</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
