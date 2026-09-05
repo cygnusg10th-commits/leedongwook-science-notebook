@@ -284,6 +284,9 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
 .shorts-item { margin: 0; }
 .youtube-short { position: relative; width: min(100%, 390px); margin-inline: auto; padding: 9px; border-radius: 30px; background: #0b1423; box-shadow: 0 20px 55px rgba(14, 28, 52, .22); }
 .youtube-short iframe { display: block; width: 100%; aspect-ratio: 9 / 16; border: 0; border-radius: 22px; background: #0b1423; }
+.youtube-short video { display: block; width: 100%; aspect-ratio: 9 / 14; border: 0; border-radius: 22px; background: #0b1423; object-fit: cover; }
+.featured-short .youtube-short { padding: 10px; background: linear-gradient(145deg, #172b4d, #315fdb); box-shadow: 0 22px 60px rgba(49, 95, 219, .24); }
+.featured-short .shorts-caption b { color: var(--physics); }
 .shorts-caption { margin: 10px auto 0; max-width: 390px; color: var(--muted); font-size: .86rem; line-height: 1.55; text-align: center; }
 .note-lead { padding: 28px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 10px 28px rgba(30, 51, 80, .06); }
 .note-lead h2 { margin: 8px 0 13px; color: var(--navy); font-size: clamp(28px, 4vw, 42px); letter-spacing: -.04em; }
@@ -298,6 +301,34 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
 .science-callout p { margin: 0; color: #46536d; line-height: 1.72; }
 .source-list { display: grid; gap: 10px; margin: 0; padding-left: 20px; color: var(--muted); font-size: .91rem; line-height: 1.65; }
 .source-list a { color: var(--physics); font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+.wind-explainer { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(310px, .75fr); gap: 24px; align-items: stretch; }
+.wind-diagram { min-height: 430px; overflow: hidden; border-radius: 25px; color: #fff; background: radial-gradient(circle at 72% 18%, rgba(75, 195, 139, .18), transparent 17rem), linear-gradient(145deg, #10243a, #0d5265); box-shadow: var(--shadow); }
+.wind-diagram svg { display: block; width: 100%; height: 100%; min-height: 430px; }
+.wind-diagram text { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif; }
+.wind-diagram .diagram-title { fill: #fff; font-size: 23px; font-weight: 850; }
+.wind-diagram .diagram-desc { fill: rgba(255,255,255,.68); font-size: 13px; }
+.wind-diagram .label, .wind-diagram .sail-label, .wind-diagram .board-label { paint-order: stroke; stroke: #10243a; stroke-width: 7px; stroke-linejoin: round; font-size: 14px; font-weight: 850; }
+.wind-diagram .cyan { fill: #63e1f7; }
+.wind-diagram .orange { fill: #ffbd68; }
+.wind-diagram .blue { fill: #a8c6ff; }
+.wind-diagram .yellow { fill: #ffe487; }
+.wind-diagram .sail-label { fill: #8ae0b5; }
+.wind-diagram .board-label { fill: #fff; }
+.force-steps { display: grid; gap: 10px; }
+.force-steps article { display: grid; grid-template-columns: 42px 1fr; gap: 13px; align-items: start; padding: 17px; border: 1px solid var(--line); border-radius: 17px; background: #fff; }
+.force-steps article > b { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: #fff; background: var(--physics); font-size: 15px; }
+.force-steps h3 { margin: 1px 0 5px; color: var(--navy); font-size: 1rem; }
+.force-steps p { margin: 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+.angle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.angle-card { padding: 29px; border: 1px solid var(--line); border-radius: 22px; background: #fff; box-shadow: 0 10px 28px rgba(30, 51, 80, .05); }
+.angle-card h2 { margin: 7px 0 15px; color: var(--navy); font-size: clamp(25px, 3vw, 34px); line-height: 1.25; letter-spacing: -.035em; }
+.angle-card > p:not(.eyebrow) { color: var(--muted); line-height: 1.75; }
+.angle-card .angle-rule, .angle-card .route-summary { margin-top: 20px; padding: 17px 18px; border-radius: 15px; color: #33415e; background: var(--physics-soft); }
+.route-card ol { display: grid; gap: 14px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: route-step; }
+.route-card li { display: grid; grid-template-columns: minmax(135px, .7fr) 1.3fr; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line); counter-increment: route-step; }
+.route-card li b { color: var(--navy); }
+.route-card li span { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+.fact-grid.four-up { grid-template-columns: repeat(4, 1fr); }
 
 @media (max-width: 940px) {
   .site-nav { display: none; }
@@ -309,6 +340,8 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
   .lesson-grid { grid-template-columns: 1fr; }
   .side-stack { display: grid; grid-template-columns: 1fr 1fr; }
   .video-note-layout { grid-template-columns: 340px minmax(0, 1fr); gap: 26px; }
+  .wind-explainer { grid-template-columns: 1fr; }
+  .fact-grid.four-up { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 620px) {
@@ -362,8 +395,15 @@ input[type="range"] { width: 100%; margin-top: 11px; accent-color: var(--physics
   .mobile-nav a[aria-current] { color: var(--physics); }
   .video-note-layout { grid-template-columns: 1fr; }
   .fact-grid { grid-template-columns: 1fr; }
+  .fact-grid.four-up { grid-template-columns: 1fr; }
   .note-lead { padding: 22px; }
   .youtube-short { width: min(100%, 360px); }
+  .wind-diagram, .wind-diagram svg { min-height: 360px; }
+  .wind-diagram .diagram-title { font-size: 20px; }
+  .wind-diagram .label, .wind-diagram .sail-label, .wind-diagram .board-label { font-size: 12px; }
+  .angle-grid { grid-template-columns: 1fr; }
+  .angle-card { padding: 22px; }
+  .route-card li { grid-template-columns: 1fr; gap: 5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
