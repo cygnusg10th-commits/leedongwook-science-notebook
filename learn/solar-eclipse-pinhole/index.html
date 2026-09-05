@@ -51,12 +51,18 @@
     .method-list li strong { color: var(--navy); }
     .refs { color: var(--muted); font-size: .92rem; line-height: 1.85; }
     .refs a { color: var(--physics); font-weight: 700; }
+    .deeper-link { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; margin-top: 24px; padding: 24px; border-radius: 20px; color: #eaf5ff; background: linear-gradient(135deg, #173953, #0a6b68); }
+    .deeper-link h3 { margin: 0 0 7px; color: #fff; }
+    .deeper-link p { margin: 0; color: #d5e7ed; }
+    .deeper-link .button { white-space: nowrap; background: #fff; color: #153651; }
 
     @media (max-width: 820px) {
       .video-layout, .aperture-demo { grid-template-columns: 1fr; }
       .principle-grid, .distance-grid { grid-template-columns: 1fr; }
       .aperture-demo { padding: 22px; }
       .triangle-window { width: min(78vw, 320px); }
+      .deeper-link { grid-template-columns: 1fr; }
+      .deeper-link .button { width: fit-content; }
     }
   </style>
 </head>
@@ -108,6 +114,7 @@
           <article class="principle-card"><h3>잎 사이의 작은 틈</h3><p>겹친 잎 사이의 구멍이 여러 방향의 빛을 아주 좁은 영역으로 제한합니다.</p></article>
           <article class="principle-card"><h3>바닥의 태양상</h3><p>틈에서 교차한 빛이 다시 퍼져, 스크린 역할을 하는 바닥에 180° 돌아간 상을 만듭니다.</p></article>
         </div>
+        <div class="deeper-link"><div><h3>풍경 전체는 어떻게 한 장의 상이 될까?</h3><p>물체의 한 점에서 출발한 빛부터 스크린에 뒤집힌 상이 완성될 때까지, 일반적인 핀홀 카메라의 경로를 영상으로 따라가 보세요.</p></div><a class="button" href="../pinhole-camera/">핀홀 카메라 원리 →</a></div>
       </div>
     </section>
 

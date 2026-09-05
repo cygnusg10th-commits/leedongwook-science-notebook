@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="풍경의 각 점에서 온 빛이 작은 구멍을 통과해 암실의 스크린에 거꾸로 된 상을 만드는 핀홀 카메라의 원리를 영상과 광선 그림으로 설명합니다." />
+  <title>작은 구멍 하나가 풍경을 그리는 법 | 과학 수첩</title>
+  <meta property="og:title" content="작은 구멍 하나가 풍경을 그리는 법" />
+  <meta property="og:description" content="한 점의 빛이 핀홀을 지나 스크린의 한 점에 닿고, 그 대응이 모여 풍경 전체의 상이 되는 과정을 확인하세요." />
+  <meta property="og:image" content="media/pinhole-camera-poster.jpg" />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260821-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <style>
+    .pinhole-hero h1 { max-width: 900px; }
+    .video-layout { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 48px; align-items: center; }
+    .shorts-frame { width: min(100%, 400px); margin: 0 auto; padding: 10px; border-radius: 34px; background: #07111b; box-shadow: 0 24px 64px rgba(9, 25, 43, .28); }
+    .shorts-frame video { display: block; width: 100%; aspect-ratio: 9 / 16; border-radius: 25px; background: #07111b; }
+    .video-note { margin: 14px 0 0; color: var(--muted); font-size: .92rem; text-align: center; }
+    .chapter-list { display: grid; gap: 13px; margin-top: 25px; }
+    .chapter { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: start; padding: 16px 18px; border: 1px solid #dbe4ed; border-radius: 17px; background: #fff; }
+    .chapter time { color: var(--physics); font-weight: 800; }
+    .chapter strong { display: block; color: var(--navy); }
+    .chapter span { display: block; margin-top: 4px; color: var(--muted); }
+
+    .ray-stage { overflow: hidden; padding: 28px; border-radius: 26px; background: linear-gradient(145deg, #06111c, #112b3b); box-shadow: var(--shadow); }
+    .ray-stage svg { display: block; width: 100%; height: auto; }
+    .ray-caption { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+    .ray-caption div { padding: 16px; border: 1px solid rgba(255,255,255,.14); border-radius: 15px; color: #c8d8e8; background: rgba(255,255,255,.05); }
+    .ray-caption strong { display: block; margin-bottom: 5px; color: #fff; }
+
+    .concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .concept-card { padding: 24px; border: 1px solid var(--line); border-radius: 20px; background: #fff; box-shadow: 0 10px 28px rgba(30, 51, 80, .06); }
+    .concept-icon { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 18px; border-radius: 15px; color: #fff; background: var(--physics); font-weight: 900; }
+    .concept-card h3 { margin: 0 0 9px; color: var(--navy); }
+    .concept-card p { margin: 0; color: var(--muted); }
+
+    .accuracy-box { display: grid; grid-template-columns: .82fr 1.18fr; gap: 30px; align-items: center; padding: 30px; border-radius: 24px; background: #fff7e7; border: 1px solid #f0dfb5; }
+    .accuracy-visual { position: relative; min-height: 230px; overflow: hidden; border-radius: 20px; background: #101b24; }
+    .accuracy-visual::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 19% 50%, #ff685a 0 3px, transparent 4px), radial-gradient(circle at 34% 44%, #ffbd66 0 3px, transparent 4px), radial-gradient(circle at 51% 52%, #87d8ff 0 3px, transparent 4px), radial-gradient(circle at 67% 42%, #ff685a 0 3px, transparent 4px), radial-gradient(circle at 82% 54%, #87d8ff 0 3px, transparent 4px); }
+    .accuracy-visual::after { content: "광선 경로를 느리게 표시"; position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); width: max-content; color: #dbe9f5; font-weight: 700; }
+    .accuracy-box h2 { margin: 0 0 12px; color: var(--navy); }
+    .accuracy-box p { color: #5d5141; }
+    .accuracy-box p:last-child { margin-bottom: 0; }
+
+    .tradeoff { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+    .tradeoff article { padding: 20px; border-radius: 17px; background: var(--physics-soft); }
+    .tradeoff strong { display: block; margin-bottom: 7px; color: var(--navy); }
+    .tradeoff p { margin: 0; color: var(--muted); }
+    .related { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; padding: 28px; border-radius: 22px; color: #eef6ff; background: linear-gradient(135deg, #153451, #0b6c69); }
+    .related h2 { margin: 0 0 8px; color: #fff; }
+    .related p { margin: 0; color: #d6e8ee; }
+    .related .button { white-space: nowrap; background: #fff; color: #12324d; }
+    details.transcript { margin-top: 22px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+    details.transcript summary { padding: 18px 20px; color: var(--navy); font-weight: 800; cursor: pointer; }
+    .transcript-body { padding: 0 20px 20px; color: var(--muted); }
+    .transcript-body p { margin: 0 0 12px; }
+
+    @media (max-width: 820px) {
+      .video-layout, .accuracy-box, .related { grid-template-columns: 1fr; }
+      .concept-grid, .ray-caption, .tradeoff { grid-template-columns: 1fr; }
+      .ray-stage, .accuracy-box { padding: 20px; }
+      .related .button { width: fit-content; }
+    }
+  </style>
+</head>
+<body>
+  <a class="sr-only" href="#main">본문으로 바로가기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
+      <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container page-hero pinhole-hero">
+      <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>핀홀 카메라</span></nav>
+      <div class="tag-row" style="margin-top:24px"><span class="tag physics">빛과 광학</span><span class="tag everyday">영상 해설</span><span class="tag neutral">1분 11초</span><span class="tag everyday">숏츠</span></div>
+      <h1>작은 구멍 하나가<br />풍경을 그리는 법</h1>
+      <p>렌즈도 센서도 없는 어두운 방. 풍경의 각 점에서 온 빛 가운데 작은 구멍과 나란한 경로만 통과하면, 맞은편 스크린에 상하좌우가 뒤집힌 풍경이 맺힙니다.</p>
+    </section>
+
+    <section class="section tinted">
+      <div class="container video-layout">
+        <div>
+          <div class="shorts-frame">
+            <video controls playsinline preload="metadata" poster="media/pinhole-camera-poster.jpg" aria-label="빛의 경로가 핀홀을 통과해 스크린에 풍경을 만드는 과정 설명 영상">
+              <source src="media/pinhole-camera.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <p class="video-note">소리를 켜고 보세요. 1분 11초입니다.</p>
+        </div>
+        <div>
+          <p class="eyebrow">영상의 핵심 흐름</p>
+          <h2>한 점의 빛에서<br />풍경 전체의 상까지</h2>
+          <div class="chapter-list">
+            <div class="chapter"><time>00:05</time><div><strong>한 점에서 여러 방향으로</strong><span>풍경의 한 점에서 반사된 빛이 사방으로 곧게 나아갑니다.</span></div></div>
+            <div class="chapter"><time>00:11</time><div><strong>핀홀을 향한 한 경로</strong><span>대부분은 벽에 막히고, 작은 구멍과 이어진 좁은 경로만 통과합니다.</span></div></div>
+            <div class="chapter"><time>00:25</time><div><strong>스크린의 한 점에 도착</strong><span>물체의 한 점과 스크린의 한 작은 영역이 대응합니다.</span></div></div>
+            <div class="chapter"><time>00:41</time><div><strong>수많은 대응이 상을 완성</strong><span>다른 점에서 온 빛도 같은 과정을 거쳐 뒤집힌 풍경을 만듭니다.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><h2>왜 거꾸로 보일까?</h2><p>핀홀은 빛을 꺾는 렌즈가 아니라, 통과할 수 있는 방향을 아주 좁게 고르는 구멍입니다.</p></div>
+        <div class="ray-stage">
+          <svg viewBox="0 0 960 390" role="img" aria-labelledby="ray-title ray-desc">
+            <title id="ray-title">핀홀을 통과하는 두 광선과 거꾸로 맺힌 상</title>
+            <desc id="ray-desc">물체 위쪽의 노란 점에서 출발한 광선은 핀홀을 지나 스크린 아래쪽에 닿고, 물체 아래쪽의 푸른 점에서 출발한 광선은 스크린 위쪽에 닿는다.</desc>
+            <defs>
+              <linearGradient id="screenGlow" x1="0" x2="1"><stop stop-color="#203546"/><stop offset="1" stop-color="#edf6f1"/></linearGradient>
+              <filter id="glow"><feGaussianBlur stdDeviation="5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <rect x="0" y="0" width="960" height="390" rx="22" fill="#081522"/>
+            <path d="M170 75v240M120 315h100" stroke="#d6e3eb" stroke-width="8" stroke-linecap="round"/>
+            <circle cx="170" cy="85" r="10" fill="#ffd15a" filter="url(#glow)"/>
+            <circle cx="170" cy="300" r="10" fill="#68c9ff" filter="url(#glow)"/>
+            <rect x="468" y="26" width="25" height="150" rx="6" fill="#263747"/>
+            <rect x="468" y="214" width="25" height="150" rx="6" fill="#263747"/>
+            <circle cx="481" cy="195" r="7" fill="#fff4bc" filter="url(#glow)"/>
+            <rect x="818" y="46" width="24" height="298" rx="8" fill="url(#screenGlow)"/>
+            <path d="M170 85L481 195L830 300" fill="none" stroke="#ffd15a" stroke-width="4" stroke-linecap="round"/>
+            <path d="M170 300L481 195L830 85" fill="none" stroke="#68c9ff" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="830" cy="300" r="10" fill="#ffd15a" filter="url(#glow)"/>
+            <circle cx="830" cy="85" r="10" fill="#68c9ff" filter="url(#glow)"/>
+            <text x="170" y="355" fill="#d8e5ed" font-size="22" font-weight="700" text-anchor="middle">풍경</text>
+            <text x="481" y="386" fill="#d8e5ed" font-size="22" font-weight="700" text-anchor="middle">핀홀</text>
+            <text x="830" y="386" fill="#d8e5ed" font-size="22" font-weight="700" text-anchor="middle">스크린</text>
+          </svg>
+          <div class="ray-caption">
+            <div><strong>1. 직진</strong>균일한 매질에서 빛은 거의 곧게 나아갑니다.</div>
+            <div><strong>2. 교차</strong>위와 아래에서 온 경로는 핀홀 부근에서 서로 교차합니다.</div>
+            <div><strong>3. 반전</strong>위쪽은 아래쪽에, 왼쪽은 오른쪽에 대응합니다.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>한 점이 한 점을 만드는 과정</h2><p>풍경 전체가 한꺼번에 구멍으로 들어오는 것이 아닙니다. 이 대응이 모든 위치에서 동시에 일어납니다.</p></div>
+        <div class="concept-grid">
+          <article class="concept-card"><span class="concept-icon">1</span><h3>물체의 한 점</h3><p>햇빛을 받은 나무, 지붕, 호수의 각 작은 면은 빛을 여러 방향으로 반사합니다.</p></article>
+          <article class="concept-card"><span class="concept-icon">→</span><h3>선택된 방향</h3><p>그중 핀홀을 향해 직진한 매우 좁은 빛 다발만 어두운 방 안으로 들어옵니다.</p></article>
+          <article class="concept-card"><span class="concept-icon">●</span><h3>스크린의 작은 영역</h3><p>유한한 크기의 구멍이므로 수학적인 한 점이 아니라 작은 흐림 원으로 기록됩니다.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="accuracy-box">
+          <div class="accuracy-visual" role="img" aria-label="빛의 이동 경로를 보여 주기 위해 느리게 표시한 색점들"></div>
+          <div>
+            <p class="eyebrow">영상 표현을 정확히 읽기</p>
+            <h2>빛이 실제로 천천히 날아가는 것은 아닙니다</h2>
+            <p>영상의 색점은 빛 알갱이의 실제 속도와 크기를 재현한 것이 아니라, <strong>어느 지점에서 출발한 빛이 어떤 직선 경로로 스크린에 닿는지</strong>를 눈으로 추적하기 위한 시간 확대 표현입니다.</p>
+            <p>빛이 중간에서 갈라지거나 곡선으로 꺾이는 것도 아닙니다. 풍경의 각 점에서 이미 여러 방향으로 나온 빛 가운데 핀홀을 향한 경로를 골라 보여 준 것입니다. 실제 스크린은 수많은 광자의 에너지를 거의 동시에 받아 밝기와 색을 드러냅니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tinted">
+      <div class="container">
+        <div class="section-head"><h2>구멍을 작게 만들면 무조건 좋을까?</h2><p>선명도와 밝기 사이에는 맞교환이 있습니다.</p></div>
+        <div class="tradeoff">
+          <article><strong>구멍이 크면</strong><p>더 많은 빛이 들어와 밝지만, 한 물체점의 빛이 넓게 퍼져 서로 겹치므로 흐려집니다.</p></article>
+          <article><strong>구멍이 적당히 작으면</strong><p>통과 방향이 좁아져 상이 선명해집니다. 대신 들어오는 빛이 줄어 더 어둡습니다.</p></article>
+          <article><strong>지나치게 작으면</strong><p>회절로 빛이 다시 퍼지고 매우 어두워집니다. 가장 선명한 크기는 구멍과 스크린의 거리, 빛의 파장에 따라 달라집니다.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="related">
+          <div><h2>나뭇잎의 작은 틈도 핀홀입니다</h2><p>부분일식 날 바닥에 초승달 모양이 반복되는 이유와, 삼각형 잎 틈도 태양상을 만들 수 있는 조건을 이어서 확인하세요.</p></div>
+          <a class="button" href="../solar-eclipse-pinhole/">일식 핀홀 보기 →</a>
+        </div>
+        <details class="transcript">
+          <summary>영상 내레이션 원문 보기</summary>
+          <div class="transcript-body">
+            <p>빛이 들어오지 않는 암실입니다. 아직 스크린에는 아무 상도 없습니다.</p>
+            <p>풍경의 한 점에서 반사된 빛은, 처음부터 서로 다른 방향으로 곧게 퍼져 나갑니다. 대부분의 빛은 벽에 막힙니다. 그러나 핀홀과 한 직선 위에 놓인 하나의 경로는 작은 구멍을 향합니다.</p>
+            <p>빛은 방향을 꺾지 않은 채, 핀홀을 통과해 암실 안으로 계속 직진합니다. 그리고 맞은편 스크린의 한 점에 도착합니다. 물체의 한 점과 스크린의 한 점이 대응한 것입니다.</p>
+            <p>이제 풍경의 다른 점들에서도 같은 과정이 이어집니다. 각 점에서 출발한 빛 가운데, 핀홀을 통과하는 좁은 경로만 암실 안으로 들어옵니다.</p>
+            <p>위쪽에서 온 빛은 아래쪽에, 왼쪽에서 온 빛은 오른쪽에 닿습니다. 핀홀에서 경로가 서로 교차하기 때문에, 스크린에는 상하좌우가 뒤집힌 상이 만들어집니다.</p>
+            <p>처음에는 몇 개의 점뿐이지만, 도착하는 빛이 쌓일수록 거꾸로 된 풍경의 색과 윤곽이 선명해집니다. 작은 구멍 하나로 상을 만드는 것. 이것이 핀홀 카메라의 원리입니다.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>물리학 · 빛과 광학 · 핀홀 카메라</span><a href="../">전체 콘텐츠 →</a></div></footer>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
