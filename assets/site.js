@@ -65,3 +65,45 @@
   if (contentSearch) contentSearch.addEventListener('input', applyContentFilters);
   applyContentFilters();
 })();
+
+
+// Shared page-view counter: one badge request per production page load.
+// All pages use the same key. This is a view count, not unique people.
+(() => {
+  const basePath = '/leedongwook-science-notebook/';
+  if (location.hostname !== 'cygnusg10th-commits.github.io' ||
+      !location.pathname.startsWith(basePath) ||
+      document.querySelector('[data-site-counter]')) return;
+
+  const footer = document.querySelector('.site-footer .footer-inner') ||
+    document.querySelector('.site-footer');
+  if (!footer) return;
+
+  const counter = document.createElement('span');
+  counter.dataset.siteCounter = '';
+  counter.style.cssText = 'display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:100%;font-size:14px';
+  const link = document.createElement('a');
+  link.href = 'https://hits.sh/cygnusg10th-commits.github.io/leedongwook-science-notebook/';
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.setAttribute('aria-label', '사이트 누적 조회수와 조회 추이 보기 (새 창)');
+  link.style.cssText = 'display:inline-flex;align-items:center;min-height:32px';
+
+  const badge = document.createElement('img');
+  badge.alt = '누적 조회수';
+  badge.height = 24;
+  badge.style.cssText = 'height:24px;width:auto;max-width:100%';
+  badge.referrerPolicy = 'no-referrer';
+  badge.addEventListener('error', () => {
+    link.textContent = '조회수 확인';
+  }, { once: true });
+  // Do not lazy-load: a view should count even without scrolling to the footer.
+  badge.src = 'https://hits.sh/cygnusg10th-commits.github.io/leedongwook-science-notebook.svg?label=' +
+    encodeURIComponent('누적 조회수') + '&color=4355db&labelColor=334155';
+  link.append(badge);
+
+  const note = document.createElement('span');
+  note.textContent = '2026.09.05부터 · 중복 조회 포함';
+  counter.append(link, note);
+  footer.append(counter);
+})();
