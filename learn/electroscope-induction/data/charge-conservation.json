@@ -1,0 +1,54 @@
+{
+  "units": "dimensionless electron-bundle equivalents; not nC",
+  "sensor_and_earth_packet_count": 230,
+  "rod_packet_count": 250,
+  "states": {
+    "neutral": [
+      120,
+      8,
+      22,
+      40,
+      40,
+      0
+    ],
+    "rod_near_before_ground": [
+      72,
+      8,
+      22,
+      64,
+      64,
+      0
+    ],
+    "grounded_and_after_finger_removal": [
+      72,
+      8,
+      22,
+      40,
+      40,
+      48
+    ],
+    "rod_removed_after_disconnection": [
+      96,
+      7,
+      19,
+      30,
+      30,
+      48
+    ]
+  },
+  "region_order": [
+    "plate",
+    "upper_stem",
+    "lower_stem",
+    "left_leaf",
+    "right_leaf",
+    "earth"
+  ],
+  "checks": {
+    "all_electron_ids_persist": true,
+    "no_electron_events_at_finger_removal": true,
+    "leaves_stay_closed_until_rod_moves": true,
+    "earth_count_fixed_after_disconnection": true
+  },
+  "angle_model": "Illustrative equal point-charge pendulum, with 22 degree initial opening as a chosen display scale. Not a calibrated prediction for the bottle geometry."
+}
