@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="우주정거장을 돌리면 사람이 걸을 수 있을까요? 92초 영상과 회전축·가스 분사·구심력·공기의 회전 해설, 인공 중력 계산기로 확인합니다." />
+  <meta property="og:title" content="우주정거장을 돌리면, 사람이 걸을 수 있을까? | 과학 수첩" />
+  <meta property="og:description" content="가스를 뿜어 회전시키고, 바닥을 딛고 걷기까지. 우주 속 ‘아래’를 만드는 원리를 영상과 계산으로 살펴봅니다." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://cygnusg10th-commits.github.io/leedongwook-science-notebook/learn/rotating-space-station/" />
+  <meta property="og:image" content="https://cygnusg10th-commits.github.io/leedongwook-science-notebook/learn/rotating-space-station/media/poster.jpg" />
+  <title>우주정거장을 돌리면, 사람이 걸을 수 있을까? | 과학 수첩</title>
+  <link rel="canonical" href="https://cygnusg10th-commits.github.io/leedongwook-science-notebook/learn/rotating-space-station/" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260905-1" />
+  <link rel="stylesheet" href="station.css?v=20260911-1" />
+  <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <script src="gravity-model.js?v=20260911-1" defer></script>
+  <script src="station.js?v=20260911-1" defer></script>
+</head>
+<body>
+<a class="sr-only" href="#main">본문으로 바로가기</a>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a><nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../">과학 문서</a><a href="../../subjects/physics/" aria-current="true">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav><div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div></div></header>
+<main id="main" class="ag-lesson">
+<section class="container page-hero ag-hero">
+  <nav class="breadcrumb" aria-label="현재 위치"><a href="../../">홈</a><span>›</span><a href="../../subjects/physics/">물리학</a><span>›</span><span>회전하는 우주정거장</span></nav>
+  <div class="tag-row"><span class="tag physics">운동과 힘</span><span class="tag earth">태양계와 우주</span><span class="tag">영상 1분 32초</span></div>
+  <h1>우주정거장을 돌리면,<br />사람이 걸을 수 있을까?</h1>
+  <p>떠 있던 사람이 발을 딛고, 한 걸음을 내딛습니다. 회전하는 정거장에서는 <strong>바닥이 몸을 받쳐 주는 힘</strong>이 ‘무게’를 만듭니다.</p>
+  <p class="ag-published"><time datetime="2026-09-11">2026년 9월 11일</time> · 3D 영상과 심화 해설</p>
+  <nav class="ag-toc" aria-label="이 글의 순서"><a href="#watch">영상 보기</a><a href="#axis">회전축과 바닥</a><a href="#spin">가스로 돌리는 법</a><a href="#calculator">인공 중력 계산</a><a href="#air">공기는 어떻게 될까?</a><a href="#questions">궁금한 점</a><a href="#sources">연구 자료</a></nav>
+</section>
+
+<section class="section ag-watch-section" id="watch"><div class="container ag-watch">
+  <figure class="ag-video"><video id="station-video" controls playsinline preload="metadata" poster="media/poster.jpg" width="720" height="1280" aria-label="가스 분사로 회전을 시작한 우주정거장 안에서 사람이 바닥을 딛고 걷는 92초 영상" aria-describedby="video-note"><source src="media/rotating-space-station.mp4" type="video/mp4" /><track kind="captions" src="media/narration.ko.vtt" srclang="ko" label="한국어 전체 내레이션" /><p><a href="media/rotating-space-station.mp4">우주정거장 영상 열기</a></p></video><figcaption id="video-note">내레이션·핵심 자막·록 배경음악이 포함된 영상입니다. 재생기에서 전체 내레이션 자막을 켤 수 있습니다. <a href="media/rotating-space-station.mp4">영상 파일 열기</a></figcaption></figure>
+  <div class="ag-watch-copy"><p class="eyebrow">우주에서 ‘아래’를 만드는 방법</p><h2>정거장을 돌리고,<br /><em>바닥으로 몸을 받칩니다.</em></h2><p>먼저 전체 모습을 충분히 보고, 가스 분사를 따라 창문 안으로 들어갑니다. 난간을 잡은 사람, 손을 놓는 순간, 마지막 걸음까지 이어서 관찰해 보세요.</p>
+  <nav class="ag-chapters" aria-label="영상 장면 바로 보기"><a href="media/rotating-space-station.mp4#t=4" data-video-time="4"><span>00:04</span><b>양쪽 가스 분사와 회전</b></a><a href="media/rotating-space-station.mp4#t=26" data-video-time="26"><span>00:26</span><b>난간을 잡으면 몸도 함께 회전</b></a><a href="media/rotating-space-station.mp4#t=37" data-video-time="37"><span>00:37</span><b>손을 놓고 바닥에 닿는 순간</b></a><a href="media/rotating-space-station.mp4#t=69" data-video-time="69"><span>01:09</span><b>바깥쪽 바닥을 딛고 걷기</b></a></nav>
+  <p id="video-status" role="status"></p><p class="ag-watch-note">영상의 회전 설정은 약 0.067g입니다. 지구와 같은 1g를 재현한 장면은 아닙니다. 아래 계산기에서 차이를 비교할 수 있습니다.</p></div>
+</div></section>
+
+<section class="section" id="axis"><div class="container"><div class="section-head"><h2>가운데가 축, 바깥쪽이 바닥입니다</h2><p>고리의 둘레를 따라 걷는 사람에게는 바깥쪽 벽이 발을 딛는 바닥이 됩니다.</p></div>
+  <div class="ag-split"><figure class="ag-diagram">
+    <svg viewBox="0 0 520 490" role="img" aria-labelledby="axis-title axis-desc"><title id="axis-title">회전축에서 바라본 정거장의 바닥과 힘</title><desc id="axis-desc">고리 중심을 화면 앞뒤로 관통하는 축 둘레로 정거장이 회전합니다. 아래쪽에 선 사람의 발은 고리 바깥쪽, 머리는 중심을 향합니다. 바닥의 힘 화살표는 안쪽을 향합니다.</desc>
+      <defs><marker id="arrow-inward" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#a35f00" /></marker><marker id="arrow-spin" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#215e87" /></marker></defs>
+      <circle cx="260" cy="240" r="175" fill="none" stroke="#a9bacb" stroke-width="30" /><circle cx="260" cy="240" r="160" fill="none" stroke="#263e59" stroke-width="4" />
+      <path d="M110 173 A165 165 0 0 1 230 77" fill="none" stroke="#215e87" stroke-width="4" marker-end="url(#arrow-spin)" /><text x="95" y="104" font-size="19" fill="#215e87">회전</text>
+      <circle cx="260" cy="240" r="15" fill="white" stroke="#263e59" stroke-width="3" /><circle cx="260" cy="240" r="5" fill="#263e59" /><text x="288" y="244" font-size="20" font-weight="700" fill="#172b4d">회전축</text><text x="190" y="282" font-size="16" fill="#43536a">화면 앞뒤로 관통</text>
+      <circle cx="260" cy="332" r="13" fill="#263e59" /><path d="M260 347V373 M239 352L260 358L281 352 M260 373L247 399 M260 373L273 399" fill="none" stroke="#263e59" stroke-width="8" stroke-linecap="round" />
+      <path d="M214 392V321" stroke="#a35f00" stroke-width="5" marker-end="url(#arrow-inward)" /><text x="62" y="349" font-size="18" fill="#805000">바닥의 힘</text><text x="289" y="339" font-size="17" fill="#172b4d">머리 → 축 쪽</text><text x="289" y="392" font-size="17" fill="#172b4d">발 → 바깥쪽</text><text x="180" y="462" font-size="19" font-weight="700" fill="#172b4d">고리 바깥 벽의 안쪽 면</text>
+    </svg><figcaption>회전축은 고리 평면에 수직입니다. 여기서는 축을 정면에서 바라봤기 때문에 중심의 점으로 표시했습니다. 그림의 사람 크기는 설명을 위해 확대했습니다.</figcaption>
+  </figure><div><h3>밖에서 보면, 몸의 방향이 계속 바뀝니다</h3><p>정거장과 함께 도는 사람은 원운동을 합니다. 속력의 크기가 같아도 움직이는 방향이 계속 달라지므로, 중심을 향한 가속도가 필요합니다. 바닥이 발을 밀어 그 가속도를 만듭니다.</p><h3>안에서 보면, 바닥이 몸을 받칩니다</h3><p>정거장과 함께 회전하는 관점에서는 바깥쪽으로 향하는 원심력을 도입해 설명할 수 있습니다. 그 안에서 서 있는 사람은 바닥의 받침을 무게처럼 느낍니다. 두 관점은 같은 운동을 서로 다르게 표현합니다.</p><p class="ag-note">관측 기준과 접촉력의 구분은 <a href="https://www.spacearchitect.org/pubs/ICES-2016-194.pdf">Hall의 인공 중력 해설(2016)</a>을 참고했습니다.</p></div></div>
+</div></section>
+
+<section class="section tinted" id="spin"><div class="container ag-reading"><div class="section-head"><h2>양쪽의 분사가 한 방향의 회전을 만듭니다</h2><p>정거장을 통째로 밀어 보내는 것과, 중심 둘레로 돌리는 것은 구분해야 합니다.</p></div>
+  <p>고리의 서로 반대편에 있는 두 노즐이 <strong>서로 반대인 접선 방향</strong>으로 가스를 내보냅니다. 노즐이 받는 반작용도 서로 반대지만, 중심에서의 위치 역시 반대이므로 <strong>회전시키는 효과인 토크는 같은 방향</strong>으로 더해집니다.</p>
+  <div class="ag-equation">이상적인 대칭 분사: 합력 = 0 · 토크 = 2RF</div>
+  <p>R은 중심에서 노즐까지 거리, F는 노즐 하나가 받는 접선 방향 추력입니다. 두 추력이 같다면 중심을 옆으로 미는 효과는 상쇄하면서 회전을 시작할 수 있습니다.</p>
+  <div class="ag-highlight"><strong>정거장만 보면 회전이 생기고, 가스까지 보면 각운동량이 보존됩니다.</strong><p>외부 토크를 무시하면 정거장과 배출 가스의 각운동량 합은 일정합니다. 모터만으로 정거장을 돌릴 때에도 반대로 도는 다른 부분이나 외부와 각운동량을 주고받는 장치가 필요합니다.</p></div>
+  <p>원하는 회전수에 도달한 뒤에는 분사를 멈춰도 회전이 이어집니다. 다만 외부 토크나 내부 질량 이동이 있으면 회전 상태가 달라져 자세·속도 보정이 필요할 수 있습니다.</p>
+</div></section>
+
+<section class="section"><div class="container"><div class="section-head"><h2>몸과 바닥이 만나는 세 단계</h2><p>‘돌기 시작했다’와 ‘사람이 바닥에 서 있다’ 사이에 힘이 전달되는 과정이 있습니다.</p></div>
+  <div class="ag-scenes"><figure><a href="media/rotating-space-station.mp4#t=32" data-video-time="32"><img src="media/rail.jpg" width="540" height="960" loading="lazy" alt="난간을 잡고 발이 떠 있는 우주인" /></a><figcaption><strong>1. 난간을 통해 힘을 받습니다</strong><p>처음부터 자유롭게 떠 있는 몸이 회전만으로 즉시 바닥에 끌려가지는 않습니다. 이 장면에서는 난간을 잡은 손을 통해 몸이 정거장과 함께 회전하게 됩니다.</p></figcaption></figure>
+  <figure><a href="media/rotating-space-station.mp4#t=39" data-video-time="39"><img src="media/landing.jpg" width="540" height="960" loading="lazy" alt="손을 놓은 뒤 고리의 바깥쪽 바닥에 발을 딛는 우주인" /></a><figcaption><strong>2. 손을 놓으면 관성으로 나아갑니다</strong><p>짧은 시간 동안 공기 저항과 조석 효과를 무시하면, 몸은 놓는 순간의 접선 방향으로 나아갑니다. 그 경로가 회전하는 고리의 바닥과 만나 발이 닿습니다.</p></figcaption></figure>
+  <figure><a href="media/rotating-space-station.mp4#t=70" data-video-time="70"><img src="media/walking.jpg" width="540" height="960" loading="lazy" alt="회전하는 정거장 내부에서 바깥쪽 바닥을 딛고 걷는 우주인" /></a><figcaption><strong>3. 바닥이 계속 몸을 안쪽으로 밉니다</strong><p>바닥이 몸의 운동 방향을 바꿔 원운동을 이어 갑니다. 발은 바깥쪽을, 머리는 회전축 쪽을 향합니다.</p></figcaption></figure></div>
+</div></section>
+
+<section class="section tinted" id="calculator"><div class="container"><div class="section-head"><h2>얼마나 빨리 돌아야 할까요?</h2><p>바닥과 함께 회전하며 서 있는 사람의 가속도는 회전 속도의 제곱과 반지름에 비례합니다.</p></div>
+  <div class="ag-equation">a = ω²R = (2πn / 60)²R</div><p class="ag-note">n은 분당 회전수(rpm), ω는 초당 회전각(rad/s), R은 회전축에서 바닥까지의 거리입니다. g는 지표 중력가속도의 기준값 9.80665m/s²를 뜻합니다.</p>
+  <div class="ag-calc"><div><div class="ag-control"><label for="station-radius">바닥의 반지름 <output id="radius-value" for="station-radius">103 m</output></label><input id="station-radius" type="range" min="20" max="300" step="1" value="103" /><small>회전축에서 발까지의 거리 · 20–300m</small></div><div class="ag-control"><label for="station-rpm">분당 회전수 <output id="rpm-value" for="station-rpm">0.764 rpm</output></label><input id="station-rpm" type="range" min="0" max="4" step="0.001" value="0.764" /><small>1rpm은 1분에 한 바퀴입니다.</small></div><div class="ag-presets"><button id="preset-video" type="button">영상 설정</button><button id="preset-earth" type="button">1g와 비교</button></div></div>
+  <div class="ag-result" role="status" aria-live="polite" aria-atomic="true"><span>바닥에서 느끼는 인공 중력</span><strong id="gravity-value">0.067 g</strong><dl><dt>중심 쪽 가속도</dt><dd id="acceleration-value">0.659 m/s²</dd><dt>회전 주기</dt><dd id="period-value">한 바퀴 78.5초</dd><dt>바닥의 접선 속력</dt><dd id="speed-value">8.24 m/s</dd></dl></div></div>
+  <p id="one-g-value" class="ag-note">반지름 103m에서 1g를 만들려면 약 2.947rpm이 필요합니다.</p><p class="ag-note">정상 회전의 계산입니다. 걷는 사람의 코리올리 효과, 가속 중의 접선 방향 힘, 공기 흐름은 포함하지 않습니다. 작은 반지름에서 ‘1g와 비교’를 누르면 조절 범위 안의 103m로 돌아갑니다.</p>
+  <div class="ag-table-wrap"><table class="ag-table"><caption>영상에 사용한 정상 회전 값</caption><thead><tr><th scope="col">항목</th><th scope="col">값</th><th scope="col">뜻</th></tr></thead><tbody><tr><th scope="row">반지름</th><td>103m</td><td>축에서 바닥까지</td></tr><tr><th scope="row">각속도</th><td>0.08rad/s</td><td>약 0.764rpm</td></tr><tr><th scope="row">가속도</th><td>0.6592m/s²</td><td>약 0.067g · 지구의 약 1/15</td></tr><tr><th scope="row">회전 주기</th><td>약 78.5초</td><td>정상 속도로 한 바퀴 도는 시간</td></tr></tbody></table></div>
+</div></section>
+
+<section class="section" id="air"><div class="container ag-reading"><div class="section-head"><h2>벽이 돌기 시작하면, 공기는 어떻게 될까요?</h2><p>벽은 먼저 움직이지만 공기 전체가 한순간에 같은 속도로 돌지는 않습니다.</p></div>
+  <p>움직이는 벽과 공기 사이의 점성 작용이 운동량을 전달합니다. 벽 근처에서 시작된 변화는 내부의 순환과 혼합을 통해 퍼집니다. 회전이 시작되는 동안에는 벽과 공기의 속도 차이 때문에 <strong>실내에서 일시적인 상대 바람</strong>이 생길 수 있습니다.</p>
+  <p>시간이 지나면 공기는 정거장의 회전을 따라가는 쪽으로 변합니다. 실제 선실에서는 통로와 칸막이, 사람과 장비, 환기 장치, 난류가 흐름에 영향을 줍니다. 바람의 속도나 잦아드는 시간은 정거장 형상과 가속 방법 없이 하나의 숫자로 정할 수 없습니다.</p>
+  <p class="ag-note">회전 유체의 경계층과 내부 순환에 관한 출발점은 <a href="https://doi.org/10.1017/S0022112063001415">Greenspan·Howard(1963)</a>입니다. 이 연구를 근거로 실제 정거장의 공기 흐름을 그대로 계산했다고 해석해서는 안 됩니다.</p>
+  <div class="ag-highlight"><strong>바람이 인공 중력을 만드는 것은 아닙니다.</strong><p>공기는 물체의 움직임에 영향을 줄 수 있지만, 이 영상에서 사람이 서 있는 핵심 이유는 회전하는 바닥이 몸을 안쪽으로 받쳐 주기 때문입니다.</p></div>
+</div></section>
+
+<section class="section tinted" id="questions"><div class="container ag-reading"><div class="section-head"><h2>영상에서 이어지는 질문</h2><p>무엇이 실제 힘이고, 무엇이 관측 기준에 따른 설명인지 함께 구분해 봅니다.</p></div>
+  <details class="ag-details"><summary>우주에는 중력이 없어서 사람이 뜨는 것 아닌가요?</summary><div><p>지구 주변 궤도에도 지구의 중력이 작용합니다. 정거장과 사람이 함께 자유낙하하므로 바닥이 몸을 지탱할 필요가 거의 없어 떠 있는 것입니다. 회전 정거장에서는 바닥이 몸을 원운동시키는 추가적인 접촉력을 제공합니다.</p><p><a href="../jupiter-flyby/">목성 스윙바이와 자유낙하 영상</a>에서 ‘중력이 작용하는 것’과 ‘무게를 느끼는 것’의 차이를 이어서 볼 수 있습니다.</p></div></details>
+  <details class="ag-details"><summary>회전축에 떠 있던 사람도 바닥으로 떨어지나요?</summary><div><p>몸이 정확히 축에 정지해 있고 아무 힘도 받지 않는 이상적인 경우라면, 벽이 회전한다는 이유만으로 저절로 바깥쪽으로 이동하지 않습니다. 난간을 잡거나 밀고 나가거나, 공기와 접촉하는 등의 힘 전달과 초기 속도를 함께 살펴야 합니다.</p></div></details>
+  <details class="ag-details"><summary>줌인할 때 정거장의 회전이 멈춘 것처럼 보이는 이유는?</summary><div><p>카메라가 회전하는 창문을 따라가면 정거장과 카메라 사이의 상대 움직임이 작아집니다. 영상의 작은 외부 시점 화면은 이때도 정거장이 계속 회전한다는 것을 보여 줍니다.</p></div></details>
+  <details class="ag-details"><summary>머리와 발이 느끼는 중력도 같을까요?</summary><div><p>같은 각속도라면 a=ω²r이므로 축에 가까운 머리 쪽의 가속도가 더 작습니다. 영상 반지름 103m에서 머리가 발보다 축 쪽으로 1.7m 가까우면 머리 위치의 가속도는 발 위치보다 약 1.7/103, 즉 1.65% 작습니다. 이것은 위치별 가속도 비교이며 인체 내부 힘 전체를 계산한 것은 아닙니다.</p></div></details>
+  <details class="ag-details"><summary>실제로도 영상처럼 자연스럽게 걸을 수 있나요?</summary><div><p>영상의 보행은 실제 지상 보행 기록을 3D 인물에 적용한 설명용 동작입니다. 0.067g의 보행을 검증한 생체역학 시뮬레이션은 아닙니다. 회전 환경에서는 이동 방향과 속도, 코리올리 효과, 회전 적응에 따라 균형과 발걸음이 달라질 수 있습니다.</p></div></details>
+  <details class="ag-details"><summary>커다란 바퀴형 정거장이 이미 실험으로 검증됐나요?</summary><div><p>거주지 설계 연구와 실제 우주 실험을 구분해야 합니다. 예를 들어 ISS의 MARS 연구는 원심분리 장치로 생쥐에게 인공 1g를 제공한 실험입니다. 그 결과가 영상 같은 대형 유인 회전 정거장의 장기 거주를 검증했다는 뜻은 아닙니다.</p></div></details>
+</div></section>
+
+<section class="section" id="sources"><div class="container ag-reading"><div class="section-head"><h2>연구 자료로 더 읽기</h2><p>회전 거주지의 해석, 공기의 회전 적응, 실제 우주 실험을 나누어 읽으면 영상의 적용 범위가 분명해집니다.</p></div>
+  <ul class="ag-sources"><li><a href="https://www.spacearchitect.org/pubs/ICES-2016-194.pdf">Hall (2016), Artificial Gravity in Theory and Practice</a><small>학술대회 논문 · 회전 기준계, 바닥의 접촉력, 인공 중력과 공간 설계.</small></li><li><a href="https://doi.org/10.1017/S0022112063001415">Greenspan &amp; Howard (1963), On a time-dependent motion of a rotating fluid</a><small>유체 이론·실험 · 경계층과 내부 순환이 유체의 회전 적응을 이끄는 과정. 정거장 공기 자체의 실험은 아닙니다.</small></li><li><a href="https://www.nature.com/articles/s41598-017-10998-4">Shiba 외 (2017), Development of new experimental platform ‘MARS’</a><small>ISS 생쥐 실험 · 원심분리로 만든 인공 중력의 실제 우주 실험과 장치 개발.</small></li><li><a href="https://www.nature.com/articles/s41526-017-0034-8">Clément (2017), International roadmap for artificial gravity research</a><small>연구 로드맵 · 인체 적응, 노출 조건, 장기 적용에서 남은 연구 문제.</small></li></ul>
+  <details class="ag-details"><summary>이 영상과 계산의 제작 범위</summary><div><p>정거장, 지구, 인물과 카메라는 Blender의 3D 장면으로 제작했습니다. 영상은 가스 분사와 회전의 관계를 보여 주기 위해 가속 과정의 시간을 압축하고 가스의 가시성을 강조했습니다. 진공 분사의 밝기·모양을 실측한 영상은 아닙니다.</p><p>공기 흐름은 정성적으로 설명했으며 이 정거장의 CFD를 수행한 결과가 아닙니다. 계산기는 정상 회전의 원운동 관계만 계산합니다. 지구 배경과 구름 변화도 영상 표현으로, 특정 시각의 위성 관측 자료와 일치시키지는 않았습니다.</p><p>배경음악은 Gemini에서 제작한 기존 하드 록 곡 〈Line on the Glass〉를 사용했습니다.</p></div></details>
+  <div class="ag-related"><strong>이어서 볼 자료</strong><a href="../jupiter-flyby/">목성이 끌어당기는데, 왜 사람은 둥둥 뜰까? →</a><a href="../rolling-wheel/">굴러가는 바퀴의 맨 아래는 멈춰 있다 →</a><a href="../earth-tunnel/">지구를 관통하는 터널에 떨어지면? →</a></div>
+</div></section>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>물리학 × 지구과학 · 회전하는 우주정거장</span><a href="../">전체 콘텐츠 →</a></div></footer>
+<nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/physics/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+</body>
+</html>
