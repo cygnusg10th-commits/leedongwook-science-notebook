@@ -9,8 +9,10 @@
   <meta property="og:description" content="우리가 그리는 비는 두 번 틀렸습니다. 사선은 잔상이고, 눈물방울은 앞뒤가 뒤집혀 있습니다." />
   <meta property="og:image" content="video/raindrop-shape-poster.jpg" />
   <meta property="og:type" content="article" />
-  <link rel="stylesheet" href="../../assets/site.css?v=20260905-1" />
+  <link rel="stylesheet" href="../../assets/site.css?v=20260924-1" />
   <script src="../../assets/site.js?v=20260817-2" defer></script>
+  <script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'global'}};</script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
   <style>
     .raindrop-hero h1 { max-width: 760px; }
     .video-layout { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 42px; align-items: center; }
@@ -43,7 +45,7 @@
     .clip-grid figcaption { margin-top: 10px; color: var(--muted); font-size: .9rem; text-align: center; }
 
     .formula-box { margin: 22px 0; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; text-align: center; }
-    .formula-box code { font-size: 1.02rem; color: var(--navy); }
+    .formula-box .formula-tex { color: var(--navy); font-size: 1.08rem; }
     .formula-box .result { display: block; margin-top: 8px; color: var(--muted); font-size: .92rem; }
     .formula-box .result b { color: var(--earth); }
 
@@ -56,6 +58,10 @@
       .video-layout { grid-template-columns: 1fr; }
       .clip-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
     }
+    /* 5열 표가 좁은 화면에서 페이지 전체를 옆으로 밀지 않도록 표 안에서만 스크롤합니다. */
+    @media (max-width: 560px) {
+      .data-table th, .data-table td { padding: 12px 10px; white-space: nowrap; }
+    }
   </style>
 </head>
 <body>
@@ -64,7 +70,7 @@
     <div class="container header-inner">
       <a class="brand" href="../../"><span class="brand-mark" aria-hidden="true"></span><span>과학 수첩</span></a>
       <nav class="site-nav" aria-label="주요 메뉴" data-site-nav><a href="../../subjects/physics/">물리학</a><a href="../../subjects/chemistry/">화학</a><a href="../../subjects/biology/">생명과학</a><a href="../../subjects/earth-science/" aria-current="true">지구과학</a><a href="../../everyday/">일상 속 과학</a><a href="../../simulations/">직접 체험</a></nav>
-      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색">⌕</a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button>☰</button></div>
+      <div class="header-tools"><a class="icon-button" href="../" aria-label="전체 콘텐츠 검색"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></a><button class="icon-button menu-button" type="button" aria-label="전체 메뉴" aria-expanded="false" data-menu-button><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
     </div>
   </header>
 
@@ -101,6 +107,7 @@
     <section class="section">
       <div class="container">
         <div class="section-head"><h2>사선의 정체 — 늘어난 것은 시간</h2><p>지름 2 mm 빗방울은 초속 6.5 m로 떨어집니다. 카메라도 눈도 빛을 일정 시간 모아서 보기 때문에, 빠른 것은 선으로 남습니다.</p></div>
+        <div class="table-scroll" role="region" aria-label="노출 시간별 빗방울 잔상 표" tabindex="0">
         <table class="data-table">
           <thead><tr><th>보는 방법</th><th>노출 시간</th><th>맺히는 길이</th><th>보이는 종횡비</th></tr></thead>
           <tbody>
@@ -109,6 +116,7 @@
             <tr><td>사람 눈의 잔상</td><td>약 1/20초</td><td><b>33 cm</b></td><td><b>165 : 1</b></td></tr>
           </tbody>
         </table>
+        </div>
         <p class="table-note">길이 = 지름 + 속도 × 노출 시간. 고속 촬영이 나오기 전까지 인류는 빗방울의 모양을 눈으로 확인할 방법이 없었습니다.</p>
       </div>
     </section>
@@ -120,7 +128,8 @@
           <img src="figures/drop-shapes-raytraced.png" alt="지름 1 mm, 3 mm, 5.5 mm 빗방울의 광선추적 렌더. 클수록 아래가 눌린다." loading="lazy" />
           <figcaption>왼쪽부터 지름 1 · 3 · 5.5 mm. 물의 굴절률(1.331~1.337)로 광선추적한 결과이며, 물방울 안에 뒤편 풍경이 렌즈처럼 180° 뒤집혀 맺힙니다.</figcaption>
         </figure>
-        <table class="data-table" style="margin-top:26px">
+        <div class="table-scroll" style="margin-top:26px" role="region" aria-label="지름별 빗방울 축비 표" tabindex="0">
+        <table class="data-table">
           <thead><tr><th>지름</th><th>종단속도</th><th>축비(세로÷가로) 계산</th><th>측정식(Beard–Chuang)</th><th>편차</th></tr></thead>
           <tbody>
             <tr><td>1 mm</td><td>4.0 m/s</td><td><b>0.97</b></td><td>0.98</td><td>−1.4%</td></tr>
@@ -128,6 +137,7 @@
             <tr><td>5 mm</td><td>9.1 m/s</td><td><b>0.71</b></td><td>0.71</td><td>+0.8%</td></tr>
           </tbody>
         </table>
+        </div>
         <p class="science-caution"><strong>눈물방울은 앞뒤가 뒤집혀 있습니다.</strong> 「빠른 건 앞이 뾰족하다」는 직관대로라면 진행 방향인 아래가 뾰족해야 하는데, 우리는 위를 뾰족하게 그립니다. 실제 빗방울은 정반대로 위가 둥글고 아래가 눌립니다. 물방울은 유체라 유선형을 유지할 수 없고, 표면장력이 늘 구로 되돌리려 하기 때문입니다.</p>
       </div>
     </section>
@@ -136,7 +146,7 @@
       <div class="container">
         <div class="section-head"><h2>한계와 떨림</h2><p>지름이 5 mm를 넘으면 바닥이 파이며 낙하산처럼 부풀다 터집니다. 그리고 그 아래 크기에서도 모양은 고정이 아닙니다.</p></div>
         <div class="formula-box">
-          <code>f = (1/2π) √( n(n−1)(n+2) σ / ρa³ )</code>
+          <div class="formula-tex">$$f = \frac{1}{2\pi}\sqrt{\frac{n(n-1)(n+2)\,\sigma}{\rho\,a^{3}}}$$</div>
           <span class="result">레일리(1879)의 액적 진동식 · n = 2, 지름 4 mm → 초당 <b>43회</b> 진동</span>
         </div>
         <div class="clip-grid">
@@ -178,6 +188,6 @@
   </main>
 
   <footer class="site-footer"><div class="container footer-inner"><strong>과학 수첩</strong><span>지구과학 · 빗방울의 모양</span><a href="../">전체 콘텐츠 →</a></div></footer>
-  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b>⌂</b>홈</a><a href="../../subjects/earth-science/" aria-current="true"><b>◫</b>분야</a><a href="../../everyday/"><b>☀</b>일상</a><a href="../../simulations/"><b>▶</b>체험</a><a href="../"><b>⌕</b>검색</a></nav>
+  <nav class="mobile-nav" aria-label="모바일 메뉴"><a href="../../"><b><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg></b>홈</a><a href="../../subjects/earth-science/" aria-current="true"><b><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg></b>분야</a><a href="../../everyday/"><b><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2.5 12h2M19.5 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></b>일상</a><a href="../../simulations/"><b><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg></b>체험</a><a href="../"><b><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></b>검색</a></nav>
 </body>
 </html>
