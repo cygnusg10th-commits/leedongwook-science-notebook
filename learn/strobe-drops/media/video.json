@@ -1,0 +1,14 @@
+{
+  "title": "물은 한 번도 멈춘 적이 없습니다",
+  "duration": 56.0,
+  "resolution": [
+    1080,
+    1920
+  ],
+  "fps": 30,
+  "bytes": 45522967,
+  "sha256": "6b5d7e5599ad1385e28acac3197e9bd18457cb55a1b3865a393c7d95c55c154f",
+  "date": "2026-09-25",
+  "music": "The Anatomy of Stillness (Gemini)",
+  "visuals": "Blender 3D animation; drops are ballistic beads, terrain from AWS Terrain Tiles"
+}
